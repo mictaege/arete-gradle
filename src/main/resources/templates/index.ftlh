@@ -44,7 +44,7 @@
     <#include "arete.ftlh">
 </head>
 <body style="font-family: sans-serif">
-    <div class="card-blue" style="margin-top: 40px">
+    <div style="margin-top: 40px">
         <div style="padding: 0; margin: 16px">
             <h3>Summaries</h3>
         </div>
@@ -73,7 +73,7 @@
                         <span style="float:right;">${plan.specSummaries().successCount}</span>
                     </div>
                 </div>
-                <div class="step">
+                <div class="neutral step">
                     <div style="text-align: left">Overall
                         <span style="float:right;">${plan.specSummaries().overallCount}</span>
                     </div>
@@ -103,7 +103,7 @@
                         <span style="float:right;">${plan.scenarioSummaries().successCount}</span>
                     </div>
                 </div>
-                <div class="step">
+                <div class="neutral step">
                     <div style="text-align: left">Overall
                         <span style="float:right;">${plan.scenarioSummaries().overallCount}</span>
                     </div>
@@ -133,7 +133,7 @@
                         <span style="float:right;">${plan.descSummaries().successCount}</span>
                     </div>
                 </div>
-                <div class="step">
+                <div class="neutral step">
                     <div style="text-align: left">Overall
                         <span style="float:right;">${plan.descSummaries().overallCount}</span>
                     </div>
@@ -141,7 +141,7 @@
             </div>
         </div>
     </div>
-    <div class="card-blue" style="margin-top: 40px">
+    <div class="card-white" style="margin-top: 40px">
         <div style="padding: 0; margin: 16px">
             <h2>Specifications</h2>
         </div>

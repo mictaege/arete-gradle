@@ -35,6 +35,15 @@
         background-color: red;
     }
 
+    .neutral {
+        background-color: lightskyblue;
+        border-left: 6px solid deepskyblue;
+    }
+
+    .neutral:hover {
+        background-color: deepskyblue;
+    }
+
     [class*="card-"] {
         box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
         transition: 0.3s;
@@ -58,4 +67,5 @@
         padding: 8px;
         box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     }
+
 </style>

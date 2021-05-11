@@ -30,7 +30,7 @@
     <#include "rainbow-theme.ftlh">
 </head>
 <body style="font-family: sans-serif">
-    <div class="card-blue">
+    <div class="card-white" style="margin-top: 40px">
         <#assign level = 0>
         <#macro dumpSteps step>
             <#assign vMargin = 0>
