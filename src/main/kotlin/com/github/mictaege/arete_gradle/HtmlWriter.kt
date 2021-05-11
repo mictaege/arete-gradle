@@ -34,8 +34,9 @@ class HtmlWriter: SpecificationWriter {
 
     override fun finishPlan(plan: SpecificationPlan) {
         writeHtmlFile("/index.ftlh", mapOf("plan" to plan), File(BuildDir.areteDir, "index.html"))
-        //writeHtmlFile("/navigation.ftlh", mapOf("plan" to plan), File(BuildDir.areteDir, "navigation.html"))
-        //writeHtmlFile("/overview.ftlh", mapOf("plan" to plan), File(BuildDir.areteDir, "overview.html"))
+        writeHtmlFile("/alphabetical.ftlh", mapOf("plan" to plan), File(BuildDir.areteDir, "alphabetical.html"))
+        writeHtmlFile("/hierarchical.ftlh", mapOf("plan" to plan), File(BuildDir.areteDir, "hierarchical.html"))
+        writeHtmlFile("/tagged.ftlh", mapOf("plan" to plan), File(BuildDir.areteDir, "tagged.html"))
     }
 
     private fun writeHtmlFile(
