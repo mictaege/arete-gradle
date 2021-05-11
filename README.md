@@ -16,8 +16,8 @@ Simply add the `arete-gradle` plugin to your `build.gradle` file.
 
 ```Groovy
 plugins {
-    id 'com.github.mictaege.arete-gradle' version '2021.4'
+    id 'com.github.mictaege.arete-gradle' version '20xx.x'
 }
 ```
 
-The reports generated for the `arete` specifications will be written to the `your_project\build\reports\arete\index.htlm` folder.
+The reports generated for the `arete` specifications will be written to the `your_project\build\reports\arete\index.html` folder.
