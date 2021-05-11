@@ -2,34 +2,16 @@
 <html>
 <head>
     <title>${step.displayName}</title>
-    <#include "arete.ftlh">
-    <style>
-        .collapsible {
-            cursor: pointer;
-            outline: none;
-        }
-
-        .collapsible:before {
-            content: '\002B';
-            font-weight: bold;
-            float: right;
-            margin-left: 5px;
-        }
-
-        .active:before {
-            content: "\2212";
-        }
-
-        .content {
-            max-height: 0;
-            overflow: hidden;
-            border: none;
-            transition: max-height 0.2s ease-out;
-        }
-    </style>
+    <#include "arete-css.ftlh">
     <#include "rainbow-theme.ftlh">
 </head>
-<body style="font-family: sans-serif">
+<body>
+    <div class="topnav">
+        <a class="active" href="./../index.html">Overview</a>
+        <a href="./../alphabetical.html">Alphabetical</a>
+        <a href="./../hierarchical.html">Hierarchical</a>
+        <a href="./../tagged.html">Tagged</a>
+    </div>
     <div class="card-white" style="margin-top: 40px">
         <#assign level = 0>
         <#macro dumpSteps step>

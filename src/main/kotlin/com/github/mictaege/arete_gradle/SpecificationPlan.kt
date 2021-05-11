@@ -95,11 +95,24 @@ class SpecificationPlan: SpecificationNode() {
     }
 
     fun specsOrderedByPrio(): List<SpecificationStep> {
-        return steps.sortedWith(Comparator<SpecificationStep> { s1, s2 ->
-            s1.cumulatedState().compareTo(s2.cumulatedState())
-        }.then { s1, s2 ->
-            s1.displayName.compareTo(s2.displayName)
-        })
+        return steps.filter { it.cumulatedState() != ResultState.SUCCESSFUL }
+            .sortedWith(Comparator<SpecificationStep> { s1, s2 ->
+                s1.cumulatedState().compareTo(s2.cumulatedState())
+            }.then { s1, s2 ->
+                s1.displayName.compareTo(s2.displayName)
+            })
+    }
+
+    fun specsOrderedByName(): List<SpecificationStep> {
+        return steps.sortedWith { s1, s2 -> s1.displayName.compareTo(s2.displayName) }
+    }
+
+    fun specsOrderedByHierarchy(): List<SpecificationStep> {
+        return steps.sortedWith { s1, s2 -> s1.testClassName.compareTo(s2.testClassName) }
+    }
+
+    fun specsOrderedByTags(): List<SpecificationStep> {
+        return steps.filter { it.tags.isNotEmpty() }.sortedWith { s1, s2 -> s1.tags.compareTo(s2.tags) }
     }
 
     fun specSummaries(): PlanSummaries {
@@ -150,6 +163,8 @@ class SpecificationStep(
                             .putString(uniqueId, UTF_8).hash().asLong()}"
                             .replace("-", "_")
     val displayName: String = testId.displayName
+    val testClassName: String = testId.testClass()?.canonicalName ?: ""
+    val tags: String = testId.tags.map { t -> t.name }.sorted().joinToString(" ") { n -> "#$n" }
     val resultState: ResultState
         get() = when(testResult?.status) {
             Status.SUCCESSFUL -> ResultState.SUCCESSFUL
