@@ -3,6 +3,7 @@
         font-family: sans-serif;
     }
     .ignored {
+        border-radius: 2px;
         background-color: lightgray;
         border-left: 6px solid grey;
     }
@@ -12,6 +13,7 @@
     }
 
     .successful {
+        border-radius: 2px;
         background-color: palegreen;
         border-left: 6px solid limegreen;
     }
@@ -21,6 +23,7 @@
     }
 
     .aborted {
+        border-radius: 2px;
         background-color: lightyellow;
         border-left: 6px solid yellow;
     }
@@ -30,6 +33,7 @@
     }
 
     .failed {
+        border-radius: 2px;
         background-color: lightpink;
         border-left: 6px solid red;
     }
@@ -39,6 +43,7 @@
     }
 
     .neutral {
+        border-radius: 2px;
         background-color: lightskyblue;
         border-left: 6px solid deepskyblue;
     }

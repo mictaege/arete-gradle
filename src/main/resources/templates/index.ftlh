@@ -110,7 +110,7 @@
     </div>
     <div class="card-white" style="margin-top: 40px">
         <div style="padding: 0; margin: 16px">
-            <h2>Specifications</h2>
+            <h2>Suspicious Specifications</h2>
         </div>
         <div style="padding: 0; margin: 16px">
             <input type="text" id="searchInput" onkeyup="searchFunction()" placeholder="Search for Specifications.."/>

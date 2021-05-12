@@ -11,7 +11,8 @@ import java.io.StringWriter
 object BuildDir {
     val reportDir = File(System.getProperty(AretePlugin.BUILD_DIR_PROPERTY) + "/reports")
     val areteDir = File(reportDir,"arete")
-    val specsDir = File(areteDir, "specs")
+    val taskDir = File(areteDir, System.getProperty(AretePlugin.TASK_NAME_PROPERTY))
+    val specsDir = File(taskDir, "specs")
 }
 
 object Freemaker {
@@ -33,10 +34,10 @@ class HtmlWriter: SpecificationWriter {
     }
 
     override fun finishPlan(plan: SpecificationPlan) {
-        writeHtmlFile("/index.ftlh", mapOf("plan" to plan), File(BuildDir.areteDir, "index.html"))
-        writeHtmlFile("/alphabetical.ftlh", mapOf("plan" to plan), File(BuildDir.areteDir, "alphabetical.html"))
-        writeHtmlFile("/hierarchical.ftlh", mapOf("plan" to plan), File(BuildDir.areteDir, "hierarchical.html"))
-        writeHtmlFile("/tagged.ftlh", mapOf("plan" to plan), File(BuildDir.areteDir, "tagged.html"))
+        writeHtmlFile("/index.ftlh", mapOf("plan" to plan), File(BuildDir.taskDir, "index.html"))
+        writeHtmlFile("/alphabetical.ftlh", mapOf("plan" to plan), File(BuildDir.taskDir, "alphabetical.html"))
+        writeHtmlFile("/hierarchical.ftlh", mapOf("plan" to plan), File(BuildDir.taskDir, "hierarchical.html"))
+        writeHtmlFile("/tagged.ftlh", mapOf("plan" to plan), File(BuildDir.taskDir, "tagged.html"))
     }
 
     private fun writeHtmlFile(
