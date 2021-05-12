@@ -12,12 +12,20 @@ Gradle reporting plugin for the [Arete](https://github.com/mictaege/arete) JUnit
 
 ## Usage
 
-Simply add the `arete-gradle` plugin to your `build.gradle` file.
+Add the `arete-gradle` plugin to your `build.gradle` file using the `buildscript` section.
 
 ```Groovy
-plugins {
-    id 'com.github.mictaege.arete-gradle' version '2021.4'
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath group: 'com.github.mictaege', name: 'arete-gradle', version:'20xxx.x.x'
+    }
 }
+
+
+apply plugin: 'arete-gradle'
 ```
 
-The reports generated for the `arete` specifications will be written to the `your_project\build\reports\arete\index.htlm` folder.
+The reports generated for the `arete` specifications will be written to the `your_project\build\reports\arete\index.html` folder.

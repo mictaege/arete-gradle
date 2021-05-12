@@ -2,11 +2,8 @@ package com.github.mictaege.arete_gradle
 
 import com.github.mictaege.arete_gradle.ResultState.*
 import org.fusesource.jansi.Ansi.ansi
-import org.gradle.api.logging.Logging
 
 class ConsoleWriter: SpecificationWriter {
-
-    val logger = Logging.getLogger(javaClass)
 
     override fun finishPlan(plan: SpecificationPlan) {
         //nop
@@ -16,9 +13,9 @@ class ConsoleWriter: SpecificationWriter {
         val buffer = StringBuffer()
         collect(0, buffer, step)
         if (step.anyMatch { it.resultState == FAILED || it.resultState == ABORTED }) {
-            logger.warn(ansi().render(buffer.toString()).toString())
+            error(ansi().render(buffer.toString()).toString())
         } else {
-            logger.info(ansi().render(buffer.toString()).toString())
+            println(ansi().render(buffer.toString()).toString())
         }
     }
 

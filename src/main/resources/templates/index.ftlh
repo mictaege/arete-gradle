@@ -2,54 +2,21 @@
 <html>
 <head>
     <title>Main</title>
-    <#include "arete.ftlh">
-    <style>
-        .flex-container {
-            display: flex;
-        }
-
-        .flex-container > div {
-            flex-grow: 1;
-            flex-basis: 0;
-        }
-
-        #searchInput {
-            width: 100%;
-            padding-top: 12px;
-            padding-right: 20px;
-            padding-left: 40px;
-            padding-bottom: 12px;
-            border: 1px solid darkgrey;
-        }
-
-        #specList {
-            /* Remove default list styling */
-            list-style-type: none;
-            padding: 0;
-            margin: 16px;
-        }
-
-        #specList li {
-            margin-bottom: 15px;
-            margin-top: 15px;
-        }
-
-        #specList li a {
-            text-decoration: none;
-            display: block;
-            color: black;
-        }
-
-    </style>
-    <#include "arete.ftlh">
+    <#include "arete-css.ftlh">
 </head>
-<body style="font-family: sans-serif">
-    <div class="card-blue" style="margin-top: 40px">
+<body>
+    <div class="topnav">
+        <a class="active" href="./index.html">Overview</a>
+        <a href="./alphabetical.html">Alphabetical</a>
+        <a href="./hierarchical.html">Hierarchical</a>
+        <a href="./tagged.html">Tagged</a>
+    </div>
+    <div class="card-white" style="margin-top: 40px">
         <div style="padding: 0; margin: 16px">
             <h3>Summaries</h3>
         </div>
         <div class="flex-container" style="margin: 16px">
-            <div class="card-white" style="margin-right: 16px; padding-left: 16px">
+            <div style="margin-right: 16px; padding-left: 16px">
                 <div style="padding: 0; margin: 16px">
                     <h3>Specifications</h3>
                 </div>
@@ -73,13 +40,13 @@
                         <span style="float:right;">${plan.specSummaries().successCount}</span>
                     </div>
                 </div>
-                <div class="step">
+                <div class="neutral step">
                     <div style="text-align: left">Overall
                         <span style="float:right;">${plan.specSummaries().overallCount}</span>
                     </div>
                 </div>
             </div>
-            <div class="card-white" style="margin-right: 16px; padding-left: 16px">
+            <div style="margin-right: 16px; padding-left: 16px">
                 <div style="padding: 0; margin: 16px">
                     <h3>Scenarios</h3>
                 </div>
@@ -103,13 +70,13 @@
                         <span style="float:right;">${plan.scenarioSummaries().successCount}</span>
                     </div>
                 </div>
-                <div class="step">
+                <div class="neutral step">
                     <div style="text-align: left">Overall
                         <span style="float:right;">${plan.scenarioSummaries().overallCount}</span>
                     </div>
                 </div>
             </div>
-            <div class="card-white" style="padding-left: 16px">
+            <div style="padding-left: 16px">
                 <div style="padding: 0; margin: 16px">
                     <h3>Descriptions</h3>
                 </div>
@@ -133,7 +100,7 @@
                         <span style="float:right;">${plan.descSummaries().successCount}</span>
                     </div>
                 </div>
-                <div class="step">
+                <div class="neutral step">
                     <div style="text-align: left">Overall
                         <span style="float:right;">${plan.descSummaries().overallCount}</span>
                     </div>
@@ -141,9 +108,9 @@
             </div>
         </div>
     </div>
-    <div class="card-blue" style="margin-top: 40px">
+    <div class="card-white" style="margin-top: 40px">
         <div style="padding: 0; margin: 16px">
-            <h2>Specifications</h2>
+            <h2>Suspicious Specifications</h2>
         </div>
         <div style="padding: 0; margin: 16px">
             <input type="text" id="searchInput" onkeyup="searchFunction()" placeholder="Search for Specifications.."/>
@@ -165,27 +132,7 @@
         </ul>
     </div>
 
-    <script>
-        function searchFunction() {
-            // Declare variables
-            var input, filter, ul, li, a, i, txtValue;
-            input = document.getElementById('searchInput');
-            filter = input.value.toUpperCase();
-            ul = document.getElementById("specList");
-            li = ul.getElementsByTagName('li');
-
-            // Loop through all list items, and hide those who don't match the search query
-            for (i = 0; i < li.length; i++) {
-                a = li[i].getElementsByTagName("a")[0];
-                txtValue = a.textContent || a.innerText;
-                if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                    li[i].style.display = "";
-                } else {
-                    li[i].style.display = "none";
-                }
-            }
-        }
-    </script>
+    <#include "search-js.ftlh">
 
 </body>
 </html>

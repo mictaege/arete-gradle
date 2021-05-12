@@ -6,14 +6,14 @@ plugins {
 }
 
 group 'com.github.mictaege'
-version '2021.4'
+version '2021.4.2'
 
 sourceCompatibility = 1.8
 
 gradlePlugin {
     plugins {
         simplePlugin {
-            id = 'com.github.mictaege.arete-gradle'
+            id = 'arete-gradle'
             implementationClass = 'com.github.mictaege.arete_gradle.AretePlugin'
         }
     }
@@ -35,6 +35,20 @@ dependencies {
     implementation 'org.fusesource.jansi:jansi:2.3.2'
     implementation 'com.google.guava:guava:30.1.1-jre'
     implementation 'org.freemarker:freemarker:2.3.31'
+}
+
+task generateResources {
+    ext {
+        propFile = file("$buildDir/generated/arete-gradle.properties")
+    }
+    outputs.file propFile
+    doLast {
+        mkdir propFile.parentFile
+        propFile.text = "version=$project.version"
+    }
+}
+processResources {
+    from files(generateResources)
 }
 
 test {
