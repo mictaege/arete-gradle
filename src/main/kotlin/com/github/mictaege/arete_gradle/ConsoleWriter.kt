@@ -12,11 +12,7 @@ class ConsoleWriter: SpecificationWriter {
     override fun writeSpec(step: SpecificationStep) {
         val buffer = StringBuffer()
         collect(0, buffer, step)
-        if (step.anyMatch { it.resultState == FAILED || it.resultState == ABORTED }) {
-            error(ansi().render(buffer.toString()).toString())
-        } else {
-            println(ansi().render(buffer.toString()).toString())
-        }
+        println(ansi().render(buffer.toString()).toString())
     }
 
     private fun collect(intend: Int, buffer: StringBuffer, step: SpecificationStep) {
