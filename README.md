@@ -28,4 +28,5 @@ buildscript {
 apply plugin: 'arete-gradle'
 ```
 
-The reports generated for the `arete` specifications will be written to the `your_project\build\reports\arete\index.html` folder.
+The reports generated for the `arete` specifications will be written to the `<your_project>/build/reports/arete/<task>/index.html` folder.
+This is a parallel structure to the gradle test reporting structure `<your_project>/build/reports/test/<task>/index.html`.
