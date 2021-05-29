@@ -13,7 +13,7 @@ sourceCompatibility = 1.8
 gradlePlugin {
     plugins {
         simplePlugin {
-            id = 'arete-gradle'
+            id = 'com.github.mictaege.arete'
             implementationClass = 'com.github.mictaege.arete_gradle.AretePlugin'
         }
     }
