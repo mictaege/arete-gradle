@@ -3,14 +3,15 @@
 <head>
     <title>${step.displayName}</title>
     <#include "arete-css.ftlh">
+    <#include "font-awesome-css.ftlh">
     <#include "rainbow-theme.ftlh">
 </head>
 <body>
     <div class="topnav">
-        <a href="./../index.html">Overview</a>
-        <a href="./../alphabetical.html">Alphabetical</a>
-        <a href="./../hierarchical.html">Hierarchical</a>
-        <a href="./../tagged.html">Tagged</a>
+        <a href="./../index.html"><i class="fas fa-home"></i> Overview</a>
+        <a href="./../alphabetical.html"><i class="fas fa-font"></i> Alphabetical</a>
+        <a href="./../hierarchical.html"><i class="fas fa-sitemap"></i> Hierarchical</a>
+        <a href="./../tagged.html"><i class="fas fa-tags"></i> Tagged</a>
     </div>
     <div class="card-white" style="margin-top: 40px">
         <#assign level = 0>
@@ -18,9 +19,9 @@
             <#assign vMargin = 0>
             <#assign vMargin = 0>
             <#assign fWeight = "normal">
-            <#assign imgContainer = "">
+            <#assign screenshotContainer = "">
             <#if step.hasScreenshot>
-                <#assign imgContainer = "imgContainer">
+                <#assign screenshotContainer = " collapsible">
             </#if>
             <#if step.type.container>
                 <#assign vMargin = 15>
@@ -30,28 +31,69 @@
             <div style="margin-left: ${indent}px; margin-bottom: ${vMargin}; margin-top: ${vMargin}">
 
                 <#if "${step.resultState}" == "IGNORED">
-                    <div class="ignored step ${imgContainer}" style="font-weight: ${fWeight}">${step.displayName}</div>
+                    <div class="ignored step${screenshotContainer}" style="font-weight: ${fWeight}">
+                        ${step.displayName}
+                        <#if step.hasScreenshot>
+                            <i class="fas fa-camera"></i>
+                        </#if>
+                    </div>
+                    <#if step.hasScreenshot>
+                        <div class="content">
+                            <img src="./${step.uniqueHash}.png"/>
+                        </div>
+                    </#if>
                 <#elseif "${step.resultState}" == "SUCCESSFUL">
-                    <div class="successful step ${imgContainer}" style="font-weight: ${fWeight}">${step.displayName}</div>
+                    <div class="successful step${screenshotContainer}" style="font-weight: ${fWeight}">
+                        ${step.displayName}
+                        <#if step.hasScreenshot>
+                            <i class="fas fa-camera"></i>
+                        </#if>
+                    </div>
+                    <#if step.hasScreenshot>
+                        <div class="content">
+                            <img src="./${step.uniqueHash}.png"/>
+                        </div>
+                    </#if>
                 <#elseif "${step.resultState}" == "ABORTED">
-                    <div class="aborted step ${imgContainer}" style="font-weight: ${fWeight}">${step.displayName}</div>
+                    <div class="aborted step${screenshotContainer}" style="font-weight: ${fWeight}">
+                        ${step.displayName}
+                        <#if step.hasScreenshot>
+                            <i class="fas fa-camera"></i>
+                        </#if>
+                    </div>
+                    <#if step.hasScreenshot>
+                        <div class="content">
+                            <img src="./${step.uniqueHash}.png"/>
+                        </div>
+                    </#if>
                 <#elseif "${step.resultState}" == "FAILED">
-                    <div class="failed step collapsible ${imgContainer}" style="font-weight: ${fWeight}">
-                        <div style="padding-bottom: 4px">${step.displayName}</div>
+                    <div class="failed step collapsible" style="font-weight: ${fWeight}">
+                        <div style="padding-bottom: 4px">
+                            ${step.displayName}
+                            <#if step.hasScreenshot>
+                                <i class="fas fa-camera"></i>
+                            </#if>
+                            <i class="fas fa-file-alt"></i>
+                        </div>
                         <pre>
                             <code data-language="shell">${step.errorMsg}</code>
                         </pre>
                     </div>
                     <div class="content">
+                        <#if step.hasScreenshot>
+                            <img src="./${step.uniqueHash}.png"/>
+                        </#if>
                         <pre><code data-language="shell">${step.stackTrace}</code></pre>
                     </div>
                 <#else>
-                    <div class="step ${imgContainer}" style="font-weight: ${fWeight}">${step.resultState.sign} ${step.displayName}</div>
-                </#if>
-                <#if step.hasScreenshot>
-                    <div class="hide">
-                        <img src="./${step.uniqueHash}.png"/>
+                    <div class="step${screenshotContainer}" style="font-weight: ${fWeight}">
+                        ${step.resultState.sign} ${step.displayName}
                     </div>
+                    <#if step.hasScreenshot>
+                        <div class="content">
+                            <img src="./${step.uniqueHash}.png"/>
+                        </div>
+                    </#if>
                 </#if>
                 <#list step.steps as childStep>
                     <#assign level++>

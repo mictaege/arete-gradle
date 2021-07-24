@@ -3,13 +3,14 @@
 <head>
     <title>Main</title>
     <#include "arete-css.ftlh">
+    <#include "font-awesome-css.ftlh">
 </head>
 <body>
     <div class="topnav">
-        <a class="active" href="./index.html">Overview</a>
-        <a href="./alphabetical.html">Alphabetical</a>
-        <a href="./hierarchical.html">Hierarchical</a>
-        <a href="./tagged.html">Tagged</a>
+        <a class="active" href="./index.html"><i class="fas fa-home"></i> Overview</a>
+        <a href="./alphabetical.html"><i class="fas fa-font"></i> Alphabetical</a>
+        <a href="./hierarchical.html"><i class="fas fa-sitemap"></i> Hierarchical</a>
+        <a href="./tagged.html"><i class="fas fa-tags"></i> Tagged</a>
     </div>
     <div class="card-white" style="margin-top: 40px">
         <div style="padding: 0; margin: 16px">

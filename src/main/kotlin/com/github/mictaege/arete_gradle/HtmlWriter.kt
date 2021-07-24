@@ -31,15 +31,18 @@ object Freemaker {
 class HtmlWriter: SpecificationWriter {
 
     override fun writeSpec(step: SpecificationStep) {
-        moveScreenshots(step)
+        copyScreenshots(step)
         writeHtmlFile("/spec.ftlh", mapOf("step" to step), File(BuildDir.specsDir, "${step.uniqueHash}.html"))
     }
 
-    private fun moveScreenshots(step: SpecificationStep) {
+    private fun copyScreenshots(step: SpecificationStep) {
         step.screenshot?.also {
-            Files.copy(it, File(BuildDir.specsDir, "${step.uniqueHash}.png"))
+            try {
+                Files.copy(it, File(BuildDir.specsDir, "${step.uniqueHash}.png"))
+            } catch (ignore: Exception) {
+            }
         }
-        step.steps.forEach { moveScreenshots(it) }
+        step.steps.forEach { copyScreenshots(it) }
     }
 
     override fun finishPlan(plan: SpecificationPlan) {
