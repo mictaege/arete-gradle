@@ -1,16 +1,16 @@
 <#-- @ftlvariable name="plan" type="com.github.mictaege.arete_gradle.SpecificationPlan" -->
 <html>
 <head>
-    <title>Alphabetical</title>
+    <title>Display Names</title>
     <#include "arete-css.ftlh">
     <#include "font-awesome-css.ftlh">
 </head>
 <body>
     <div class="topnav">
         <a href="./index.html"><i class="fas fa-home"></i> Overview</a>
-        <a class="active" href="./alphabetical.html"><i class="fas fa-font"></i> Alphabetical</a>
-        <a href="./hierarchical.html"><i class="fas fa-sitemap"></i> Hierarchical</a>
-        <a href="./tagged.html"><i class="fas fa-tags"></i> Tagged</a>
+        <a class="active" href="./display_names.html"><i class="fas fa-tv"></i> Display Names</a>
+        <a href="./test_specs.html"><i class="fas fa-vial"></i></i> Test Specs</a>
+        <a href="./tags.html"><i class="fas fa-tags"></i> Tags</a>
     </div>
     <div class="card-white" style="margin-top: 40px">
         <div style="padding: 0; margin: 16px">

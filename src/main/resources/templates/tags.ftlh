@@ -8,9 +8,9 @@
 <body>
     <div class="topnav">
         <a href="./index.html"><i class="fas fa-home"></i> Overview</a>
-        <a href="./alphabetical.html"><i class="fas fa-font"></i> Alphabetical</a>
-        <a href="./hierarchical.html"><i class="fas fa-sitemap"></i> Hierarchical</a>
-        <a class="active" href="./tagged.html"><i class="fas fa-tags"></i> Tagged</a>
+        <a href="./display_names.html"><i class="fas fa-tv"></i> Display Names</a>
+        <a href="./test_specs.html"><i class="fas fa-vial"></i></i> Test Specs</a>
+        <a class="active" href="./tags.html"><i class="fas fa-tags"></i> Tags</a>
     </div>
     <div class="card-white" style="margin-top: 40px">
         <div style="padding: 0; margin: 16px">

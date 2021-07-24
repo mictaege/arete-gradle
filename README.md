@@ -6,10 +6,6 @@
 
 Gradle reporting plugin for the [Arete](https://github.com/mictaege/arete) JUnit5 testing framework.
 
-> Note that this gradle plugin is currently work in progress and under heavy development.
-> So if you are using this plugin you may face unexpected behavior and bugs.
-> Also significant changes in the future are very likely.
-
 ## Usage
 
 Add the `arete-gradle` plugin to your `build.gradle` file using the `buildscript` section.
@@ -24,8 +20,10 @@ buildscript {
     }
 }
 
-
-apply plugin: 'arete-gradle'
+plugins {
+    id 'java'
+    id 'com.github.mictaege.arete' version '2021.5.4'
+}
 ```
 
 The reports generated for the `arete` specifications will be written to the `<your_project>/build/reports/arete/<task>/index.html` folder.
