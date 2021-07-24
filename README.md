@@ -26,5 +26,49 @@ plugins {
 }
 ```
 
+## Reports
+
 The reports generated for the `arete` specifications will be written to the `<your_project>/build/reports/arete/<task>/index.html` folder.
 This is a parallel structure to the gradle test reporting structure `<your_project>/build/reports/test/<task>/index.html`.
+
+![Report](Report.png)
+
+## Screenshot-Taking
+
+```Java
+@Spec class WebshopSpec {
+
+    private WebDriver webDriver;
+    
+    @RegisterExtension
+    public ScreenshotExtension screenshots 
+            = new ScreenshotExtension(new MySeleniumScreenshotTaker(webDriver));
+    
+    //...
+
+}
+```
+
+```Java
+public class MySeleniumScreenshotTaker implements ScreenshotTaker {
+
+    private WebDriver webDriver;
+    
+    public MySeleniumScreenshotTaker(WebDriver webDriver) {
+        this.webDriver = webDriver;
+    }
+    
+    @Override
+    public Set<TestResult> takeWhen() {
+        return Stream.of(SUCCESS, FAILURE).collect(toSet());
+    }
+
+    @Override
+    public byte[] getImageBytes() {
+        //Read PNG image bytes from web driver
+    }
+
+}
+```
+
+
