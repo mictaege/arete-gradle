@@ -6,9 +6,7 @@
 
 Gradle reporting plugin for the [Arete](https://github.com/mictaege/arete) JUnit5 testing framework.
 
-> Note that this gradle plugin is currently work in progress and under heavy development.
-> So if you are using this plugin you may face unexpected behavior and bugs.
-> Also significant changes in the future are very likely.
+![Report](Report.png)
 
 ## Usage
 
@@ -24,9 +22,54 @@ buildscript {
     }
 }
 
-
-apply plugin: 'arete-gradle'
+plugins {
+    id 'java'
+    id 'com.github.mictaege.arete' version '2021.5.4'
+}
 ```
+
+## Reports
 
 The reports generated for the `arete` specifications will be written to the `<your_project>/build/reports/arete/<task>/index.html` folder.
 This is a parallel structure to the gradle test reporting structure `<your_project>/build/reports/test/<task>/index.html`.
+
+
+## Screenshot-Taking
+
+```Java
+@Spec class WebshopSpec {
+
+    private WebDriver webDriver;
+    
+    @RegisterExtension
+    public ScreenshotExtension screenshots 
+            = new ScreenshotExtension(new MySeleniumScreenshotTaker(webDriver));
+    
+    //...
+
+}
+```
+
+```Java
+public class MySeleniumScreenshotTaker implements ScreenshotTaker {
+
+    private WebDriver webDriver;
+    
+    public MySeleniumScreenshotTaker(WebDriver webDriver) {
+        this.webDriver = webDriver;
+    }
+    
+    @Override
+    public Set<TestResult> takeWhen() {
+        return Stream.of(SUCCESS, FAILURE).collect(toSet());
+    }
+
+    @Override
+    public byte[] getImageBytes() {
+        //Read PNG image bytes from web driver
+    }
+
+}
+```
+
+

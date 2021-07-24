@@ -1,13 +1,12 @@
 package com.github.mictaege.arete_gradle
 
 import com.github.mictaege.arete.Spec
-import com.google.common.hash.Hashing
 import org.junit.platform.engine.TestExecutionResult
 import org.junit.platform.engine.TestExecutionResult.Status
 import org.junit.platform.launcher.TestIdentifier
+import java.io.File
 import java.io.PrintWriter
 import java.io.StringWriter
-import kotlin.text.Charsets.UTF_8
 
 enum class StepType(val container: Boolean) {
     SPEC(true),
@@ -156,12 +155,10 @@ class SpecificationStep(
     val testId: TestIdentifier,
     val type: StepType,
     var testResult: TestExecutionResult? = null
-): SpecificationNode() {
+): SpecificationNode(), TestIdentifierNormalizer {
     val parentId: String = testId.parentId.orElse("")
     val uniqueId: String = testId.uniqueId
-    val uniqueHash: String = "${Hashing.murmur3_128().newHasher()
-                            .putString(uniqueId, UTF_8).hash().asLong()}"
-                            .replace("-", "_")
+    val uniqueHash: String = normalize(testId)
     val displayName: String = testId.displayName
     val testClassName: String = testId.testClass()?.canonicalName ?: ""
     val tags: String = testId.tags.map { t -> t.name }.sorted().joinToString(" ") { n -> "#$n" }
@@ -182,6 +179,18 @@ class SpecificationStep(
                 stringWriter.toString()
             }?.orElse("") ?: ""
         }
+    val screenshot: File?
+        get() {
+            val tmpDir = File(File(System.getProperty("java.io.tmpdir")), "arete_screenshots")
+            val screenshot = File(tmpDir, uniqueHash + ".png")
+            return if (screenshot.exists()) {
+                screenshot
+            } else {
+                null
+            }
+        }
+    val hasScreenshot: Boolean
+        get() = screenshot != null
 
     override fun add(step: SpecificationStep): Boolean {
         return if (step.parentId == uniqueId) {
