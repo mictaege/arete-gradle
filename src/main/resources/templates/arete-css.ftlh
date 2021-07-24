@@ -164,4 +164,12 @@
         text-decoration: none;
     }
 
+    .hide {
+        display: none;
+    }
+
+    .imgContainer:hover + .hide {
+        display: block;
+    }
+
 </style>

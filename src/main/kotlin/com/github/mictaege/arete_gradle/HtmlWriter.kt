@@ -1,5 +1,6 @@
 package com.github.mictaege.arete_gradle
 
+import com.google.common.io.Files
 import freemarker.template.Configuration
 import freemarker.template.Configuration.VERSION_2_3_29
 import freemarker.template.Template
@@ -30,7 +31,15 @@ object Freemaker {
 class HtmlWriter: SpecificationWriter {
 
     override fun writeSpec(step: SpecificationStep) {
+        moveScreenshots(step)
         writeHtmlFile("/spec.ftlh", mapOf("step" to step), File(BuildDir.specsDir, "${step.uniqueHash}.html"))
+    }
+
+    private fun moveScreenshots(step: SpecificationStep) {
+        step.screenshot?.also {
+            Files.copy(it, File(BuildDir.specsDir, "${step.uniqueHash}.png"))
+        }
+        step.steps.forEach { moveScreenshots(it) }
     }
 
     override fun finishPlan(plan: SpecificationPlan) {

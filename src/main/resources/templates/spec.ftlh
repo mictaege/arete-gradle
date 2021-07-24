@@ -18,20 +18,25 @@
             <#assign vMargin = 0>
             <#assign vMargin = 0>
             <#assign fWeight = "normal">
+            <#assign imgContainer = "">
+            <#if step.hasScreenshot>
+                <#assign imgContainer = "imgContainer">
+            </#if>
             <#if step.type.container>
                 <#assign vMargin = 15>
                 <#assign fWeight = "bolder">
             </#if>
             <#assign indent = 25>
             <div style="margin-left: ${indent}px; margin-bottom: ${vMargin}; margin-top: ${vMargin}">
+
                 <#if "${step.resultState}" == "IGNORED">
-                    <div class="ignored step" style="font-weight: ${fWeight}">${step.displayName}</div>
+                    <div class="ignored step ${imgContainer}" style="font-weight: ${fWeight}">${step.displayName}</div>
                 <#elseif "${step.resultState}" == "SUCCESSFUL">
-                    <div class="successful step" style="font-weight: ${fWeight}">${step.displayName}</div>
+                    <div class="successful step ${imgContainer}" style="font-weight: ${fWeight}">${step.displayName}</div>
                 <#elseif "${step.resultState}" == "ABORTED">
-                    <div class="aborted step" style="font-weight: ${fWeight}">${step.displayName}</div>
+                    <div class="aborted step ${imgContainer}" style="font-weight: ${fWeight}">${step.displayName}</div>
                 <#elseif "${step.resultState}" == "FAILED">
-                    <div class="failed step collapsible" style="font-weight: ${fWeight}">
+                    <div class="failed step collapsible ${imgContainer}" style="font-weight: ${fWeight}">
                         <div style="padding-bottom: 4px">${step.displayName}</div>
                         <pre>
                             <code data-language="shell">${step.errorMsg}</code>
@@ -41,7 +46,12 @@
                         <pre><code data-language="shell">${step.stackTrace}</code></pre>
                     </div>
                 <#else>
-                    <div class="step" style="font-weight: ${fWeight}">${step.resultState.sign} ${step.displayName}</div>
+                    <div class="step ${imgContainer}" style="font-weight: ${fWeight}">${step.resultState.sign} ${step.displayName}</div>
+                </#if>
+                <#if step.hasScreenshot>
+                    <div class="hide">
+                        <img src="./${step.uniqueHash}.png"/>
+                    </div>
                 </#if>
                 <#list step.steps as childStep>
                     <#assign level++>
