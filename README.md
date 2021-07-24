@@ -6,6 +6,8 @@
 
 Gradle reporting plugin for the [Arete](https://github.com/mictaege/arete) JUnit5 testing framework.
 
+![Report](Report.png)
+
 ## Usage
 
 Add the `arete-gradle` plugin to your `build.gradle` file using the `buildscript` section.
@@ -31,7 +33,6 @@ plugins {
 The reports generated for the `arete` specifications will be written to the `<your_project>/build/reports/arete/<task>/index.html` folder.
 This is a parallel structure to the gradle test reporting structure `<your_project>/build/reports/test/<task>/index.html`.
 
-![Report](Report.png)
 
 ## Screenshot-Taking
 
