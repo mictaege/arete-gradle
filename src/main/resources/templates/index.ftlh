@@ -1,15 +1,16 @@
 <#-- @ftlvariable name="plan" type="com.github.mictaege.arete_gradle.SpecificationPlan" -->
 <html>
 <head>
-    <title>Main</title>
+    <title>Overview</title>
     <#include "arete-css.ftlh">
+    <#include "font-awesome-css.ftlh">
 </head>
 <body>
     <div class="topnav">
-        <a class="active" href="./index.html">Overview</a>
-        <a href="./alphabetical.html">Alphabetical</a>
-        <a href="./hierarchical.html">Hierarchical</a>
-        <a href="./tagged.html">Tagged</a>
+        <a class="active" href="./index.html"><i class="fas fa-home"></i> Overview</a>
+        <a href="./display_names.html"><i class="fas fa-tv"></i> Display Names</a>
+        <a href="./test_specs.html"><i class="fas fa-vial"></i></i> Test Specs</a>
+        <a href="./tags.html"><i class="fas fa-tags"></i> Tags</a>
     </div>
     <div class="card-white" style="margin-top: 40px">
         <div style="padding: 0; margin: 16px">
@@ -19,6 +20,11 @@
             <div style="margin-right: 16px; padding-left: 16px">
                 <div style="padding: 0; margin: 16px">
                     <h3>Specifications</h3>
+                </div>
+                <div class="neutral step">
+                    <div style="text-align: left">Overall
+                        <span style="float:right;">${plan.specSummaries().overallCount}</span>
+                    </div>
                 </div>
                 <div class="failed step">
                     <div style="text-align: left">Failed
@@ -40,15 +46,15 @@
                         <span style="float:right;">${plan.specSummaries().successCount}</span>
                     </div>
                 </div>
-                <div class="neutral step">
-                    <div style="text-align: left">Overall
-                        <span style="float:right;">${plan.specSummaries().overallCount}</span>
-                    </div>
-                </div>
             </div>
             <div style="margin-right: 16px; padding-left: 16px">
                 <div style="padding: 0; margin: 16px">
                     <h3>Scenarios</h3>
+                </div>
+                <div class="neutral step">
+                    <div style="text-align: left">Overall
+                        <span style="float:right;">${plan.scenarioSummaries().overallCount}</span>
+                    </div>
                 </div>
                 <div class="failed step">
                     <div style="text-align: left">Failed
@@ -70,15 +76,15 @@
                         <span style="float:right;">${plan.scenarioSummaries().successCount}</span>
                     </div>
                 </div>
-                <div class="neutral step">
-                    <div style="text-align: left">Overall
-                        <span style="float:right;">${plan.scenarioSummaries().overallCount}</span>
-                    </div>
-                </div>
             </div>
             <div style="padding-left: 16px">
                 <div style="padding: 0; margin: 16px">
                     <h3>Descriptions</h3>
+                </div>
+                <div class="neutral step">
+                    <div style="text-align: left">Overall
+                        <span style="float:right;">${plan.descSummaries().overallCount}</span>
+                    </div>
                 </div>
                 <div class="failed step">
                     <div style="text-align: left">Failed
@@ -98,11 +104,6 @@
                 <div class="successful step">
                     <div style="text-align: left">Successful
                         <span style="float:right;">${plan.descSummaries().successCount}</span>
-                    </div>
-                </div>
-                <div class="neutral step">
-                    <div style="text-align: left">Overall
-                        <span style="float:right;">${plan.descSummaries().overallCount}</span>
                     </div>
                 </div>
             </div>

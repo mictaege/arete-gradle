@@ -118,14 +118,10 @@
     }
 
     .collapsible:before {
-        content: '\002B';
+
         font-weight: bold;
         float: right;
         margin-left: 5px;
-    }
-
-    .active:before {
-        content: "\2212";
     }
 
     .content {
@@ -162,6 +158,11 @@
         background-color: deepskyblue;
         color: white;
         text-decoration: none;
+    }
+
+    img {
+        max-width: 100%;
+        height: auto;
     }
 
 </style>
