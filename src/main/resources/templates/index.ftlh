@@ -21,6 +21,11 @@
                 <div style="padding: 0; margin: 16px">
                     <h3>Specifications</h3>
                 </div>
+                <div class="neutral step">
+                    <div style="text-align: left">Overall
+                        <span style="float:right;">${plan.specSummaries().overallCount}</span>
+                    </div>
+                </div>
                 <div class="failed step">
                     <div style="text-align: left">Failed
                         <span style="float:right;">${plan.specSummaries().failedCount}</span>
@@ -41,15 +46,15 @@
                         <span style="float:right;">${plan.specSummaries().successCount}</span>
                     </div>
                 </div>
-                <div class="neutral step">
-                    <div style="text-align: left">Overall
-                        <span style="float:right;">${plan.specSummaries().overallCount}</span>
-                    </div>
-                </div>
             </div>
             <div style="margin-right: 16px; padding-left: 16px">
                 <div style="padding: 0; margin: 16px">
                     <h3>Scenarios</h3>
+                </div>
+                <div class="neutral step">
+                    <div style="text-align: left">Overall
+                        <span style="float:right;">${plan.scenarioSummaries().overallCount}</span>
+                    </div>
                 </div>
                 <div class="failed step">
                     <div style="text-align: left">Failed
@@ -71,15 +76,15 @@
                         <span style="float:right;">${plan.scenarioSummaries().successCount}</span>
                     </div>
                 </div>
-                <div class="neutral step">
-                    <div style="text-align: left">Overall
-                        <span style="float:right;">${plan.scenarioSummaries().overallCount}</span>
-                    </div>
-                </div>
             </div>
             <div style="padding-left: 16px">
                 <div style="padding: 0; margin: 16px">
                     <h3>Descriptions</h3>
+                </div>
+                <div class="neutral step">
+                    <div style="text-align: left">Overall
+                        <span style="float:right;">${plan.descSummaries().overallCount}</span>
+                    </div>
                 </div>
                 <div class="failed step">
                     <div style="text-align: left">Failed
@@ -99,11 +104,6 @@
                 <div class="successful step">
                     <div style="text-align: left">Successful
                         <span style="float:right;">${plan.descSummaries().successCount}</span>
-                    </div>
-                </div>
-                <div class="neutral step">
-                    <div style="text-align: left">Overall
-                        <span style="float:right;">${plan.descSummaries().overallCount}</span>
                     </div>
                 </div>
             </div>
