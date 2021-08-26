@@ -1,23 +1,20 @@
 <#-- @ftlvariable name="plan" type="com.github.mictaege.arete_gradle.SpecificationPlan" -->
 <html>
 <head>
-    <title>test_specs</title>
+    <title>Spec Classes</title>
     <#include "arete-css.ftlh">
-    <#include "font-awesome-css.ftlh">
+    <#include "root-font-awesome-css.ftlh">
 </head>
 <body>
     <div class="topnav">
         <a href="./index.html"><i class="fas fa-home"></i> Overview</a>
-        <a href="./display_names.html"><i class="fas fa-tv"></i> Display Names</a>
-        <a class="active" href="./test_specs.html"><i class="fas fa-vial"></i></i> Test Specs</a>
+        <a href="./display_names.html"><i class="fas fa-hands-helping"></i> Specifications</a>
+        <a class="active" href="./test_specs.html"><i class="fas fa-vial"></i></i> Spec Classes</a>
         <a href="./tags.html"><i class="fas fa-tags"></i> Tags</a>
     </div>
     <div class="card-white" style="margin-top: 40px">
         <div style="padding: 0; margin: 16px">
-            <h2>Specifications</h2>
-        </div>
-        <div style="padding: 0; margin: 16px">
-            <input type="text" id="searchInput" onkeyup="searchFunction()" placeholder="Search for Specifications.."/>
+            <input type="text" id="searchInput" onkeyup="searchFunction()" placeholder="Search for Classes.."/>
         </div>
         <ul id="specList">
             <#list plan.specsOrderedByHierarchy() as spec>

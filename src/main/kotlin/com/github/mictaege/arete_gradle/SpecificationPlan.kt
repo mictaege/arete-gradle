@@ -171,6 +171,8 @@ class SpecificationStep(
         }
     val errorMsg: String
         get() = testResult?.throwable?.map { t -> t.localizedMessage }?.orElse("") ?: ""
+    val hasErrorMsg: Boolean
+        get() = errorMsg.isNotEmpty()
     val stackTrace: String
         get() {
             return testResult?.throwable?.map { t ->
