@@ -3,14 +3,14 @@
 <head>
     <title>${step.displayName}</title>
     <#include "arete-css.ftlh">
-    <#include "font-awesome-css.ftlh">
+    <#include "parent-font-awesome-css.ftlh">
     <#include "rainbow-theme.ftlh">
 </head>
 <body>
     <div class="topnav">
         <a href="./../index.html"><i class="fas fa-home"></i> Overview</a>
-        <a href="./../display_names.html"><i class="fas fa-tv"></i> Display Names</a>
-        <a href="./../test_specs.html"><i class="fas fa-vial"></i></i> Test Specs</a>
+        <a href="./../display_names.html"><i class="fas fa-hands-helping"></i> Specifications</a>
+        <a href="./../test_specs.html"><i class="fas fa-vial"></i></i> Spec Classes</a>
         <a href="./../tags.html"><i class="fas fa-tags"></i> Tags</a>
     </div>
     <div class="card-white" style="margin-top: 40px">

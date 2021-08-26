@@ -2,6 +2,13 @@
     body {
         font-family: sans-serif;
     }
+
+    .ignored-no-hover {
+        border-radius: 2px;
+        background-color: lightgray;
+        border-left: 6px solid grey;
+    }
+
     .ignored {
         border-radius: 2px;
         background-color: lightgray;
@@ -10,6 +17,12 @@
 
     .ignored:hover {
         background-color: grey;
+    }
+
+    .successful-no-hover {
+        border-radius: 2px;
+        background-color: palegreen;
+        border-left: 6px solid limegreen;
     }
 
     .successful {
@@ -22,6 +35,12 @@
         background-color: limegreen;
     }
 
+    .aborted-no-hover {
+        border-radius: 2px;
+        background-color: lightyellow;
+        border-left: 6px solid yellow;
+    }
+
     .aborted {
         border-radius: 2px;
         background-color: lightyellow;
@@ -32,6 +51,12 @@
         background-color: yellow;
     }
 
+    .failed-no-hover {
+        border-radius: 2px;
+        background-color: lightpink;
+        border-left: 6px solid red;
+    }
+
     .failed {
         border-radius: 2px;
         background-color: lightpink;
@@ -40,6 +65,12 @@
 
     .failed:hover {
         background-color: red;
+    }
+
+    .neutral-no-hover {
+        border-radius: 2px;
+        background-color: lightskyblue;
+        border-left: 6px solid deepskyblue;
     }
 
     .neutral {
