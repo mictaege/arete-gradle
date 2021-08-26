@@ -75,9 +75,11 @@
                             </#if>
                             <i class="fas fa-file-alt"></i>
                         </div>
-                        <pre>
-                            <code data-language="shell">${step.errorMsg}</code>
-                        </pre>
+                        <#if step.hasErrorMsg>
+                            <pre>
+                                <code data-language="shell">${step.errorMsg}</code>
+                            </pre>
+                        </#if>
                     </div>
                     <div class="content">
                         <#if step.hasScreenshot>
