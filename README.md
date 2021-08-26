@@ -24,7 +24,7 @@ buildscript {
 
 plugins {
     id 'java'
-    id 'com.github.mictaege.arete' version '2021.5.4'
+    id 'com.github.mictaege.arete' version '2021.6'
 }
 ```
 
