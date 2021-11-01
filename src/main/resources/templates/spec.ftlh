@@ -4,7 +4,7 @@
     <title>${step.displayName}</title>
     <#include "arete-css.ftlh">
     <#include "parent-font-awesome-css.ftlh">
-    <#include "rainbow-theme.ftlh">
+    <#include "prism-css.ftlh">
 </head>
 <body>
     <div class="topnav">
@@ -77,7 +77,7 @@
                         </div>
                         <#if step.hasErrorMsg>
                             <pre>
-                                <code data-language="shell">${step.errorMsg}</code>
+                                <code class="language-javastacktrace">${step.errorMsg}</code>
                             </pre>
                         </#if>
                     </div>
@@ -85,7 +85,7 @@
                         <#if step.hasScreenshot>
                             <img src="./${step.uniqueHash}.png"/>
                         </#if>
-                        <pre><code data-language="shell">${step.stackTrace}</code></pre>
+                        <pre><code class="language-javastacktrace">${step.stackTrace}</code></pre>
                     </div>
                 <#else>
                     <div class="step${screenshotContainer}" style="font-weight: ${fWeight}">
@@ -123,7 +123,7 @@
           });
         }
     </script>
-    <#include "rainbow-js.ftlh">
+    <#include "prism-js.ftlh">
 
 </body>
 </html>

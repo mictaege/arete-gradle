@@ -1,1 +1,1 @@
-<link href="./../fontawesome/css/all.css" rel="stylesheet">
+<link href="./../fontawesome/css/all.css" rel="stylesheet"/>

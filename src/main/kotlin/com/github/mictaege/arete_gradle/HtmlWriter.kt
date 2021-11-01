@@ -15,6 +15,7 @@ object BuildDir {
     val reportDir = File(System.getProperty(AretePlugin.BUILD_DIR_PROPERTY) + "/reports")
     val areteDir = File(reportDir,"arete")
     val taskDir = File(areteDir, System.getProperty(AretePlugin.TASK_NAME_PROPERTY))
+    val prismDir = File(taskDir, "prism")
     val specsDir = File(taskDir, "specs")
 }
 
@@ -66,6 +67,7 @@ class HtmlWriter: SpecificationWriter {
         writeHtmlFile("/test_specs.ftlh", mapOf("plan" to plan), File(BuildDir.taskDir, "test_specs.html"))
         writeHtmlFile("/tags.ftlh", mapOf("plan" to plan), File(BuildDir.taskDir, "tags.html"))
         extractFontAwesome()
+        copyPrism()
     }
 
     private fun writeHtmlFile(
@@ -86,6 +88,20 @@ class HtmlWriter: SpecificationWriter {
             Files.copy(it, zipFile.toPath(), REPLACE_EXISTING)
             ZipFile(zipFile).extractAll(BuildDir.taskDir.absolutePath)
             zipFile.delete()
+        }
+    }
+
+    private fun copyPrism() {
+        File(BuildDir.prismDir, "prism").deleteRecursively()
+        val prismJs = File(BuildDir.prismDir, "prism.js")
+        prismJs.mkdirs()
+        val prismCss = File(BuildDir.prismDir, "prism.css")
+        prismCss.mkdirs()
+        javaClass.getResourceAsStream("/prism/prism.js")?.let {
+            Files.copy(it, prismJs.toPath(), REPLACE_EXISTING)
+        }
+        javaClass.getResourceAsStream("/prism/prism.css")?.let {
+            Files.copy(it, prismCss.toPath(), REPLACE_EXISTING)
         }
     }
 
