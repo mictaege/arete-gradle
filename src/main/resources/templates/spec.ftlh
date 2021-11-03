@@ -76,16 +76,14 @@
                             <i class="fas fa-file-alt"></i>
                         </div>
                         <#if step.hasErrorMsg>
-                            <pre>
-                                <code class="language-javastacktrace">${step.errorMsg}</code>
-                            </pre>
+<pre><code class="language-javastacktrace">${step.errorMsg}</code></pre>
                         </#if>
                     </div>
                     <div class="content">
                         <#if step.hasScreenshot>
                             <img src="./${step.uniqueHash}.png"/>
                         </#if>
-                        <pre><code class="language-javastacktrace">${step.stackTrace}</code></pre>
+<pre><code class="language-javastacktrace">${step.stackTrace}</code></pre>
                     </div>
                 <#else>
                     <div class="step${screenshotContainer}" style="font-weight: ${fWeight}">

@@ -170,7 +170,7 @@ class SpecificationStep(
             null -> ResultState.IGNORED
         }
     val errorMsg: String
-        get() = testResult?.throwable?.map { t -> t.localizedMessage }?.orElse("") ?: ""
+        get() = testResult?.throwable?.map { t -> t.localizedMessage }?.map { m -> m.trim() }?.orElse("") ?: ""
     val hasErrorMsg: Boolean
         get() = errorMsg.isNotEmpty()
     val stackTrace: String
@@ -179,7 +179,7 @@ class SpecificationStep(
                 val stringWriter = StringWriter()
                 t.printStackTrace(PrintWriter(stringWriter))
                 stringWriter.toString()
-            }?.orElse("") ?: ""
+            }?.map { m -> m.trim() }?.orElse("") ?: ""
         }
     val screenshot: File?
         get() {
