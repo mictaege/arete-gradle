@@ -28,8 +28,10 @@ class AreteTestListener: TestExecutionListener {
                 -> specPlan.add(SpecificationStep(testId, StepType.DESCRIBE))
             testId.isAnnotated(ItShould::class.java)
                 -> specPlan.add(SpecificationStep(testId, StepType.IT_SHOULD))
-            testId.isAnnotated(Examples::class.java)
-                -> specPlan.add(SpecificationStep(testId, StepType.EXAMPLE))
+            testId.isAnnotated(Examples::class.java) && testId.isContainer
+                -> specPlan.add(SpecificationStep(testId, StepType.EXAMPLE_TEMPLATE))
+            testId.isAnnotated(Examples::class.java) && !testId.isContainer
+                -> specPlan.add(SpecificationStep(testId, StepType.EXAMPLE_INSTANCE))
         }
     }
 

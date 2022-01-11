@@ -17,7 +17,8 @@ enum class StepType(val container: Boolean) {
     THEN(false),
     DESCRIBE(true),
     IT_SHOULD(false),
-    EXAMPLE(false)
+    EXAMPLE_TEMPLATE(true),
+    EXAMPLE_INSTANCE(false)
 }
 
 enum class ResultState(val sign: String) {
