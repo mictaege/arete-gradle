@@ -95,6 +95,15 @@
                         </div>
                     </#if>
                 </#if>
+
+                <#if step.hasNarrative>
+                    <div class="neutral step" style="margin-bottom: ${vMargin}; margin-top: ${vMargin};  font-weight: normal">
+                        <#list step.narrative as narrative>
+                            <p>${narrative}</p>
+                        </#list>
+                    </div>
+                </#if>
+
                 <#list step.steps as childStep>
                     <#assign level++>
                     <@dumpSteps childStep/>
