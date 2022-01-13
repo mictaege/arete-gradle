@@ -28,3 +28,11 @@ fun TestIdentifier.isAnnotated(annotation: Class<out Annotation>): Boolean {
         else -> false
     }
 }
+
+fun <A: Annotation>TestIdentifier.getAnnotation(annotation: Class<A>): A? {
+    return when (val source = this.source.orElse(null)) {
+        is ClassSource -> source.javaClass.getAnnotation(annotation)
+        is MethodSource -> source.javaMethod.getAnnotation(annotation)
+        else -> null
+    }
+}

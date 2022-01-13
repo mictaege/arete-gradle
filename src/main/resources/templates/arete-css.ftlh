@@ -107,6 +107,11 @@
         box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     }
 
+    .narrative {
+        padding: 2px;
+        margin: 0;
+    }
+
     .flex-container {
         display: flex;
     }

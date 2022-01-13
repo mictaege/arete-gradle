@@ -1,5 +1,6 @@
 package com.github.mictaege.arete_gradle
 
+import com.github.mictaege.arete.Narrative
 import com.github.mictaege.arete.Spec
 import org.junit.platform.engine.TestExecutionResult
 import org.junit.platform.engine.TestExecutionResult.Status
@@ -16,7 +17,9 @@ enum class StepType(val container: Boolean) {
     WHEN(false),
     THEN(false),
     DESCRIBE(true),
-    IT_SHOULD(false)
+    IT_SHOULD(false),
+    EXAMPLE_TEMPLATE(true),
+    EXAMPLE_INSTANCE(false)
 }
 
 enum class ResultState(val sign: String) {
@@ -162,6 +165,8 @@ class SpecificationStep(
     val displayName: String = testId.displayName
     val testClassName: String = testId.testClass()?.canonicalName ?: ""
     val tags: String = testId.tags.map { t -> t.name }.sorted().joinToString(" ") { n -> "#$n" }
+    val hasNarrative: Boolean = testId.isAnnotated(Narrative::class.java)
+    val narrative: NarrativeSection? = testId.getAnnotation(Narrative::class.java)?.let { NarrativeSection(it) }
     val resultState: ResultState
         get() = when(testResult?.status) {
             Status.SUCCESSFUL -> ResultState.SUCCESSFUL
