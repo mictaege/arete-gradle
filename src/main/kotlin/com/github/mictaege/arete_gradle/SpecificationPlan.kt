@@ -166,7 +166,7 @@ class SpecificationStep(
     val testClassName: String = testId.testClass()?.canonicalName ?: ""
     val tags: String = testId.tags.map { t -> t.name }.sorted().joinToString(" ") { n -> "#$n" }
     val hasNarrative: Boolean = testId.isAnnotated(Narrative::class.java)
-    val narrative: List<String> = testId.getAnnotation(Narrative::class.java)?.value?.toList() ?: emptyList()
+    val narrative: NarrativeSection? = testId.getAnnotation(Narrative::class.java)?.let { NarrativeSection(it) }
     val resultState: ResultState
         get() = when(testResult?.status) {
             Status.SUCCESSFUL -> ResultState.SUCCESSFUL

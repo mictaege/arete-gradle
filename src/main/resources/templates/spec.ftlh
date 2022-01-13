@@ -19,9 +19,15 @@
             <#assign vMargin = 0>
             <#assign vMargin = 0>
             <#assign fWeight = "normal">
-            <#assign screenshotContainer = "">
+            <#assign noHoverSuffix = "-no-hover">
+            <#assign collapsible = "">
             <#if step.hasScreenshot>
-                <#assign screenshotContainer = " collapsible">
+                <#assign collapsible = "collapsible">
+                <#assign noHoverSuffix = "">
+            </#if>
+            <#if step.hasErrorMsg>
+                <#assign collapsible = "collapsible">
+                <#assign noHoverSuffix = "">
             </#if>
             <#if step.type.container>
                 <#assign vMargin = 15>
@@ -31,7 +37,7 @@
             <div style="margin-left: ${indent}px; margin-bottom: ${vMargin}; margin-top: ${vMargin}">
 
                 <#if "${step.resultState}" == "IGNORED">
-                    <div class="ignored step${screenshotContainer}" style="font-weight: ${fWeight}">
+                    <div class="ignored${noHoverSuffix} step ${${collapsible}}" style="font-weight: ${fWeight}">
                         ${step.displayName}
                         <#if step.hasScreenshot>
                             <i class="fas fa-camera"></i>
@@ -43,7 +49,7 @@
                         </div>
                     </#if>
                 <#elseif "${step.resultState}" == "SUCCESSFUL">
-                    <div class="successful step${screenshotContainer}" style="font-weight: ${fWeight}">
+                    <div class="successful${noHoverSuffix} step ${${collapsible}}" style="font-weight: ${fWeight}">
                         ${step.displayName}
                         <#if step.hasScreenshot>
                             <i class="fas fa-camera"></i>
@@ -55,7 +61,7 @@
                         </div>
                     </#if>
                 <#elseif "${step.resultState}" == "ABORTED">
-                    <div class="aborted step${screenshotContainer}" style="font-weight: ${fWeight}">
+                    <div class="aborted${noHoverSuffix} step ${${collapsible}}" style="font-weight: ${fWeight}">
                         ${step.displayName}
                         <#if step.hasScreenshot>
                             <i class="fas fa-camera"></i>
@@ -67,7 +73,7 @@
                         </div>
                     </#if>
                 <#elseif "${step.resultState}" == "FAILED">
-                    <div class="failed step collapsible" style="font-weight: ${fWeight}">
+                    <div class="failed${noHoverSuffix} step ${collapsible}" style="font-weight: ${fWeight}">
                         <div style="padding-bottom: 4px">
                             ${step.displayName}
                             <#if step.hasScreenshot>
@@ -86,7 +92,7 @@
 <pre><code class="language-javastacktrace">${step.stackTrace}</code></pre>
                     </div>
                 <#else>
-                    <div class="step${screenshotContainer}" style="font-weight: ${fWeight}">
+                    <div class="step ${collapsible}" style="font-weight: ${fWeight}">
                         ${step.resultState.sign} ${step.displayName}
                     </div>
                     <#if step.hasScreenshot>
@@ -97,9 +103,10 @@
                 </#if>
 
                 <#if step.hasNarrative>
-                    <div class="neutral step" style="margin-bottom: ${vMargin}; margin-top: ${vMargin};  font-weight: normal">
-                        <#list step.narrative as narrative>
-                            <p>${narrative}</p>
+                    <div class="neutral-no-hover step" style="margin-bottom: ${vMargin}; margin-top: ${vMargin};  font-weight: normal">
+                        <p class="narrative" style="font-weight: ${fWeight}">${step.narrative.header}</p>
+                        <#list step.narrative.lines as line>
+                            <p class="narrative">${line}</p>
                         </#list>
                     </div>
                 </#if>
