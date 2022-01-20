@@ -10,7 +10,7 @@
     <div class="topnav">
         <a href="./../index.html"><i class="fas fa-home"></i> Overview</a>
         <a href="./../display_names.html"><i class="fas fa-hands-helping"></i> Specifications</a>
-        <a href="./../test_specs.html"><i class="fas fa-vial"></i></i> Spec Classes</a>
+        <a href="./../test_specs.html"><i class="fas fa-vial"></i> Spec Classes</a>
         <a href="./../tags.html"><i class="fas fa-tags"></i> Tags</a>
     </div>
     <div class="card-white" style="margin-top: 40px">
@@ -37,7 +37,7 @@
             <div style="margin-left: ${indent}px; margin-bottom: ${vMargin}; margin-top: ${vMargin}">
 
                 <#if "${step.resultState}" == "IGNORED">
-                    <div class="ignored${noHoverSuffix} step ${${collapsible}}" style="font-weight: ${fWeight}">
+                    <div class="ignored${noHoverSuffix} step ${collapsible}" style="font-weight: ${fWeight}">
                         ${step.displayName}
                         <#if step.hasScreenshot>
                             <i class="fas fa-camera"></i>
@@ -49,7 +49,7 @@
                         </div>
                     </#if>
                 <#elseif "${step.resultState}" == "SUCCESSFUL">
-                    <div class="successful${noHoverSuffix} step ${${collapsible}}" style="font-weight: ${fWeight}">
+                    <div class="successful${noHoverSuffix} step ${collapsible}" style="font-weight: ${fWeight}">
                         ${step.displayName}
                         <#if step.hasScreenshot>
                             <i class="fas fa-camera"></i>
@@ -61,7 +61,7 @@
                         </div>
                     </#if>
                 <#elseif "${step.resultState}" == "ABORTED">
-                    <div class="aborted${noHoverSuffix} step ${${collapsible}}" style="font-weight: ${fWeight}">
+                    <div class="aborted${noHoverSuffix} step ${collapsible}" style="font-weight: ${fWeight}">
                         ${step.displayName}
                         <#if step.hasScreenshot>
                             <i class="fas fa-camera"></i>

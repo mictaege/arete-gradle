@@ -9,7 +9,7 @@
     <div class="topnav">
         <a href="./index.html"><i class="fas fa-home"></i> Overview</a>
         <a href="./display_names.html"><i class="fas fa-hands-helping"></i> Specifications</a>
-        <a class="active" href="./test_specs.html"><i class="fas fa-vial"></i></i> Spec Classes</a>
+        <a class="active" href="./test_specs.html"><i class="fas fa-vial"></i> Spec Classes</a>
         <a href="./tags.html"><i class="fas fa-tags"></i> Tags</a>
     </div>
     <div class="card-white" style="margin-top: 40px">
