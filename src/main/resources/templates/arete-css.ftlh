@@ -87,6 +87,14 @@
         font-family: monospace;
     }
 
+    .step-time {
+        font-style: italic;
+        font-size: 0.6em;
+        margin-top: 0.2em;
+        margin-bottom: 0.2em;
+        float:right;
+    }
+
     .spec-footer {
         font-style: italic;
         font-size: 0.7em;
