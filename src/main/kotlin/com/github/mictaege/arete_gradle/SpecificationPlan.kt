@@ -170,7 +170,8 @@ class SpecificationStep(
     val displayName: String = testId.displayName
     val testClassName: String = testId.testClass()?.canonicalName ?: ""
     val timeStamp: ZonedDateTime = ZonedDateTime.now()
-    val timeStampRfc: String = timeStamp.format(DateTimeFormatter.RFC_1123_DATE_TIME)
+    val timeStampLong: String = timeStamp.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM, FormatStyle.MEDIUM))
+    val timeOnly: String = timeStamp.format(DateTimeFormatter.ofPattern("HH:mm:ss.SSS"))
     val tags: String = testId.tags.map({ t -> t.name }).sorted().joinToString(" ") { n -> "#$n" }
     val hasNarrative: Boolean = testId.isAnnotated(Narrative::class.java)
     val narrative: NarrativeSection? = testId.getAnnotation(Narrative::class.java)?.let { NarrativeSection(it) }
