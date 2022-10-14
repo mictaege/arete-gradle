@@ -12,7 +12,7 @@
         <a class="active" href="./test_specs.html"><i class="fas fa-vial"></i> Spec Classes</a>
         <a href="./tags.html"><i class="fas fa-tags"></i> Tags</a>
     </div>
-    <div class="card-white" style="margin-top: 40px">
+    <div class="card" style="margin-top: 40px">
         <div style="padding: 0; margin: 16px">
             <input type="text" id="searchInput" onkeyup="searchFunction()" placeholder="Search for Classes.."/>
         </div>

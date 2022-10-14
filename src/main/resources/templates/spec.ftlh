@@ -13,7 +13,7 @@
         <a href="./../test_specs.html"><i class="fas fa-vial"></i> Spec Classes</a>
         <a href="./../tags.html"><i class="fas fa-tags"></i> Tags</a>
     </div>
-    <span class="card-white" style="margin-top: 20px">
+    <div class="card" style="margin-top: 20px">
         <#assign level = 0>
 
         <#macro stamp step>

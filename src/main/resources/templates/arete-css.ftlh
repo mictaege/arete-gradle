@@ -1,18 +1,26 @@
 <style>
+    :root {
+        --step-border-radius: 6px;
+        --border-left-width: 12px;
+        --bk-color: #282a36;
+        --com-color: #44475a;
+        --fg-color: #f8f8f2;
+    }
     body {
         font-family: sans-serif;
+        background-color: var(--bk-color);
     }
 
     .ignored-no-hover {
-        border-radius: 2px;
+        border-radius: var(--step-border-radius);
         background-color: lightgray;
-        border-left: 6px solid grey;
+        border-left: var(--border-left-width) solid grey;
     }
 
     .ignored {
-        border-radius: 2px;
+        border-radius: var(--step-border-radius);
         background-color: lightgray;
-        border-left: 6px solid grey;
+        border-left: var(--border-left-width) solid grey;
     }
 
     .ignored:hover {
@@ -20,15 +28,15 @@
     }
 
     .successful-no-hover {
-        border-radius: 2px;
+        border-radius: var(--step-border-radius);
         background-color: palegreen;
-        border-left: 6px solid limegreen;
+        border-left: var(--border-left-width) solid limegreen;
     }
 
     .successful {
-        border-radius: 2px;
+        border-radius: var(--step-border-radius);
         background-color: palegreen;
-        border-left: 6px solid limegreen;
+        border-left: var(--border-left-width) solid limegreen;
     }
 
     .successful:hover {
@@ -36,15 +44,15 @@
     }
 
     .aborted-no-hover {
-        border-radius: 2px;
+        border-radius: var(--step-border-radius);
         background-color: lightyellow;
-        border-left: 6px solid yellow;
+        border-left: var(--border-left-width) solid yellow;
     }
 
     .aborted {
-        border-radius: 2px;
+        border-radius: var(--step-border-radius);
         background-color: lightyellow;
-        border-left: 6px solid yellow;
+        border-left: var(--border-left-width) solid yellow;
     }
 
     .aborted:hover {
@@ -52,15 +60,15 @@
     }
 
     .failed-no-hover {
-        border-radius: 2px;
+        border-radius: var(--step-border-radius);
         background-color: lightpink;
-        border-left: 6px solid red;
+        border-left: var(--border-left-width) solid red;
     }
 
     .failed {
-        border-radius: 2px;
+        border-radius: var(--step-border-radius);
         background-color: lightpink;
-        border-left: 6px solid red;
+        border-left: var(--border-left-width) solid red;
     }
 
     .failed:hover {
@@ -68,15 +76,15 @@
     }
 
     .neutral-no-hover {
-        border-radius: 2px;
+        border-radius: var(--step-border-radius);
         background-color: lightskyblue;
-        border-left: 6px solid deepskyblue;
+        border-left: var(--border-left-width) solid deepskyblue;
     }
 
     .neutral {
-        border-radius: 2px;
+        border-radius: var(--step-border-radius);
         background-color: lightskyblue;
-        border-left: 6px solid deepskyblue;
+        border-left: var(--border-left-width) solid deepskyblue;
     }
 
     .neutral:hover {
@@ -93,29 +101,22 @@
         font-size: 0.7em;
         float:right;
     }
-    
-    [class*="card-"] {
-        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+
+    .card {
         transition: 0.3s;
         border-radius: 5px;
+        color: var(--fg-color);
+        background-color: var(--com-color);
         padding-top: 10px;
         padding-right: 25px;
         padding-left: 0;
         padding-bottom: 10px;
     }
 
-    .card-white {
-        background-color: white;
-    }
-
-    .card-blue {
-        background-color: lightskyblue;
-    }
-
     .step {
+        color: var(--bk-color);
         margin-bottom: 2px;
         padding: 8px;
-        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     }
 
     .narrative {
@@ -134,6 +135,7 @@
 
     #searchInput {
         width: 100%;
+        border-radius: var(--step-border-radius);
         padding-top: 12px;
         padding-right: 20px;
         padding-left: 40px;
@@ -156,7 +158,7 @@
     #specList li a {
         text-decoration: none;
         display: block;
-        color: black;
+        color: var(--bk-color);
     }
 
     .collapsible {
@@ -180,7 +182,8 @@
 
     /* Add a black background color to the top navigation */
     .topnav {
-        background-color: #333;
+        background-color: var(--com-color);
+        border-radius: var(--step-border-radius);
         overflow: hidden;
     }
 
@@ -197,13 +200,13 @@
     /* Change the color of links on hover */
     .topnav a:hover {
         background-color: lightskyblue;
-        color: black;
+        color: var(--bk-color);
     }
 
     /* Add a color to the active/current link */
     .topnav a.active {
         background-color: deepskyblue;
-        color: white;
+        color: var(--fg-color);
         text-decoration: none;
     }
 
