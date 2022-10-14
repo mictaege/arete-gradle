@@ -21,35 +21,35 @@
                 <#if "${spec.cumulatedState()}" == "IGNORED">
                     <li class="ignored step">
                         <a href="./specs/${spec.uniqueHash}.html">
-                            <span style="font-family: monospace">${spec.testClassName}</span>
+                            <span class="mono">${spec.testClassName}</span>
                             <span style="float:right;">${spec.displayName}</span>
                         </a>
                     </li>
                 <#elseif "${spec.cumulatedState()}" == "SUCCESSFUL">
                     <li class="successful step">
                         <a href="./specs/${spec.uniqueHash}.html">
-                            <span style="font-family: monospace">${spec.testClassName}</span>
+                            <span class="mono">${spec.testClassName}</span>
                             <span style="float:right;">${spec.displayName}</span>
                         </a>
                     </li>
                 <#elseif "${spec.cumulatedState()}" == "ABORTED">
                     <li class="aborted step">
                         <a href="./specs/${spec.uniqueHash}.html">
-                            <span style="font-family: monospace">${spec.testClassName}</span>
+                            <span class="mono">${spec.testClassName}</span>
                             <span style="float:right;">${spec.displayName}</span>
                         </a>
                     </li>
                 <#elseif "${spec.cumulatedState()}" == "FAILED">
                     <li class="failed step">
                         <a href="./specs/${spec.uniqueHash}.html">
-                            <span style="font-family: monospace">${spec.testClassName}</span>
+                            <span class="mono">${spec.testClassName}</span>
                             <span style="float:right;">${spec.displayName}</span>
                         </a>
                     </li>
                 <#else>
                     <li class="step">
                         <a href="./specs/${spec.uniqueHash}.html">
-                            <span style="font-family: monospace">${spec.testClassName}</span>
+                            <span class="mono">${spec.testClassName}</span>
                             <span style="float:right;">${spec.displayName}</span>
                         </a>
                     </li>

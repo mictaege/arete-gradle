@@ -83,6 +83,18 @@
         background-color: deepskyblue;
     }
 
+    .mono {
+        font-family: monospace;
+    }
+
+    .spec-footer {
+        font-style: italic;
+        font-size: 0.7em;
+        margin-top: 0.2em;
+        margin-bottom: 0.2em;
+        float:right;
+    }
+
     [class*="card-"] {
         box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
         transition: 0.3s;
@@ -180,7 +192,7 @@
         text-align: center;
         padding: 14px 16px;
         text-decoration: none;
-        font-size: 17px;
+        font-size: 1em;
     }
 
     /* Change the color of links on hover */

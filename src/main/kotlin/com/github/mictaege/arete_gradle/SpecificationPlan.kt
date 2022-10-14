@@ -2,12 +2,17 @@ package com.github.mictaege.arete_gradle
 
 import com.github.mictaege.arete.Narrative
 import com.github.mictaege.arete.Spec
+import org.gradle.internal.impldep.org.joda.time.format.DateTimeFormat
 import org.junit.platform.engine.TestExecutionResult
 import org.junit.platform.engine.TestExecutionResult.Status
 import org.junit.platform.launcher.TestIdentifier
 import java.io.File
 import java.io.PrintWriter
 import java.io.StringWriter
+import java.time.LocalDateTime
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 
 enum class StepType(val container: Boolean) {
     SPEC(true),
@@ -164,7 +169,9 @@ class SpecificationStep(
     val uniqueHash: String = normalize(testId)
     val displayName: String = testId.displayName
     val testClassName: String = testId.testClass()?.canonicalName ?: ""
-    val tags: String = testId.tags.map { t -> t.name }.sorted().joinToString(" ") { n -> "#$n" }
+    val timeStamp: ZonedDateTime = ZonedDateTime.now()
+    val timeStampRfc: String = timeStamp.format(DateTimeFormatter.RFC_1123_DATE_TIME)
+    val tags: String = testId.tags.map({ t -> t.name }).sorted().joinToString(" ") { n -> "#$n" }
     val hasNarrative: Boolean = testId.isAnnotated(Narrative::class.java)
     val narrative: NarrativeSection? = testId.getAnnotation(Narrative::class.java)?.let { NarrativeSection(it) }
     val resultState: ResultState
