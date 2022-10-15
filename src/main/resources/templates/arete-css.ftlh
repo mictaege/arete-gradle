@@ -2,13 +2,13 @@
     :root {
         --step-border-radius: 6px;
         --border-left-width: 12px;
-        --bk-color: #282a36;
-        --com-color: #44475a;
-        --fg-color: #f8f8f2;
+        --dracula-dark: #282a36;
+        --dracula-grey: #44475a;
+        --dracula-light: #f8f8f2;
     }
     body {
         font-family: sans-serif;
-        background-color: var(--bk-color);
+        background-color: var(--dracula-dark);
     }
 
     .ignored-no-hover {
@@ -105,8 +105,8 @@
     .card {
         transition: 0.3s;
         border-radius: 5px;
-        color: var(--fg-color);
-        background-color: var(--com-color);
+        color: lightskyblue;
+        background-color: var(--dracula-grey);
         padding-top: 10px;
         padding-right: 25px;
         padding-left: 0;
@@ -114,7 +114,7 @@
     }
 
     .step {
-        color: var(--bk-color);
+        color: var(--dracula-dark);
         margin-bottom: 2px;
         padding: 8px;
     }
@@ -158,7 +158,7 @@
     #specList li a {
         text-decoration: none;
         display: block;
-        color: var(--bk-color);
+        color: var(--dracula-dark);
     }
 
     .collapsible {
@@ -167,7 +167,6 @@
     }
 
     .collapsible:before {
-
         font-weight: bold;
         float: right;
         margin-left: 5px;
@@ -182,7 +181,7 @@
 
     /* Add a black background color to the top navigation */
     .topnav {
-        background-color: var(--com-color);
+        background-color: var(--dracula-grey);
         border-radius: var(--step-border-radius);
         overflow: hidden;
     }
@@ -200,13 +199,13 @@
     /* Change the color of links on hover */
     .topnav a:hover {
         background-color: lightskyblue;
-        color: var(--bk-color);
+        color: var(--dracula-dark);
     }
 
     /* Add a color to the active/current link */
     .topnav a.active {
         background-color: deepskyblue;
-        color: var(--fg-color);
+        color: var(--dracula-light);
         text-decoration: none;
     }
 
