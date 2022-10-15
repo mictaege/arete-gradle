@@ -2,14 +2,12 @@ package com.github.mictaege.arete_gradle
 
 import com.github.mictaege.arete.Narrative
 import com.github.mictaege.arete.Spec
-import org.gradle.internal.impldep.org.joda.time.format.DateTimeFormat
 import org.junit.platform.engine.TestExecutionResult
 import org.junit.platform.engine.TestExecutionResult.Status
 import org.junit.platform.launcher.TestIdentifier
 import java.io.File
 import java.io.PrintWriter
 import java.io.StringWriter
-import java.time.LocalDateTime
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle

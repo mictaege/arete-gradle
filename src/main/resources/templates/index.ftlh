@@ -12,7 +12,7 @@
         <a href="./test_specs.html"><i class="fas fa-vial"></i> Spec Classes</a>
         <a href="./tags.html"><i class="fas fa-tags"></i> Tags</a>
     </div>
-    <div class="card" style="margin-top: 40px">
+    <div class="card main">
         <div style="padding: 0; margin: 16px">
             <h3>Summaries</h3>
         </div>
@@ -109,7 +109,7 @@
             </div>
         </div>
     </div>
-    <div class="card" style="margin-top: 40px">
+    <div class="card" style="margin-top: 10px">
         <div style="padding: 0; margin: 16px">
             <h2>Suspicious Specifications</h2>
         </div>

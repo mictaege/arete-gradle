@@ -181,9 +181,16 @@
 
     /* Add a black background color to the top navigation */
     .topnav {
-        background-color: var(--dracula-grey);
+        background-color: var(--dracula-dark);
         border-radius: var(--step-border-radius);
         overflow: hidden;
+        position: fixed;
+        top: 5px;
+        width: calc(100% - 15px);
+    }
+
+    .main {
+        margin-top: 65px; /* Add a top margin to avoid content overlay */
     }
 
     /* Style the links inside the navigation bar */
