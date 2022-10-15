@@ -128,11 +128,20 @@
                     </div>
                 </#if>
 
-                <#list step.steps as childStep>
-                    <#assign level++>
-                    <@dumpSteps childStep/>
-                    <#assign level-->
-                </#list>
+                <#if "${step.type}" == "SPEC" || "${step.type}" == "FEATURE">
+                    <#list step.stepsReversed as childStep>
+                        <#assign level++>
+                        <@dumpSteps childStep/>
+                        <#assign level-->
+                    </#list>
+                <#else>
+                    <#list step.steps as childStep>
+                        <#assign level++>
+                        <@dumpSteps childStep/>
+                        <#assign level-->
+                    </#list>
+                </#if>
+
             </div>
         </#macro>
         <@dumpSteps step/>
