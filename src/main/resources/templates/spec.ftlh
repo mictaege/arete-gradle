@@ -3,15 +3,14 @@
 <head>
     <title>${step.displayName}</title>
     <#include "arete-css.ftlh">
-    <#include "parent-font-awesome-css.ftlh">
     <#include "prism-css.ftlh">
 </head>
 <body>
     <div class="topnav">
-        <a href="./../index.html"><i class="fas fa-home"></i> Overview</a>
-        <a href="./../display_names.html"><i class="fas fa-hands-helping"></i> Specifications</a>
-        <a href="./../test_specs.html"><i class="fas fa-vial"></i> Spec Classes</a>
-        <a href="./../tags.html"><i class="fas fa-tags"></i> Tags</a>
+        <a href="./../index.html"><i class="menu-icon-home"></i> Overview</a>
+        <a href="./../display_names.html"><i class="menu-icon-handshake"></i> Specifications</a>
+        <a href="./../test_specs.html"><i class="menu-icon-flask"></i> Spec Classes</a>
+        <a href="./../tags.html"><i class="menu-icon-tags"></i> Tags</a>
     </div>
     <div class="card main">
         <#assign level = 0>
@@ -53,7 +52,7 @@
                     <div class="ignored${noHoverSuffix} step ${collapsible}" style="font-weight: ${fWeight}">
                         ${step.displayName}
                         <#if step.hasScreenshot>
-                            <i class="fas fa-camera"></i>
+                            <i class="icon-camera"></i>
                         </#if>
                         <@stamp step/>
                     </div>
@@ -66,7 +65,7 @@
                     <div class="successful${noHoverSuffix} step ${collapsible}" style="font-weight: ${fWeight}">
                         ${step.displayName}
                         <#if step.hasScreenshot>
-                            <i class="fas fa-camera"></i>
+                            <i class="icon-camera"></i>
                         </#if>
                         <@stamp step/>
                     </div>
@@ -79,7 +78,7 @@
                     <div class="aborted${noHoverSuffix} step ${collapsible}" style="font-weight: ${fWeight}">
                         ${step.displayName}
                         <#if step.hasScreenshot>
-                            <i class="fas fa-camera"></i>
+                            <i class="icon-camera"></i>
                         </#if>
                         <@stamp step/>
                     </div>
@@ -93,9 +92,9 @@
                         <div style="padding-bottom: 4px">
                             ${step.displayName}
                             <#if step.hasScreenshot>
-                                <i class="fas fa-camera"></i>
+                                <i class="icon-camera"></i>
                             </#if>
-                            <i class="fas fa-file-alt"></i>
+                            <i class="icon-file"></i>
                             <@stamp step/>
                         </div>
                         <#if step.hasErrorMsg>
