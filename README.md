@@ -18,13 +18,13 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath group: 'com.github.mictaege', name: 'arete-gradle', version:'20xxx.x.x'
+        classpath group: 'com.github.mictaege', name: 'arete-gradle', version:'20xx.x.x'
     }
 }
 
 plugins {
     id 'java'
-    id 'com.github.mictaege.arete' version '2022.2'
+    id 'com.github.mictaege.arete' version '20xx.x.x'
 }
 ```
 
