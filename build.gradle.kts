@@ -28,12 +28,11 @@ repositories {
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib")
-    implementation("org.junit.platform:junit-platform-launcher:1.7.1")
+    implementation("org.junit.platform:junit-platform-launcher:1.9.1")
     implementation("com.github.mictaege:arete:2022.2")
-    implementation("org.fusesource.jansi:jansi:2.3.2")
-    implementation("com.google.guava:guava:30.1.1-jre")
+    implementation("org.fusesource.jansi:jansi:2.4.0")
+    implementation("com.google.guava:guava:31.1-jre")
     implementation("org.freemarker:freemarker:2.3.31")
-    implementation("net.lingala.zip4j:zip4j:2.9.0")
 }
 
 tasks.register("generateResources") {
