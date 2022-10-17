@@ -3,16 +3,15 @@
 <head>
     <title>Spec Classes</title>
     <#include "arete-css.ftlh">
-    <#include "root-font-awesome-css.ftlh">
 </head>
 <body>
     <div class="topnav">
-        <a href="./index.html"><i class="fas fa-home"></i> Overview</a>
-        <a href="./display_names.html"><i class="fas fa-hands-helping"></i> Specifications</a>
-        <a class="active" href="./test_specs.html"><i class="fas fa-vial"></i> Spec Classes</a>
-        <a href="./tags.html"><i class="fas fa-tags"></i> Tags</a>
+        <a href="./index.html"><i class="menu-icon-home"></i> Overview</a>
+        <a href="./display_names.html"><i class="menu-icon-handshake"></i> Specifications</a>
+        <a class="active" href="./test_specs.html"><i class="menu-icon-flask"></i> Spec Classes</a>
+        <a href="./tags.html"><i class="menu-icon-tags"></i> Tags</a>
     </div>
-    <div class="card-white" style="margin-top: 40px">
+    <div class="card main">
         <div style="padding: 0; margin: 16px">
             <input type="text" id="searchInput" onkeyup="searchFunction()" placeholder="Search for Classes.."/>
         </div>
@@ -21,35 +20,35 @@
                 <#if "${spec.cumulatedState()}" == "IGNORED">
                     <li class="ignored step">
                         <a href="./specs/${spec.uniqueHash}.html">
-                            <span style="font-family: monospace">${spec.testClassName}</span>
+                            <span class="mono">${spec.testClassName}</span>
                             <span style="float:right;">${spec.displayName}</span>
                         </a>
                     </li>
                 <#elseif "${spec.cumulatedState()}" == "SUCCESSFUL">
                     <li class="successful step">
                         <a href="./specs/${spec.uniqueHash}.html">
-                            <span style="font-family: monospace">${spec.testClassName}</span>
+                            <span class="mono">${spec.testClassName}</span>
                             <span style="float:right;">${spec.displayName}</span>
                         </a>
                     </li>
                 <#elseif "${spec.cumulatedState()}" == "ABORTED">
                     <li class="aborted step">
                         <a href="./specs/${spec.uniqueHash}.html">
-                            <span style="font-family: monospace">${spec.testClassName}</span>
+                            <span class="mono">${spec.testClassName}</span>
                             <span style="float:right;">${spec.displayName}</span>
                         </a>
                     </li>
                 <#elseif "${spec.cumulatedState()}" == "FAILED">
                     <li class="failed step">
                         <a href="./specs/${spec.uniqueHash}.html">
-                            <span style="font-family: monospace">${spec.testClassName}</span>
+                            <span class="mono">${spec.testClassName}</span>
                             <span style="float:right;">${spec.displayName}</span>
                         </a>
                     </li>
                 <#else>
                     <li class="step">
                         <a href="./specs/${spec.uniqueHash}.html">
-                            <span style="font-family: monospace">${spec.testClassName}</span>
+                            <span class="mono">${spec.testClassName}</span>
                             <span style="float:right;">${spec.displayName}</span>
                         </a>
                     </li>

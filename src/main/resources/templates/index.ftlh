@@ -3,16 +3,15 @@
 <head>
     <title>Overview</title>
     <#include "arete-css.ftlh">
-    <#include "root-font-awesome-css.ftlh">
 </head>
 <body>
     <div class="topnav">
-        <a class="active" href="./index.html"><i class="fas fa-home"></i> Overview</a>
-        <a href="./display_names.html"><i class="fas fa-hands-helping"></i> Specifications</a>
-        <a href="./test_specs.html"><i class="fas fa-vial"></i> Spec Classes</a>
-        <a href="./tags.html"><i class="fas fa-tags"></i> Tags</a>
+        <a class="active" href="./index.html"><i class="menu-icon-home"></i> Overview</a>
+        <a href="./display_names.html"><i class="menu-icon-handshake"></i> Specifications</a>
+        <a href="./test_specs.html"><i class="menu-icon-flask"></i> Spec Classes</a>
+        <a href="./tags.html"><i class="menu-icon-tags"></i> Tags</a>
     </div>
-    <div class="card-white" style="margin-top: 40px">
+    <div class="card main">
         <div style="padding: 0; margin: 16px">
             <h3>Summaries</h3>
         </div>
@@ -21,27 +20,27 @@
                 <div style="padding: 0; margin: 16px">
                     <h3>Specifications</h3>
                 </div>
-                <div class="neutral-no-hover step">
+                <div class="neutral-no-hover step" style="margin-bottom: 12px">
                     <div style="text-align: left">Overall
                         <span style="float:right;">${plan.specSummaries().overallCount}</span>
                     </div>
                 </div>
-                <div class="failed-no-hover step">
+                <div class="failed-no-hover step" style="margin-bottom: 12px">
                     <div style="text-align: left">Failed
                         <span style="float:right;">${plan.specSummaries().failedCount}</span>
                     </div>
                 </div>
-                <div class="aborted-no-hover step">
+                <div class="aborted-no-hover step" style="margin-bottom: 12px">
                     <div style="text-align: left">Aborted
                         <span style="float:right;">${plan.specSummaries().abortedCount}</span>
                     </div>
                 </div>
-                <div class="ignored-no-hover step">
+                <div class="ignored-no-hover step" style="margin-bottom: 12px">
                     <div style="text-align: left">Ignored
                         <span style="float:right;">${plan.specSummaries().ignoredCount}</span>
                     </div>
                 </div>
-                <div class="successful-no-hover step">
+                <div class="successful-no-hover step" style="margin-bottom: 12px">
                     <div style="text-align: left">Successful
                         <span style="float:right;">${plan.specSummaries().successCount}</span>
                     </div>
@@ -51,27 +50,27 @@
                 <div style="padding: 0; margin: 16px">
                     <h3>Scenarios</h3>
                 </div>
-                <div class="neutral-no-hover step">
+                <div class="neutral-no-hover step" style="margin-bottom: 12px">
                     <div style="text-align: left">Overall
                         <span style="float:right;">${plan.scenarioSummaries().overallCount}</span>
                     </div>
                 </div>
-                <div class="failed-no-hover step">
+                <div class="failed-no-hover step" style="margin-bottom: 12px">
                     <div style="text-align: left">Failed
                         <span style="float:right;">${plan.scenarioSummaries().failedCount}</span>
                     </div>
                 </div>
-                <div class="aborted-no-hover step">
+                <div class="aborted-no-hover step" style="margin-bottom: 12px">
                     <div style="text-align: left">Aborted
                         <span style="float:right;">${plan.scenarioSummaries().abortedCount}</span>
                     </div>
                 </div>
-                <div class="ignored-no-hover step">
+                <div class="ignored-no-hover step" style="margin-bottom: 12px">
                     <div style="text-align: left">Ignored
                         <span style="float:right;">${plan.scenarioSummaries().ignoredCount}</span>
                     </div>
                 </div>
-                <div class="successful-no-hover step">
+                <div class="successful-no-hover step" style="margin-bottom: 12px">
                     <div style="text-align: left">Successful
                         <span style="float:right;">${plan.scenarioSummaries().successCount}</span>
                     </div>
@@ -81,27 +80,27 @@
                 <div style="padding: 0; margin: 16px">
                     <h3>Descriptions</h3>
                 </div>
-                <div class="neutral-no-hover step">
+                <div class="neutral-no-hover step" style="margin-bottom: 12px">
                     <div style="text-align: left">Overall
                         <span style="float:right;">${plan.descSummaries().overallCount}</span>
                     </div>
                 </div>
-                <div class="failed-no-hover step">
+                <div class="failed-no-hover step" style="margin-bottom: 12px">
                     <div style="text-align: left">Failed
                         <span style="float:right;">${plan.descSummaries().failedCount}</span>
                     </div>
                 </div>
-                <div class="aborted-no-hover step">
+                <div class="aborted-no-hover step" style="margin-bottom: 12px">
                     <div style="text-align: left">Aborted
                         <span style="float:right;">${plan.descSummaries().abortedCount}</span>
                     </div>
                 </div>
-                <div class="ignored-no-hover step">
+                <div class="ignored-no-hover step" style="margin-bottom: 12px">
                     <div style="text-align: left">Ignored
                         <span style="float:right;">${plan.descSummaries().ignoredCount}</span>
                     </div>
                 </div>
-                <div class="successful-no-hover step">
+                <div class="successful-no-hover step" style="margin-bottom: 12px">
                     <div style="text-align: left">Successful
                         <span style="float:right;">${plan.descSummaries().successCount}</span>
                     </div>
@@ -109,7 +108,7 @@
             </div>
         </div>
     </div>
-    <div class="card-white" style="margin-top: 40px">
+    <div class="card" style="margin-top: 10px">
         <div style="padding: 0; margin: 16px">
             <h2>Suspicious Specifications</h2>
         </div>

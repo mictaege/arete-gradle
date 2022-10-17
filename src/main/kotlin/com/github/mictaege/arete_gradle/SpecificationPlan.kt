@@ -8,6 +8,9 @@ import org.junit.platform.launcher.TestIdentifier
 import java.io.File
 import java.io.PrintWriter
 import java.io.StringWriter
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 
 enum class StepType(val container: Boolean) {
     SPEC(true),
@@ -28,6 +31,8 @@ enum class ResultState(val sign: String) {
 
 abstract class SpecificationNode {
     val steps = mutableListOf<SpecificationStep>()
+    val stepsReversed: List<SpecificationStep>
+        get() = steps.reversed()
 
     abstract fun add(step: SpecificationStep): Boolean
 
@@ -164,7 +169,10 @@ class SpecificationStep(
     val uniqueHash: String = normalize(testId)
     val displayName: String = testId.displayName
     val testClassName: String = testId.testClass()?.canonicalName ?: ""
-    val tags: String = testId.tags.map { t -> t.name }.sorted().joinToString(" ") { n -> "#$n" }
+    val timeStamp: ZonedDateTime = ZonedDateTime.now()
+    val timeStampLong: String = timeStamp.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM, FormatStyle.MEDIUM))
+    val timeOnly: String = timeStamp.format(DateTimeFormatter.ofPattern("HH:mm:ss.SSS"))
+    val tags: String = testId.tags.map({ t -> t.name }).sorted().joinToString(" ") { n -> "#$n" }
     val hasNarrative: Boolean = testId.isAnnotated(Narrative::class.java)
     val narrative: NarrativeSection? = testId.getAnnotation(Narrative::class.java)?.let { NarrativeSection(it) }
     val resultState: ResultState

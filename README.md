@@ -1,7 +1,7 @@
 # Arete-Gradle-Plugin
 
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.mictaege/arete-gradle.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.mictaege%22%20AND%20a:%22arete-gradle%22)
-[![Maven Central](https://img.shields.io/maven-central/v/org.junit.jupiter/junit-jupiter/5.7.0.svg?color=25a162&label=Jupiter)](https://search.maven.org/search?q=g:org.junit.jupiter%20AND%20v:5.7.0)
+[![Maven Central](https://img.shields.io/maven-central/v/org.junit.jupiter/junit-jupiter/5.9.1.svg?color=25a162&label=Jupiter)](https://search.maven.org/search?q=g:org.junit.jupiter%20AND%20v:5.9.1)
 [![Apache License 2.0](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
 
 Gradle reporting plugin for the [Arete](https://github.com/mictaege/arete) JUnit5 testing framework.
@@ -10,21 +10,12 @@ Gradle reporting plugin for the [Arete](https://github.com/mictaege/arete) JUnit
 
 ## Usage
 
-Add the `arete-gradle` plugin to your `build.gradle` file using the `buildscript` section.
+Add the `arete-gradle` plugin to your `build.gradle` file.
 
 ```Groovy
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath group: 'com.github.mictaege', name: 'arete-gradle', version:'20xxx.x.x'
-    }
-}
-
 plugins {
     id 'java'
-    id 'com.github.mictaege.arete' version '2022.2'
+    id 'com.github.mictaege.arete' version '20xx.x.x'
 }
 ```
 
