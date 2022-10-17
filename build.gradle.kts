@@ -2,16 +2,25 @@ plugins {
     id("org.jetbrains.kotlin.jvm") version "1.6.21"
     `java-gradle-plugin`
     `maven-publish`
+    id("com.gradle.plugin-publish") version "1.0.0"
     signing
 }
 
 group = "com.github.mictaege"
 version = "2022.2"
 
+pluginBundle {
+    website = "https://github.com/mictaege/arete-gradle"
+    vcsUrl = "scm:git:git://github.com/mictaege/arete-gradle.git"
+    tags = listOf("testing", "junit5", "bdd", "agile")
+}
+
 gradlePlugin {
     plugins {
-        create("simplePlugin") {
+        create("aretePlugin") {
             id = "com.github.mictaege.arete"
+            displayName = "Arete Plugin"
+            description = "Gradle reporting plugin for the Arete JUnit5 testing framework."
             implementationClass = "com.github.mictaege.arete_gradle.AretePlugin"
         }
     }
