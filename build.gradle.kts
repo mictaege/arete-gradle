@@ -6,7 +6,7 @@ plugins {
     signing
 }
 
-group = "com.github.mictaege"
+group = "io.github.mictaege"
 version = "2022.3"
 
 pluginBundle {
@@ -18,7 +18,7 @@ pluginBundle {
 gradlePlugin {
     plugins {
         create("aretePlugin") {
-            id = "com.github.mictaege.arete"
+            id = "io.github.mictaege.arete"
             displayName = "Arete Plugin"
             description = "Gradle reporting plugin for the Arete JUnit5 testing framework."
             implementationClass = "com.github.mictaege.arete_gradle.AretePlugin"

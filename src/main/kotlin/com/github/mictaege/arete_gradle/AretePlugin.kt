@@ -16,7 +16,7 @@ class AretePlugin: Plugin<Project>{
         val props = Properties()
         props.load(javaClass.classLoader.getResourceAsStream("arete-gradle.properties"))
         val version = props.getProperty("version")
-        project.dependencies.add("testRuntimeOnly", "com.github.mictaege:arete-gradle:${version}")
+        project.dependencies.add("testRuntimeOnly", "io.github.mictaege:arete-gradle:${version}")
         project.tasks.withType(Test::class.java) { testTask ->
             testTask.doFirst {
                 testTask.systemProperties[BUILD_DIR_PROPERTY] = project.buildDir.absolutePath

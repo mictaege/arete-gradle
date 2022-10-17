@@ -15,7 +15,7 @@ Add the `arete-gradle` plugin to your `build.gradle` file.
 ```Groovy
 plugins {
     id 'java'
-    id 'com.github.mictaege.arete' version '20xx.x.x'
+    id 'io.github.mictaege.arete' version '20xx.x.x'
 }
 ```
 
