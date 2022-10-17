@@ -11,7 +11,7 @@ version = "2022.3"
 
 pluginBundle {
     website = "https://github.com/mictaege/arete-gradle"
-    vcsUrl = "scm:git:git://github.com/mictaege/arete-gradle.git"
+    vcsUrl = "https://github.com/mictaege/arete-gradle.git"
     tags = listOf("testing", "junit5", "bdd", "agile")
 }
 
