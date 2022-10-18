@@ -6,19 +6,19 @@ plugins {
     signing
 }
 
-group = "com.github.mictaege"
-version = "2022.3"
+group = "io.github.mictaege"
+version = "2022.4"
 
 pluginBundle {
     website = "https://github.com/mictaege/arete-gradle"
-    vcsUrl = "scm:git:git://github.com/mictaege/arete-gradle.git"
+    vcsUrl = "https://github.com/mictaege/arete-gradle.git"
     tags = listOf("testing", "junit5", "bdd", "agile")
 }
 
 gradlePlugin {
     plugins {
         create("aretePlugin") {
-            id = "com.github.mictaege.arete"
+            id = "io.github.mictaege.arete"
             displayName = "Arete Plugin"
             description = "Gradle reporting plugin for the Arete JUnit5 testing framework."
             implementationClass = "com.github.mictaege.arete_gradle.AretePlugin"
@@ -38,7 +38,7 @@ repositories {
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib")
     implementation("org.junit.platform:junit-platform-launcher:1.9.1")
-    implementation("com.github.mictaege:arete:2022.3")
+    implementation("io.github.mictaege:arete:2022.4")
     implementation("org.fusesource.jansi:jansi:2.4.0")
     implementation("com.google.guava:guava:31.1-jre")
     implementation("org.freemarker:freemarker:2.3.31")
@@ -110,8 +110,8 @@ publishing {
     }
     repositories {
         maven {
-            val releasesRepoUrl = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
-            val snapshotsRepoUrl = uri("https://oss.sonatype.org/content/repositories/snapshots/")
+            val releasesRepoUrl = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+            val snapshotsRepoUrl = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
             url = if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl
             credentials {
                 username = if (hasProperty("ossrhUsername")) property("ossrhUsername") as String else ""

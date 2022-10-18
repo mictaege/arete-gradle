@@ -8,15 +8,15 @@ import java.util.*
 class AretePlugin: Plugin<Project>{
 
     companion object {
-        const val BUILD_DIR_PROPERTY = "com.github.mictaege.arete_gradle.buildDir"
-        const val TASK_NAME_PROPERTY = "com.github.mictaege.arete_gradle.taskName"
+        const val BUILD_DIR_PROPERTY = "io.github.mictaege.arete_gradle.buildDir"
+        const val TASK_NAME_PROPERTY = "io.github.mictaege.arete_gradle.taskName"
     }
 
     override fun apply(project: Project) {
         val props = Properties()
         props.load(javaClass.classLoader.getResourceAsStream("arete-gradle.properties"))
         val version = props.getProperty("version")
-        project.dependencies.add("testRuntimeOnly", "com.github.mictaege:arete-gradle:${version}")
+        project.dependencies.add("testRuntimeOnly", "io.github.mictaege:arete-gradle:${version}")
         project.tasks.withType(Test::class.java) { testTask ->
             testTask.doFirst {
                 testTask.systemProperties[BUILD_DIR_PROPERTY] = project.buildDir.absolutePath
