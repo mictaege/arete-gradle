@@ -8,8 +8,8 @@ import java.util.*
 class AretePlugin: Plugin<Project>{
 
     companion object {
-        const val BUILD_DIR_PROPERTY = "com.github.mictaege.arete_gradle.buildDir"
-        const val TASK_NAME_PROPERTY = "com.github.mictaege.arete_gradle.taskName"
+        const val BUILD_DIR_PROPERTY = "io.github.mictaege.arete_gradle.buildDir"
+        const val TASK_NAME_PROPERTY = "io.github.mictaege.arete_gradle.taskName"
     }
 
     override fun apply(project: Project) {
