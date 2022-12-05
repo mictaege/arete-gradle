@@ -1,7 +1,9 @@
 package com.github.mictaege.arete_gradle
 
+import org.gradle.api.Action
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.Task
 import org.gradle.api.tasks.testing.Test
 import java.util.*
 
@@ -17,12 +19,16 @@ class AretePlugin: Plugin<Project>{
         props.load(javaClass.classLoader.getResourceAsStream("arete-gradle.properties"))
         val version = props.getProperty("version")
         project.dependencies.add("testRuntimeOnly", "io.github.mictaege:arete-gradle:${version}")
-        project.tasks.withType(Test::class.java) { testTask ->
-            testTask.doFirst {
-                testTask.systemProperties[BUILD_DIR_PROPERTY] = project.buildDir.absolutePath
-                testTask.systemProperties[TASK_NAME_PROPERTY] = testTask.name
+        project.tasks.withType(Test::class.java, object : Action<Test> {
+            override fun execute(testTask: Test) {
+                testTask.doFirst(object : Action<Task> {
+                    override fun execute(it: Task) {
+                        testTask.systemProperties[BUILD_DIR_PROPERTY] = project.buildDir.absolutePath
+                        testTask.systemProperties[TASK_NAME_PROPERTY] = testTask.name
+                    }
+                })
             }
-        }
+        })
     }
 
 }
