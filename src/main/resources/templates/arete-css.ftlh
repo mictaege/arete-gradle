@@ -368,6 +368,7 @@
     }
 
     nav summary:hover .nav-icon-bars {
+        border-radius: var(--step-border-radius);
         background-color: lightskyblue;
         color: var(--dracula-dark);
         background-image: var(--nav-icon-bars-dark)
