@@ -361,6 +361,7 @@
         padding: 5px;
         max-width: 50%;
         opacity: 0.9;
+        z-index: 2000;
     }
 
     nav summary {
