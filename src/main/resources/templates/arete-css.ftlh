@@ -31,10 +31,27 @@
         --spec-menu-icon-tags-dark: url("./../icons/menu-icon-tags-dark.svg");
         --spec-icon-camera-dark: url("./../icons/icon-camera-dark.svg");
         --spec-icon-file-dark: url("./../icons/icon-file-dark.svg");
+        --spec-icon-link-dark: url("./../icons/icon-link-dark.svg");
+        --nav-icon-bars-light: url("./../icons/icon-bars-light.svg");
+        --nav-icon-bars-blue: url("./../icons/icon-bars-blue.svg");
+        --nav-icon-bars-dark: url("./../icons/icon-bars-dark.svg");
+        --trace-icon-clipboard-blue: url("./../icons/icon-clipboard-blue.svg");
+        --trace-icon-clipboard-dark: url("./../icons/icon-clipboard-dark.svg");
+        --trace-icon-clipboard-light: url("./../icons/icon-clipboard-light.svg");
     }
     body {
         font-family: sans-serif;
         background-color: var(--dracula-dark);
+    }
+
+    a {
+        text-decoration: none;
+    }
+    a:link, a:visited {
+        color: var(--dracula-dark);
+    }
+    a:hover {
+        color: var(--dracula-dark);
     }
 
     .ignored-no-hover {
@@ -203,6 +220,31 @@
         overflow: hidden;
         border: none;
         transition: max-height 0.2s ease-out;
+        position: relative;
+    }
+
+    .stacktrace-copy-btn {
+        position: absolute;
+        transition: 0.3s;
+        top: 22px;
+        right: 10px;
+        width:1.5rem;
+        height:1.5rem;
+        background-color: var(--dracula-dark);
+        border: none;
+        border-radius: var(--step-border-radius);
+        color: var(--dracula-light);
+        padding: 4px 4px;
+        cursor: pointer;
+        background-image: var(--trace-icon-clipboard-blue);
+        background-repeat: no-repeat;
+        background-origin: content-box;
+    }
+
+    .stacktrace-copy-btn:hover {
+        background-color: lightskyblue;
+        color: var(--dracula-dark);
+        background-image: var(--trace-icon-clipboard-dark)
     }
 
     /* Add a black background color to the top navigation */
@@ -213,6 +255,7 @@
         position: fixed;
         top: 5px;
         width: calc(100% - 15px);
+        z-index: 1999;
     }
 
     .main {
@@ -304,6 +347,43 @@
 
     .topnav a.active .spec-menu-icon-tags {
         background-image: var(--spec-menu-icon-tags-light)
+    }
+
+    nav {
+        background-color: var(--dracula-dark);
+        border-radius: var(--step-border-radius);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        top: 15px;
+        right: 20px;
+        padding: 5px;
+        max-width: 50%;
+        opacity: 0.9;
+        z-index: 2000;
+    }
+
+    nav summary {
+        list-style-type: none;
+    }
+
+    nav summary:hover .nav-icon-bars {
+        border-radius: var(--step-border-radius);
+        background-color: lightskyblue;
+        color: var(--dracula-dark);
+        background-image: var(--nav-icon-bars-dark)
+    }
+
+    nav li {
+        list-style: none;
+    }
+
+    nav div {
+        color: var(--dracula-dark);
+        margin-bottom: 8px;
+        padding: 4px;
     }
 
     img {
@@ -419,6 +499,28 @@
         width:1rem;
         height:1rem;
         background-image: var(--spec-icon-file-dark)
+    }
+
+    .spec-icon-link {
+        display: inline-block;
+        vertical-align: middle;
+        background-size: contain;
+        background-position: center center;
+        background-repeat: no-repeat;
+        width:1rem;
+        height:1rem;
+        background-image: var(--spec-icon-link-dark)
+    }
+
+    .nav-icon-bars {
+        display: inline-block;
+        vertical-align: middle;
+        background-size: contain;
+        background-position: center center;
+        background-repeat: no-repeat;
+        width:1.25rem;
+        height:1.25rem;
+        background-image: var(--nav-icon-bars-blue)
     }
 
 </style>
