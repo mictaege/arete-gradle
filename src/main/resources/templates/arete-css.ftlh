@@ -32,10 +32,23 @@
         --spec-icon-camera-dark: url("./../icons/icon-camera-dark.svg");
         --spec-icon-file-dark: url("./../icons/icon-file-dark.svg");
         --spec-icon-link-dark: url("./../icons/icon-link-dark.svg");
+        --nav-icon-bars-light: url("./../icons/icon-bars-light.svg");
+        --nav-icon-bars-blue: url("./../icons/icon-bars-blue.svg");
+        --nav-icon-bars-dark: url("./../icons/icon-bars-dark.svg");
     }
     body {
         font-family: sans-serif;
         background-color: var(--dracula-dark);
+    }
+
+    a {
+        text-decoration: none;
+    }
+    a:link, a:visited {
+        color: var(--dracula-dark);
+    }
+    a:hover {
+        color: var(--dracula-dark);
     }
 
     .ignored-no-hover {
@@ -307,6 +320,41 @@
         background-image: var(--spec-menu-icon-tags-light)
     }
 
+    nav {
+        background-color: var(--dracula-dark);
+        border-radius: var(--step-border-radius);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        top: 15px;
+        right: 20px;
+        padding: 5px;
+        max-width: 50%;
+        opacity: 0.9;
+    }
+
+    nav summary {
+        list-style-type: none;
+    }
+
+    nav summary:hover .nav-icon-bars {
+        background-color: lightskyblue;
+        color: var(--dracula-dark);
+        background-image: var(--nav-icon-bars-dark)
+    }
+
+    nav li {
+        list-style: none;
+    }
+
+    nav div {
+        color: var(--dracula-dark);
+        margin-bottom: 8px;
+        padding: 4px;
+    }
+
     img {
         max-width: 100%;
         height: auto;
@@ -431,6 +479,17 @@
         width:1rem;
         height:1rem;
         background-image: var(--spec-icon-link-dark)
+    }
+
+    .nav-icon-bars {
+        display: inline-block;
+        vertical-align: middle;
+        background-size: contain;
+        background-position: center center;
+        background-repeat: no-repeat;
+        width:1.25rem;
+        height:1.25rem;
+        background-image: var(--nav-icon-bars-blue)
     }
 
 </style>
