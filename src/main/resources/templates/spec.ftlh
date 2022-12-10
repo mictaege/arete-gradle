@@ -160,6 +160,9 @@
                         <#if step.hasScreenshot>
                             <img src="./${step.uniqueHash}.png"/>
                         </#if>
+                        <textarea  type="text" id="${step.uniqueHash}StackTrace" style="display: none;">${step.stackTrace}</textarea>
+                        <button onclick="copyToClipboard('${step.uniqueHash}StackTrace');" class="stacktrace-copy-btn">
+                        </button>
 <pre><code class="language-javastacktrace">${step.stackTrace}</code></pre>
                     </div>
                 <#else>
@@ -226,6 +229,15 @@
               content.style.maxHeight = content.scrollHeight + "px";
             }
           });
+        }
+
+        function copyToClipboard(elementId) {
+            var copyText = document.getElementById(elementId);
+
+            copyText.select();
+            copyText.setSelectionRange(0, 99999);
+
+            navigator.clipboard.writeText(copyText.value);
         }
     </script>
     <#include "prism-js.ftlh">

@@ -35,6 +35,9 @@
         --nav-icon-bars-light: url("./../icons/icon-bars-light.svg");
         --nav-icon-bars-blue: url("./../icons/icon-bars-blue.svg");
         --nav-icon-bars-dark: url("./../icons/icon-bars-dark.svg");
+        --trace-icon-clipboard-blue: url("./../icons/icon-clipboard-blue.svg");
+        --trace-icon-clipboard-dark: url("./../icons/icon-clipboard-dark.svg");
+        --trace-icon-clipboard-light: url("./../icons/icon-clipboard-light.svg");
     }
     body {
         font-family: sans-serif;
@@ -217,6 +220,31 @@
         overflow: hidden;
         border: none;
         transition: max-height 0.2s ease-out;
+        position: relative;
+    }
+
+    .stacktrace-copy-btn {
+        position: absolute;
+        transition: 0.3s;
+        top: 22px;
+        right: 10px;
+        width:1.5rem;
+        height:1.5rem;
+        background-color: var(--dracula-dark);
+        border: none;
+        border-radius: var(--step-border-radius);
+        color: var(--dracula-light);
+        padding: 4px 4px;
+        cursor: pointer;
+        background-image: var(--trace-icon-clipboard-blue);
+        background-repeat: no-repeat;
+        background-origin: content-box;
+    }
+
+    .stacktrace-copy-btn:hover {
+        background-color: lightskyblue;
+        color: var(--dracula-dark);
+        background-image: var(--trace-icon-clipboard-dark)
     }
 
     /* Add a black background color to the top navigation */
