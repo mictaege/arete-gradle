@@ -31,6 +31,7 @@
         --spec-menu-icon-tags-dark: url("./../icons/menu-icon-tags-dark.svg");
         --spec-icon-camera-dark: url("./../icons/icon-camera-dark.svg");
         --spec-icon-file-dark: url("./../icons/icon-file-dark.svg");
+        --spec-icon-link-dark: url("./../icons/icon-link-dark.svg");
     }
     body {
         font-family: sans-serif;
@@ -419,6 +420,17 @@
         width:1rem;
         height:1rem;
         background-image: var(--spec-icon-file-dark)
+    }
+
+    .spec-icon-link {
+        display: inline-block;
+        vertical-align: middle;
+        background-size: contain;
+        background-position: center center;
+        background-repeat: no-repeat;
+        width:1rem;
+        height:1rem;
+        background-image: var(--spec-icon-link-dark)
     }
 
 </style>
