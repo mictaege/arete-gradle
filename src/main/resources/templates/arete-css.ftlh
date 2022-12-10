@@ -255,6 +255,7 @@
         position: fixed;
         top: 5px;
         width: calc(100% - 15px);
+        z-index: 1999;
     }
 
     .main {
