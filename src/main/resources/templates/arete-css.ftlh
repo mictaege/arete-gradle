@@ -226,8 +226,8 @@
     .stacktrace-copy-btn {
         position: absolute;
         transition: 0.3s;
-        top: 22px;
-        right: 10px;
+        top: auto;
+        right: 15px;
         width:1.5rem;
         height:1.5rem;
         background-color: var(--dracula-dark);

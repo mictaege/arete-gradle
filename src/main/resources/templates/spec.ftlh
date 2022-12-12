@@ -161,9 +161,7 @@
                             <img src="./${step.uniqueHash}.png"/>
                         </#if>
                         <textarea  type="text" id="${step.uniqueHash}StackTrace" style="display: none;">${step.stackTrace}</textarea>
-                        <button onclick="copyToClipboard('${step.uniqueHash}StackTrace');" class="stacktrace-copy-btn">
-                        </button>
-<pre><code class="language-javastacktrace">${step.stackTrace}</code></pre>
+<pre><button onclick="copyToClipboard('${step.uniqueHash}StackTrace');" class="stacktrace-copy-btn"></button><code class="language-javastacktrace">${step.stackTrace}</code></pre>
                     </div>
                 <#else>
                     <div class="step ${collapsible}" style="font-weight: ${fWeight}">
