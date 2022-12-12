@@ -223,11 +223,31 @@
         position: relative;
     }
 
+    .link-copy-btn {
+        display: inline-flex;
+        transition: 0.3s;
+        width:1.1rem;
+        height:1.1rem;
+        margin: 0;
+        padding: 0;
+        border: none;
+        cursor: pointer;
+        background-color: transparent;
+        background-image: var(--spec-icon-link-dark);
+        background-repeat: no-repeat;
+        background-origin: content-box;
+        opacity: 0.4;
+    }
+
+    .link-copy-btn:hover {
+        opacity: 1;
+    }
+
     .stacktrace-copy-btn {
         position: absolute;
         transition: 0.3s;
-        top: 22px;
-        right: 10px;
+        top: auto;
+        right: 15px;
         width:1.5rem;
         height:1.5rem;
         background-color: var(--dracula-dark);
@@ -361,7 +381,6 @@
         right: 20px;
         padding: 5px;
         max-width: 50%;
-        opacity: 0.9;
         z-index: 2000;
     }
 
