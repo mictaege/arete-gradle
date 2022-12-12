@@ -29,8 +29,8 @@
 
         <#macro anchor step>
             <#if step.type.container>
-                <a id="${step.uniqueHash}" href="#${step.uniqueHash}" title="${step.displayName}" target="_blank">
-                    <i class="spec-icon-link" style="opacity: 0.5"></i>
+                <a id="${step.uniqueHash}">
+                    <button onclick="anchorToClipboard('#${step.uniqueHash}');" class="link-copy-btn"></button>
                 </a>
             </#if>
         </#macro>
@@ -161,7 +161,7 @@
                             <img src="./${step.uniqueHash}.png"/>
                         </#if>
                         <textarea  type="text" id="${step.uniqueHash}StackTrace" style="display: none;">${step.stackTrace}</textarea>
-<pre><button onclick="copyToClipboard('${step.uniqueHash}StackTrace');" class="stacktrace-copy-btn"></button><code class="language-javastacktrace">${step.stackTrace}</code></pre>
+<pre><button onclick="traceToClipboard('${step.uniqueHash}StackTrace');" class="stacktrace-copy-btn"></button><code class="language-javastacktrace">${step.stackTrace}</code></pre>
                     </div>
                 <#else>
                     <div class="step ${collapsible}" style="font-weight: ${fWeight}">
@@ -229,13 +229,22 @@
           });
         }
 
-        function copyToClipboard(elementId) {
+        function traceToClipboard(elementId) {
             var copyText = document.getElementById(elementId);
 
             copyText.select();
             copyText.setSelectionRange(0, 99999);
 
             navigator.clipboard.writeText(copyText.value);
+        }
+        function anchorToClipboard(anchor) {
+            var inputc = document.body.appendChild(document.createElement("input"));
+            inputc.id = "anchor-input"
+            inputc.value = window.location.href + anchor;
+            inputc.select();
+            inputc.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(inputc.value);
+            inputc.parentNode.removeChild(inputc);
         }
     </script>
     <#include "prism-js.ftlh">
