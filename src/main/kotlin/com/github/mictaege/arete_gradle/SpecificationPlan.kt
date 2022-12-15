@@ -68,14 +68,7 @@ abstract class SpecificationNode {
         return findFirst(predicate) != null
     }
 
-    fun cumulatedState(): ResultState {
-        return when {
-            anyMatch { s -> s.resultState == ResultState.FAILED } -> ResultState.FAILED
-            anyMatch { s -> s.resultState == ResultState.ABORTED } -> ResultState.ABORTED
-            anyMatch { s -> s.resultState == ResultState.IGNORED } -> ResultState.IGNORED
-            else -> ResultState.SUCCESSFUL
-        }
-    }
+    abstract fun cumulatedState(): ResultState
 }
 
 class SpecificationPlan: SpecificationNode() {
@@ -138,6 +131,15 @@ class SpecificationPlan: SpecificationNode() {
         if (testId.isAnnotated(Spec::class.java)) {
             findFirst { it.uniqueId == testId.uniqueId }
                 ?.apply { allWriter.forEach { it.writeSpec(this) } }
+        }
+    }
+
+    override fun cumulatedState(): ResultState {
+        return when {
+            anyMatch { s -> s.resultState == ResultState.FAILED } -> ResultState.FAILED
+            anyMatch { s -> s.resultState == ResultState.ABORTED } -> ResultState.ABORTED
+            anyMatch { s -> s.resultState == ResultState.IGNORED } -> ResultState.IGNORED
+            else -> ResultState.SUCCESSFUL
         }
     }
 
@@ -225,6 +227,15 @@ class SpecificationStep(
             var hit = false
             steps.forEach { hit = hit || it.addResult(testId, testResult) }
             hit
+        }
+    }
+
+    override fun cumulatedState(): ResultState {
+        return when {
+            anyMatch { s -> s.resultState == ResultState.FAILED } -> ResultState.FAILED
+            anyMatch { s -> s.resultState == ResultState.ABORTED } -> ResultState.ABORTED
+            anyMatch { s -> s.resultState == ResultState.IGNORED } -> ResultState.IGNORED
+            else -> resultState
         }
     }
 
