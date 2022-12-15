@@ -542,4 +542,37 @@
         background-image: var(--nav-icon-bars-blue)
     }
 
+    .search-by-tag-btn {
+        display: inline-flex;
+        transition: 0.3s;
+        padding: 4px;
+        gap: 2px;
+        border-radius: var(--step-border-radius);
+        border: none;
+        cursor: pointer;
+        background-color: var(--dracula-dark);
+        color: lightskyblue;
+    }
+
+    .search-by-tag-btn:hover {
+        background-color: lightskyblue;
+        color: var(--dracula-dark);
+    }
+
+    .search-by-tag-btn:hover > i {
+        background-image: var(--menu-icon-tags-dark)
+    }
+
+    .search-by-tag-icon {
+        display: inline-block;
+        vertical-align: middle;
+        background-size: contain;
+        background-position: center center;
+        background-repeat: no-repeat;
+        width:1rem;
+        height:1rem;
+        background-image: var(--menu-icon-tags-blue);
+        opacity: 1;
+    }
+
 </style>

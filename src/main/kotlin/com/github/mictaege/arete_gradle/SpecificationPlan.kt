@@ -127,6 +127,26 @@ class SpecificationPlan: SpecificationNode() {
         return PlanSummaries(flatFilter { it.type == StepType.DESCRIBE })
     }
 
+    fun allTags(): Set<String> {
+        val all = mutableSetOf<String>()
+        steps.forEach {s ->
+            s.tags.split(" ")
+                .map { it.trim()}
+                .filter { it.isNotEmpty() }
+                .map {t ->
+                    if(t.startsWith("#")) {
+                        t.substring(1)
+                    } else {
+                        t
+                    }
+                }
+                .forEach { t ->
+                    all.add(t)
+                }
+        }
+        return all.toSortedSet()
+    }
+
     private fun writeIfSpec(testId: TestIdentifier) {
         if (testId.isAnnotated(Spec::class.java)) {
             findFirst { it.uniqueId == testId.uniqueId }
