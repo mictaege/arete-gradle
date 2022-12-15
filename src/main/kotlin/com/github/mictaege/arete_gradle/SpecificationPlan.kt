@@ -68,14 +68,7 @@ abstract class SpecificationNode {
         return findFirst(predicate) != null
     }
 
-    fun cumulatedState(): ResultState {
-        return when {
-            anyMatch { s -> s.resultState == ResultState.FAILED } -> ResultState.FAILED
-            anyMatch { s -> s.resultState == ResultState.ABORTED } -> ResultState.ABORTED
-            anyMatch { s -> s.resultState == ResultState.IGNORED } -> ResultState.IGNORED
-            else -> ResultState.SUCCESSFUL
-        }
-    }
+    abstract fun cumulatedState(): ResultState
 }
 
 class SpecificationPlan: SpecificationNode() {
@@ -134,10 +127,39 @@ class SpecificationPlan: SpecificationNode() {
         return PlanSummaries(flatFilter { it.type == StepType.DESCRIBE })
     }
 
+    fun allTags(): Set<String> {
+        val all = mutableSetOf<String>()
+        steps.forEach {s ->
+            s.tags.split(" ")
+                .map { it.trim()}
+                .filter { it.isNotEmpty() }
+                .map {t ->
+                    if(t.startsWith("#")) {
+                        t.substring(1)
+                    } else {
+                        t
+                    }
+                }
+                .forEach { t ->
+                    all.add(t)
+                }
+        }
+        return all.toSortedSet()
+    }
+
     private fun writeIfSpec(testId: TestIdentifier) {
         if (testId.isAnnotated(Spec::class.java)) {
             findFirst { it.uniqueId == testId.uniqueId }
                 ?.apply { allWriter.forEach { it.writeSpec(this) } }
+        }
+    }
+
+    override fun cumulatedState(): ResultState {
+        return when {
+            anyMatch { s -> s.resultState == ResultState.FAILED } -> ResultState.FAILED
+            anyMatch { s -> s.resultState == ResultState.ABORTED } -> ResultState.ABORTED
+            anyMatch { s -> s.resultState == ResultState.IGNORED } -> ResultState.IGNORED
+            else -> ResultState.SUCCESSFUL
         }
     }
 
@@ -225,6 +247,15 @@ class SpecificationStep(
             var hit = false
             steps.forEach { hit = hit || it.addResult(testId, testResult) }
             hit
+        }
+    }
+
+    override fun cumulatedState(): ResultState {
+        return when {
+            anyMatch { s -> s.resultState == ResultState.FAILED } -> ResultState.FAILED
+            anyMatch { s -> s.resultState == ResultState.ABORTED } -> ResultState.ABORTED
+            anyMatch { s -> s.resultState == ResultState.IGNORED } -> ResultState.IGNORED
+            else -> resultState
         }
     }
 

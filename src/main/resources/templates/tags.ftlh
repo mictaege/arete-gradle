@@ -13,6 +13,14 @@
     </div>
     <div class="card main">
         <div style="padding: 0; margin: 16px">
+            <#list plan.allTags() as tag>
+                <button class="search-by-tag-btn" onclick="searchByTag('#${tag}')">
+                    <i class="search-by-tag-icon"></i>
+                    ${tag}
+                </button>
+            </#list>
+        </div>
+        <div style="padding: 0; margin: 16px">
             <input type="text" id="searchInput" onkeyup="searchFunction()" placeholder="Search for Tags.."/>
         </div>
         <ul id="specList">
@@ -56,6 +64,15 @@
             </#list>
         </ul>
     </div>
+
+    <script>
+        var searchInput = document.getElementById("searchInput");
+
+        function searchByTag(tag) {
+            searchInput.value = tag;
+            searchFunction()
+        }
+    </script>
 
     <#include "search-js.ftlh">
 

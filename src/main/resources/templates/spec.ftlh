@@ -30,7 +30,7 @@
         <#macro anchor step>
             <#if step.type.container>
                 <a id="${step.uniqueHash}">
-                    <button onclick="anchorToClipboard('#${step.uniqueHash}');" class="link-copy-btn"></button>
+                    <button onclick="anchorToClipboard('${step.displayName}', '#${step.uniqueHash}');" class="link-copy-btn"></button>
                 </a>
             </#if>
         </#macro>
@@ -230,21 +230,18 @@
         }
 
         function traceToClipboard(elementId) {
-            var copyText = document.getElementById(elementId);
+            let copyText = document.getElementById(elementId);
 
             copyText.select();
             copyText.setSelectionRange(0, 99999);
 
             navigator.clipboard.writeText(copyText.value);
         }
-        function anchorToClipboard(anchor) {
-            var inputc = document.body.appendChild(document.createElement("input"));
-            inputc.id = "anchor-input"
-            inputc.value = window.location.href + anchor;
-            inputc.select();
-            inputc.setSelectionRange(0, 99999);
-            navigator.clipboard.writeText(inputc.value);
-            inputc.parentNode.removeChild(inputc);
+        function anchorToClipboard(text, anchor) {
+            let link = window.location.href + anchor;
+            let markdownLink = '['.concat(text).concat(']').concat('(').concat(link).concat(')');
+
+            navigator.clipboard.writeText(markdownLink);
         }
     </script>
     <#include "prism-js.ftlh">
