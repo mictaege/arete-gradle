@@ -32,6 +32,12 @@
         --spec-icon-camera-dark: url("./../icons/icon-camera-dark.svg");
         --spec-icon-file-dark: url("./../icons/icon-file-dark.svg");
         --spec-icon-link-dark: url("./../icons/icon-link-dark.svg");
+        --spec-icon-external-link-light: url("./../icons/icon-external-link-light.svg");
+        --spec-icon-external-link-blue: url("./../icons/icon-external-link-blue.svg");
+        --spec-icon-external-link-dark: url("./../icons/icon-external-link-dark.svg");
+        --spec-icon-share-light: url("./../icons/icon-share-light.svg");
+        --spec-icon-share-blue: url("./../icons/icon-share-blue.svg");
+        --spec-icon-share-dark: url("./../icons/icon-share-dark.svg");
         --nav-icon-bars-light: url("./../icons/icon-bars-light.svg");
         --nav-icon-bars-blue: url("./../icons/icon-bars-blue.svg");
         --nav-icon-bars-dark: url("./../icons/icon-bars-dark.svg");
@@ -39,6 +45,11 @@
         --trace-icon-clipboard-dark: url("./../icons/icon-clipboard-dark.svg");
         --trace-icon-clipboard-light: url("./../icons/icon-clipboard-light.svg");
     }
+
+    html {
+        scroll-padding-top: 5rem;
+    }
+
     body {
         font-family: sans-serif;
         background-color: var(--dracula-dark);
@@ -233,10 +244,10 @@
         border: none;
         cursor: pointer;
         background-color: transparent;
-        background-image: var(--spec-icon-link-dark);
+        background-image: var(--spec-icon-share-dark);
         background-repeat: no-repeat;
         background-origin: content-box;
-        opacity: 0.4;
+        opacity: 0.6;
     }
 
     .link-copy-btn:hover {
@@ -520,17 +531,6 @@
         background-image: var(--spec-icon-file-dark)
     }
 
-    .spec-icon-link {
-        display: inline-block;
-        vertical-align: middle;
-        background-size: contain;
-        background-position: center center;
-        background-repeat: no-repeat;
-        width:1rem;
-        height:1rem;
-        background-image: var(--spec-icon-link-dark)
-    }
-
     .nav-icon-bars {
         display: inline-block;
         vertical-align: middle;
@@ -573,6 +573,44 @@
         height:1rem;
         background-image: var(--menu-icon-tags-blue);
         opacity: 1;
+    }
+
+    a.see-also {
+        text-decoration:none;
+        font-size: smaller;
+        appearance: none;
+        display: inline-flex;
+        transition: 0.3s;
+        padding: 4px;
+        margin-top: 4px;
+        margin-bottom: 4px;
+        gap: 2px;
+        border-radius: var(--step-border-radius);
+        border: none;
+        cursor: pointer;
+        background-color: var(--dracula-dark);
+        color: lightskyblue;
+    }
+
+    a.see-also:hover {
+        background-color: lightskyblue;
+        color: var(--dracula-dark);
+    }
+
+    .see-also-icon {
+        display: inline-block;
+        vertical-align: middle;
+        background-size: contain;
+        background-position: center center;
+        background-repeat: no-repeat;
+        width:1rem;
+        height:1rem;
+        background-image: var(--spec-icon-external-link-blue);
+        opacity: 1;
+    }
+
+    .see-also:hover > i {
+        background-image: var(--spec-icon-external-link-dark);
     }
 
 </style>

@@ -13,25 +13,25 @@ class AreteTestListener: TestExecutionListener {
     override fun executionStarted(testId: TestIdentifier) {
         when {
             testId.isAnnotated(Spec::class.java)
-                -> specPlan.add(SpecificationStep(testId, StepType.SPEC))
+                -> specPlan.add(SpecificationStep(specPlan, testId, StepType.SPEC))
             testId.isAnnotated(Feature::class.java)
-                -> specPlan.add(SpecificationStep(testId, StepType.FEATURE))
+                -> specPlan.add(SpecificationStep(specPlan, testId, StepType.FEATURE))
             testId.isAnnotated(Scenario::class.java)
-                -> specPlan.add(SpecificationStep(testId, StepType.SCENARIO))
+                -> specPlan.add(SpecificationStep(specPlan, testId, StepType.SCENARIO))
             testId.isAnnotated(Given::class.java)
-                -> specPlan.add(SpecificationStep(testId, StepType.GIVEN))
+                -> specPlan.add(SpecificationStep(specPlan, testId, StepType.GIVEN))
             testId.isAnnotated(When::class.java)
-                -> specPlan.add(SpecificationStep(testId, StepType.WHEN))
+                -> specPlan.add(SpecificationStep(specPlan, testId, StepType.WHEN))
             testId.isAnnotated(Then::class.java)
-                -> specPlan.add(SpecificationStep(testId, StepType.THEN))
+                -> specPlan.add(SpecificationStep(specPlan, testId, StepType.THEN))
             testId.isAnnotated(Describe::class.java)
-                -> specPlan.add(SpecificationStep(testId, StepType.DESCRIBE))
+                -> specPlan.add(SpecificationStep(specPlan, testId, StepType.DESCRIBE))
             testId.isAnnotated(ItShould::class.java)
-                -> specPlan.add(SpecificationStep(testId, StepType.IT_SHOULD))
+                -> specPlan.add(SpecificationStep(specPlan, testId, StepType.IT_SHOULD))
             testId.isAnnotated(Examples::class.java) && testId.isContainer
-                -> specPlan.add(SpecificationStep(testId, StepType.EXAMPLE_TEMPLATE))
+                -> specPlan.add(SpecificationStep(specPlan, testId, StepType.EXAMPLE_TEMPLATE))
             testId.isAnnotated(Examples::class.java) && !testId.isContainer
-                -> specPlan.add(SpecificationStep(testId, StepType.EXAMPLE_INSTANCE))
+                -> specPlan.add(SpecificationStep(specPlan, testId, StepType.EXAMPLE_INSTANCE))
         }
     }
 
