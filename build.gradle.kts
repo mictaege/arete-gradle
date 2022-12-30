@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "io.github.mictaege"
-version = "2022.8"
+version = "2022.9"
 
 pluginBundle {
     website = "https://github.com/mictaege/arete-gradle"
@@ -38,7 +38,7 @@ repositories {
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib")
     implementation("org.junit.platform:junit-platform-launcher:1.9.1")
-    implementation("io.github.mictaege:arete:2022.8")
+    implementation("io.github.mictaege:arete:2022.9")
     implementation("org.fusesource.jansi:jansi:2.4.0")
     implementation("com.google.guava:guava:31.1-jre")
     implementation("org.freemarker:freemarker:2.3.31")

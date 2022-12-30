@@ -174,6 +174,16 @@
                     </#if>
                 </#if>
 
+                <#if step.hasSeeAlsoRefs>
+                    <#assign startComment="<!--%%%%%">
+                    <#assign endComment="%%%%%-->">
+                    <#list step.seeAlsoRefs.refs as ref>
+                        <#noautoesc>
+                            ${startComment}${ref.className}${endComment}
+                        </#noautoesc>
+                    </#list>
+                </#if>
+
                 <#if step.hasNarrative>
                     <div class="neutral-no-hover step" style="margin-bottom: ${vMargin}; margin-top: ${vMargin};  font-weight: normal">
                         <p class="narrative" style="font-weight: ${fWeight}">${step.narrative.header}</p>
@@ -238,8 +248,8 @@
             navigator.clipboard.writeText(copyText.value);
         }
         function anchorToClipboard(text, anchor) {
-            let link = window.location.href + anchor;
-            let markdownLink = '['.concat(text).concat(']').concat('(').concat(link).concat(')');
+            let link = window.location.protocol + '//' + window.location.host + window.location.pathname + anchor;
+            let markdownLink = '[' + text + '](' + link + ')';
 
             navigator.clipboard.writeText(markdownLink);
         }

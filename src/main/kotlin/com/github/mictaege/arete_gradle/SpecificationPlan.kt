@@ -1,6 +1,8 @@
 package com.github.mictaege.arete_gradle
 
 import com.github.mictaege.arete.Narrative
+import com.github.mictaege.arete.SeeAlso
+import com.github.mictaege.arete.SeeAlsoDeclaration
 import com.github.mictaege.arete.Spec
 import org.junit.platform.engine.TestExecutionResult
 import org.junit.platform.engine.TestExecutionResult.Status
@@ -88,6 +90,11 @@ class SpecificationPlan: SpecificationNode() {
         steps.forEach { hit = hit || it.addResult(testId, testResult) }
         writeIfSpec(testId)
         return hit
+    }
+
+    fun findStepByType(testClass: Class<*>) = findFirst { s -> s.testClass == testClass }
+    fun findSpecByChild(child: SpecificationStep) = findFirst { s ->
+        s.type == StepType.SPEC && s.findFirst { c -> c == child } != null
     }
 
     fun finishPlan() {
@@ -182,6 +189,7 @@ data class PlanSummaries(
 }
 
 class SpecificationStep(
+    val plan: SpecificationPlan,
     val testId: TestIdentifier,
     val type: StepType,
     var testResult: TestExecutionResult? = null
@@ -190,6 +198,7 @@ class SpecificationStep(
     val uniqueId: String = testId.uniqueId
     val uniqueHash: String = normalize(testId)
     val displayName: String = testId.displayName
+    val testClass: Class<*>? = testId.testClass()
     val testClassName: String = testId.testClass()?.canonicalName ?: ""
     val timeStamp: ZonedDateTime = ZonedDateTime.now()
     val timeStampLong: String = timeStamp.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM, FormatStyle.MEDIUM))
@@ -197,6 +206,17 @@ class SpecificationStep(
     val tags: String = testId.tags.map({ t -> t.name }).sorted().joinToString(" ") { n -> "#$n" }
     val hasNarrative: Boolean = testId.isAnnotated(Narrative::class.java)
     val narrative: NarrativeSection? = testId.getAnnotation(Narrative::class.java)?.let { NarrativeSection(it) }
+    val hasSeeAlsoRefs: Boolean = testId.isAnnotated(SeeAlsoDeclaration::class.java) || testId.isAnnotated(SeeAlso::class.java)
+    val seeAlsoRefs: ReferenceTargets?
+        get() {
+            return if (testId.isAnnotated(SeeAlsoDeclaration::class.java)) {
+                testId.getAnnotation(SeeAlsoDeclaration::class.java)?.let { ReferenceTargets(plan, it) }
+            } else if (testId.isAnnotated(SeeAlso::class.java)) {
+                testId.getAnnotation(SeeAlso::class.java)?.let { ReferenceTargets(plan, it) }
+            } else {
+                null
+            }
+        }
     val resultState: ResultState
         get() = when(testResult?.status) {
             Status.SUCCESSFUL -> ResultState.SUCCESSFUL

@@ -61,11 +61,41 @@ class HtmlWriter: SpecificationWriter {
     }
 
     override fun finishPlan(plan: SpecificationPlan) {
+        plan.flatFilter { step -> step.type == StepType.SPEC }.forEach { spec ->
+            val specFile = File(BuildDir.specsDir, "${spec.uniqueHash}.html")
+            if (specFile.exists()) {
+                var specSource = specFile.readText()
+                if (spec.hasSeeAlsoRefs) {
+                    specSource = replaceSeeAlsoPlaceholder(spec, specSource)
+                }
+                spec.flatFilter { step -> step.hasSeeAlsoRefs }.forEach { step ->
+                    specSource = replaceSeeAlsoPlaceholder(step, specSource)
+                }
+                specFile.writeText(specSource)
+            }
+        }
         writeHtmlFile("/index.ftlh", mapOf("plan" to plan), File(BuildDir.taskDir, "index.html"))
         writeHtmlFile("/display_names.ftlh", mapOf("plan" to plan), File(BuildDir.taskDir, "display_names.html"))
         writeHtmlFile("/test_specs.ftlh", mapOf("plan" to plan), File(BuildDir.taskDir, "test_specs.html"))
         writeHtmlFile("/tags.ftlh", mapOf("plan" to plan), File(BuildDir.taskDir, "tags.html"))
         extractIcons()
+    }
+
+    private fun replaceSeeAlsoPlaceholder(step: SpecificationStep, specSource: String): String {
+        var replaced = specSource
+        step.seeAlsoRefs?.refs?.forEach { ref ->
+            if (ref.validTarget) {
+                val placeholder = "<!--%%%%%${ref.className}%%%%%-->"
+                val link = """
+                            | <a href="${ref.targetUrl}" class="see-also">
+                            |     <i class="see-also-icon"></i>
+                            |     ${ref.displayName}
+                            | </a>
+                            """.trimMargin()
+                replaced = replaced.replace(placeholder, link)
+            }
+        }
+        return replaced
     }
 
     private fun writeHtmlFile(
