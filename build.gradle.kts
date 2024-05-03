@@ -1,33 +1,30 @@
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "1.6.21"
+    id("org.jetbrains.kotlin.jvm") version "1.8.10"
     `java-gradle-plugin`
     `maven-publish`
-    id("com.gradle.plugin-publish") version "1.0.0"
+    id("com.gradle.plugin-publish") version "1.2.1"
     signing
 }
 
 group = "io.github.mictaege"
 version = "2022.9"
 
-pluginBundle {
-    website = "https://github.com/mictaege/arete-gradle"
-    vcsUrl = "https://github.com/mictaege/arete-gradle.git"
-    tags = listOf("testing", "junit5", "bdd", "agile")
-}
-
 gradlePlugin {
+    website.set("https://github.com/mictaege/arete-gradle")
+    vcsUrl.set("https://github.com/mictaege/arete-gradle.git")
     plugins {
         create("aretePlugin") {
             id = "io.github.mictaege.arete"
             displayName = "Arete Plugin"
             description = "Gradle reporting plugin for the Arete JUnit5 testing framework."
             implementationClass = "com.github.mictaege.arete_gradle.AretePlugin"
+            tags.set(listOf("testing", "junit5", "bdd", "agile"))
         }
     }
 }
 
 tasks.wrapper {
-    gradleVersion = "7.5.1"
+    gradleVersion = "8.7"
     distributionType = Wrapper.DistributionType.ALL
 }
 
