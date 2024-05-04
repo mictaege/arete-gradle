@@ -1,5 +1,5 @@
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "1.8.10"
+    id("org.jetbrains.kotlin.jvm") version "1.9.22"
     `java-gradle-plugin`
     `maven-publish`
     id("com.gradle.plugin-publish") version "1.2.1"
@@ -34,12 +34,12 @@ repositories {
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib")
-    implementation("org.junit.platform:junit-platform-launcher:1.9.1")
+    implementation("org.junit.platform:junit-platform-launcher:1.10.2")
     implementation("io.github.mictaege:arete:2024.1")
-    implementation("org.fusesource.jansi:jansi:2.4.0")
-    implementation("com.google.guava:guava:31.1-jre")
-    implementation("org.freemarker:freemarker:2.3.31")
-    implementation("net.lingala.zip4j:zip4j:2.11.2")
+    implementation("org.fusesource.jansi:jansi:2.4.1")
+    implementation("com.google.guava:guava:33.2.0-jre")
+    implementation("org.freemarker:freemarker:2.3.32")
+    implementation("net.lingala.zip4j:zip4j:2.11.5")
 }
 
 tasks.register("generateResources") {
