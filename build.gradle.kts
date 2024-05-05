@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "io.github.mictaege"
-version = "2024.1"
+version = "2024.1.1"
 
 gradlePlugin {
     website.set("https://github.com/mictaege/arete-gradle")
@@ -35,7 +35,7 @@ repositories {
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib")
     implementation("org.junit.platform:junit-platform-launcher:1.10.2")
-    implementation("io.github.mictaege:arete:2024.1")
+    implementation("io.github.mictaege:arete:2024.1.1")
     implementation("org.fusesource.jansi:jansi:2.4.1")
     implementation("com.google.guava:guava:33.2.0-jre")
     implementation("org.freemarker:freemarker:2.3.32")
@@ -60,8 +60,16 @@ tasks.test {
 }
 
 java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
     withJavadocJar()
     withSourcesJar()
+}
+
+kotlin {
+    jvmToolchain {
+        languageVersion.set(JavaLanguageVersion.of(11))
+    }
 }
 
 tasks.javadoc {
