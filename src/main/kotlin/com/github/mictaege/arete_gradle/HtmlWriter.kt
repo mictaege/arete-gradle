@@ -1,7 +1,7 @@
 package com.github.mictaege.arete_gradle
 
 import freemarker.template.Configuration
-import freemarker.template.Configuration.VERSION_2_3_29
+import freemarker.template.Configuration.VERSION_2_3_32
 import freemarker.template.Template
 import freemarker.template.TemplateExceptionHandler
 import net.lingala.zip4j.ZipFile
@@ -19,7 +19,7 @@ object BuildDir {
 }
 
 object Freemaker {
-    val cfg = Configuration(VERSION_2_3_29)
+    val cfg = Configuration(VERSION_2_3_32)
     init {
         cfg.setClassForTemplateLoading(javaClass, "/templates")
         cfg.defaultEncoding = "UTF-8"

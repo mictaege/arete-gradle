@@ -1,33 +1,30 @@
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "1.6.21"
+    id("org.jetbrains.kotlin.jvm") version "1.9.22"
     `java-gradle-plugin`
     `maven-publish`
-    id("com.gradle.plugin-publish") version "1.0.0"
+    id("com.gradle.plugin-publish") version "1.2.1"
     signing
 }
 
 group = "io.github.mictaege"
-version = "2022.9"
-
-pluginBundle {
-    website = "https://github.com/mictaege/arete-gradle"
-    vcsUrl = "https://github.com/mictaege/arete-gradle.git"
-    tags = listOf("testing", "junit5", "bdd", "agile")
-}
+version = "2024.2"
 
 gradlePlugin {
+    website.set("https://github.com/mictaege/arete-gradle")
+    vcsUrl.set("https://github.com/mictaege/arete-gradle.git")
     plugins {
         create("aretePlugin") {
             id = "io.github.mictaege.arete"
             displayName = "Arete Plugin"
             description = "Gradle reporting plugin for the Arete JUnit5 testing framework."
             implementationClass = "com.github.mictaege.arete_gradle.AretePlugin"
+            tags.set(listOf("testing", "junit5", "bdd", "agile"))
         }
     }
 }
 
 tasks.wrapper {
-    gradleVersion = "7.5.1"
+    gradleVersion = "8.7"
     distributionType = Wrapper.DistributionType.ALL
 }
 
@@ -37,12 +34,12 @@ repositories {
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib")
-    implementation("org.junit.platform:junit-platform-launcher:1.9.1")
-    implementation("io.github.mictaege:arete:2022.9")
-    implementation("org.fusesource.jansi:jansi:2.4.0")
-    implementation("com.google.guava:guava:31.1-jre")
-    implementation("org.freemarker:freemarker:2.3.31")
-    implementation("net.lingala.zip4j:zip4j:2.11.2")
+    implementation("org.junit.platform:junit-platform-launcher:1.10.2")
+    implementation("io.github.mictaege:arete:2024.2")
+    implementation("org.fusesource.jansi:jansi:2.4.1")
+    implementation("com.google.guava:guava:33.2.0-jre")
+    implementation("org.freemarker:freemarker:2.3.32")
+    implementation("net.lingala.zip4j:zip4j:2.11.5")
 }
 
 tasks.register("generateResources") {
@@ -63,8 +60,24 @@ tasks.test {
 }
 
 java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
     withJavadocJar()
     withSourcesJar()
+}
+
+kotlin {
+    jvmToolchain {
+        languageVersion.set(JavaLanguageVersion.of(11))
+    }
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+    kotlinOptions {
+        jvmTarget = "11"
+        languageVersion = "1.6"
+        apiVersion = "1.6"
+    }
 }
 
 tasks.javadoc {
