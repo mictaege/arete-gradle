@@ -4,44 +4,48 @@
         --step-border-radius: 6px;
         --border-left-width: 12px;
         --menu-icon-home-fg: url("./icons/menu-icon-home-fg.svg");
-        --menu-icon-home-color: url("./icons/menu-icon-home-color.svg");
+        --menu-icon-home-neutral: url("./icons/menu-icon-home-neutral.svg");
         --menu-icon-home-bg: url("./icons/menu-icon-home-bg.svg");
         --menu-icon-handshake-fg: url("./icons/menu-icon-handshake-fg.svg");
-        --menu-icon-handshake-color: url("./icons/menu-icon-handshake-color.svg");
+        --menu-icon-handshake-neutral: url("./icons/menu-icon-handshake-neutral.svg");
         --menu-icon-handshake-bg: url("./icons/menu-icon-handshake-bg.svg");
         --menu-icon-flask-fg: url("./icons/menu-icon-flask-fg.svg");
-        --menu-icon-flask-color: url("./icons/menu-icon-flask-color.svg");
+        --menu-icon-flask-neutral: url("./icons/menu-icon-flask-neutral.svg");
         --menu-icon-flask-bg: url("./icons/menu-icon-flask-bg.svg");
         --menu-icon-tags-fg: url("./icons/menu-icon-tags-fg.svg");
-        --menu-icon-tags-color: url("./icons/menu-icon-tags-color.svg");
+        --menu-icon-tags-neutral: url("./icons/menu-icon-tags-neutral.svg");
         --menu-icon-tags-bg: url("./icons/menu-icon-tags-bg.svg");
         --spec-menu-icon-home-fg: url("./../icons/menu-icon-home-fg.svg");
-        --spec-menu-icon-home-color: url("./../icons/menu-icon-home-color.svg");
+        --spec-menu-icon-home-neutral: url("./../icons/menu-icon-home-neutral.svg");
         --spec-menu-icon-home-bg: url("./../icons/menu-icon-home-bg.svg");
         --spec-menu-icon-handshake-fg: url("./../icons/menu-icon-handshake-fg.svg");
-        --spec-menu-icon-handshake-color: url("./../icons/menu-icon-handshake-color.svg");
+        --spec-menu-icon-handshake-neutral: url("./../icons/menu-icon-handshake-neutral.svg");
         --spec-menu-icon-handshake-bg: url("./../icons/menu-icon-handshake-bg.svg");
         --spec-menu-icon-flask-fg: url("./../icons/menu-icon-flask-fg.svg");
-        --spec-menu-icon-flask-color: url("./../icons/menu-icon-flask-color.svg");
+        --spec-menu-icon-flask-neutral: url("./../icons/menu-icon-flask-neutral.svg");
         --spec-menu-icon-flask-bg: url("./../icons/menu-icon-flask-bg.svg");
         --spec-menu-icon-tags-fg: url("./../icons/menu-icon-tags-fg.svg");
-        --spec-menu-icon-tags-color: url("./../icons/menu-icon-tags-color.svg");
+        --spec-menu-icon-tags-neutral: url("./../icons/menu-icon-tags-neutral.svg");
         --spec-menu-icon-tags-bg: url("./../icons/menu-icon-tags-bg.svg");
         --spec-icon-camera-bg: url("./../icons/icon-camera-bg.svg");
+        --spec-icon-file-fg: url("./../icons/icon-file-fg.svg");
+        --spec-icon-file-neutral: url("./../icons/icon-file-neutral.svg");
         --spec-icon-file-bg: url("./../icons/icon-file-bg.svg");
+        --spec-icon-link-fg: url("./../icons/icon-link-fg.svg");
+        --spec-icon-link-neutral: url("./../icons/icon-link-neutral.svg");
         --spec-icon-link-bg: url("./../icons/icon-link-bg.svg");
         --spec-icon-external-link-fg: url("./../icons/icon-external-link-fg.svg");
-        --spec-icon-external-link-color: url("./../icons/icon-external-link-color.svg");
+        --spec-icon-external-link-neutral: url("./../icons/icon-external-link-neutral.svg");
         --spec-icon-external-link-bg: url("./../icons/icon-external-link-bg.svg");
         --spec-icon-share-fg: url("./../icons/icon-share-fg.svg");
-        --spec-icon-share-color: url("./../icons/icon-share-color.svg");
+        --spec-icon-share-neutral: url("./../icons/icon-share-neutral.svg");
         --spec-icon-share-bg: url("./../icons/icon-share-bg.svg");
         --nav-icon-bars-fg: url("./../icons/icon-bars-fg.svg");
-        --nav-icon-bars-color: url("./../icons/icon-bars-color.svg");
+        --nav-icon-bars-neutral: url("./../icons/icon-bars-neutral.svg");
         --nav-icon-bars-bg: url("./../icons/icon-bars-bg.svg");
-        --trace-icon-clipboard-color: url("./../icons/icon-clipboard-color.svg");
-        --trace-icon-clipboard-bg: url("./../icons/icon-clipboard-bg.svg");
         --trace-icon-clipboard-fg: url("./../icons/icon-clipboard-fg.svg");
+        --trace-icon-clipboard-neutral: url("./../icons/icon-clipboard-neutral.svg");
+        --trace-icon-clipboard-bg: url("./../icons/icon-clipboard-bg.svg");
     }
 
     html {
@@ -157,12 +161,9 @@
     .card {
         transition: 0.3s;
         border-radius: 5px;
-        color: var(--arete-color-neutral);
+        color: var(--arete-color-foreground);
         background-color: var(--arete-color-card);
-        padding-top: 10px;
-        padding-right: 25px;
-        padding-left: 0;
-        padding-bottom: 10px;
+        padding: 10px 25px 10px 0;
     }
 
     .step {
@@ -188,10 +189,7 @@
     #searchInput {
         width: 100%;
         border-radius: var(--step-border-radius);
-        padding-top: 12px;
-        padding-right: 20px;
-        padding-left: 40px;
-        padding-bottom: 12px;
+        padding: 12px 20px 12px 40px;
         border: 1px solid var(--arete-color-foreground);
     }
 
@@ -265,18 +263,18 @@
         color: var(--arete-color-foreground);
         padding: 4px 4px;
         cursor: pointer;
-        background-image: var(--trace-icon-clipboard-color);
+        background-image: var(--trace-icon-clipboard-fg);
         background-repeat: no-repeat;
         background-origin: content-box;
     }
 
     .stacktrace-copy-btn:hover {
-        background-color: var(--arete-color-neutral);
+        background-color: var(--arete-color-foreground);
         color: var(--arete-color-background);
         background-image: var(--trace-icon-clipboard-bg)
     }
 
-    /* Add a black background color to the top navigation */
+    /* Add a background color to the top navigation */
     .topnav {
         background-color: var(--arete-color-background);
         border-radius: var(--step-border-radius);
@@ -294,7 +292,7 @@
     /* Style the links inside the navigation bar */
     .topnav a {
         float: left;
-        color: var(--arete-color-neutral);
+        color: var(--arete-color-foreground);
         text-align: center;
         padding: 14px 16px;
         text-decoration: none;
@@ -303,7 +301,7 @@
 
     /* Change the color of links on hover */
     .topnav a:hover {
-        background-color: var(--arete-color-neutral);
+        background-color: var(--arete-color-foreground);
         color: var(--arete-color-background);
     }
 
@@ -341,7 +339,7 @@
 
     /* Add a color to the active/current link */
     .topnav a.active {
-        background-color: var(--arete-color-neutral);
+        background-color: var(--arete-color-foreground);
         color: var(--arete-color-background);
         text-decoration: none;
     }
@@ -399,7 +397,7 @@
 
     nav summary:hover .nav-icon-bars {
         border-radius: var(--step-border-radius);
-        background-color: var(--arete-color-neutral);
+        background-color: var(--arete-color-foreground);
         color: var(--arete-color-background);
         background-image: var(--nav-icon-bars-bg)
     }
@@ -427,7 +425,7 @@
         background-repeat: no-repeat;
         width:1.25rem;
         height:1.25rem;
-        background-image: var(--menu-icon-home-color)
+        background-image: var(--menu-icon-home-fg)
     }
 
     .menu-icon-handshake {
@@ -438,7 +436,7 @@
         background-repeat: no-repeat;
         width:1.25rem;
         height:1.25rem;
-        background-image: var(--menu-icon-handshake-color)
+        background-image: var(--menu-icon-handshake-fg)
     }
 
     .menu-icon-flask {
@@ -449,7 +447,7 @@
         background-repeat: no-repeat;
         width:1.25rem;
         height:1.25rem;
-        background-image: var(--menu-icon-flask-color)
+        background-image: var(--menu-icon-flask-fg)
     }
 
     .menu-icon-tags {
@@ -460,7 +458,7 @@
         background-repeat: no-repeat;
         width:1.25rem;
         height:1.25rem;
-        background-image: var(--menu-icon-tags-color)
+        background-image: var(--menu-icon-tags-fg)
     }
 
     .spec-menu-icon-home {
@@ -471,7 +469,7 @@
         background-repeat: no-repeat;
         width:1.25rem;
         height:1.25rem;
-        background-image: var(--spec-menu-icon-home-color)
+        background-image: var(--spec-menu-icon-home-fg)
     }
 
     .spec-menu-icon-handshake {
@@ -482,7 +480,7 @@
         background-repeat: no-repeat;
         width:1.25rem;
         height:1.25rem;
-        background-image: var(--spec-menu-icon-handshake-color)
+        background-image: var(--spec-menu-icon-handshake-fg)
     }
 
     .spec-menu-icon-flask {
@@ -493,7 +491,7 @@
         background-repeat: no-repeat;
         width:1.25rem;
         height:1.25rem;
-        background-image: var(--spec-menu-icon-flask-color)
+        background-image: var(--spec-menu-icon-flask-fg)
     }
 
     .spec-menu-icon-tags {
@@ -504,7 +502,7 @@
         background-repeat: no-repeat;
         width:1.25rem;
         height:1.25rem;
-        background-image: var(--spec-menu-icon-tags-color)
+        background-image: var(--spec-menu-icon-tags-fg)
     }
 
     .spec-icon-camera {
@@ -537,7 +535,7 @@
         background-repeat: no-repeat;
         width:1.25rem;
         height:1.25rem;
-        background-image: var(--nav-icon-bars-color)
+        background-image: var(--nav-icon-bars-fg)
     }
 
     .search-by-tag-btn {
@@ -549,11 +547,11 @@
         border: none;
         cursor: pointer;
         background-color: var(--arete-color-background);
-        color: var(--arete-color-neutral);
+        color: var(--arete-color-foreground);
     }
 
     .search-by-tag-btn:hover {
-        background-color: var(--arete-color-neutral);
+        background-color: var(--arete-color-foreground);
         color: var(--arete-color-background);
     }
 
@@ -569,7 +567,7 @@
         background-repeat: no-repeat;
         width:1rem;
         height:1rem;
-        background-image: var(--menu-icon-tags-color);
+        background-image: var(--menu-icon-tags-fg);
         opacity: 1;
     }
 
@@ -587,11 +585,11 @@
         border: none;
         cursor: pointer;
         background-color: var(--arete-color-background);
-        color: var(--arete-color-neutral);
+        color: var(--arete-color-foreground);
     }
 
     a.see-also:hover {
-        background-color: var(--arete-color-neutral);
+        background-color: var(--arete-color-foreground);
         color: var(--arete-color-background);
     }
 
@@ -603,7 +601,7 @@
         background-repeat: no-repeat;
         width:1rem;
         height:1rem;
-        background-image: var(--spec-icon-external-link-color);
+        background-image: var(--spec-icon-external-link-fg);
         opacity: 1;
     }
 

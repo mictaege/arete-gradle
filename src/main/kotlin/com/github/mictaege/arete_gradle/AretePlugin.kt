@@ -11,7 +11,7 @@ class AretePlugin: Plugin<Project> {
     companion object {
         const val BUILD_DIR_PROPERTY = "io.github.mictaege.arete_gradle.buildDir"
         const val TASK_NAME_PROPERTY = "io.github.mictaege.arete_gradle.taskName"
-        val colorScheme = AlucardColors()
+        val colorScheme = AreteClassicColors()
     }
 
     override fun apply(project: Project) {
