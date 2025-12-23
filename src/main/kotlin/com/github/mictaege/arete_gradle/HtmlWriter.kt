@@ -16,6 +16,7 @@ object BuildDir {
     val areteDir = File(reportDir,"arete")
     val taskDir = File(areteDir, System.getProperty(AretePlugin.TASK_NAME_PROPERTY))
     val specsDir = File(taskDir, "specs")
+    val iconsDir = File(taskDir, "icons")
 }
 
 object Freemaker {
@@ -111,12 +112,35 @@ class HtmlWriter: SpecificationWriter {
 
     private fun extractIcons() {
         File(BuildDir.taskDir, "icons").deleteRecursively()
-        val zipFile = File(BuildDir.taskDir, "icons.zip")
-        javaClass.getResourceAsStream("/icons.zip")?.let {
-            Files.copy(it, zipFile.toPath(), REPLACE_EXISTING)
-            ZipFile(zipFile).extractAll(BuildDir.taskDir.absolutePath)
-            zipFile.delete()
+
+        listOf(
+            "icon-bars",
+            "icon-camera",
+            "icon-clipboard",
+            "icon-external-link",
+            "icon-file",
+            "icon-link",
+            "icon-share",
+            "menu-icon-flask",
+            "menu-icon-handshake",
+            "menu-icon-home",
+            "menu-icon-tags"
+        ).forEach {
+            writeSvgFile("/$it.ftlh", AretePlugin.colorScheme.arete_color_background, File(BuildDir.iconsDir, "$it-bg.svg"))
+            writeSvgFile("/$it.ftlh", AretePlugin.colorScheme.arete_color_foreground, File(BuildDir.iconsDir, "$it-fg.svg"))
+            writeSvgFile("/$it.ftlh", AretePlugin.colorScheme.arete_color_neutral, File(BuildDir.iconsDir, "$it-color.svg"))
         }
+    }
+
+    private fun writeSvgFile(
+        tmplFile: String,
+        foreground: String,
+        target: File
+    ) {
+        val temp: Template = Freemaker.cfg.getTemplate(tmplFile)
+        val stringWriter = StringWriter()
+        temp.process(mapOf("foreground" to foreground), stringWriter)
+        target.createAndWrite(stringWriter.toString())
     }
 
 }

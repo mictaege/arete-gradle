@@ -3,45 +3,45 @@
     :root {
         --step-border-radius: 6px;
         --border-left-width: 12px;
-        --menu-icon-home-light: url("./icons/menu-icon-home-light.svg");
-        --menu-icon-home-blue: url("./icons/menu-icon-home-blue.svg");
-        --menu-icon-home-dark: url("./icons/menu-icon-home-dark.svg");
-        --menu-icon-handshake-light: url("./icons/menu-icon-handshake-light.svg");
-        --menu-icon-handshake-blue: url("./icons/menu-icon-handshake-blue.svg");
-        --menu-icon-handshake-dark: url("./icons/menu-icon-handshake-dark.svg");
-        --menu-icon-flask-light: url("./icons/menu-icon-flask-light.svg");
-        --menu-icon-flask-blue: url("./icons/menu-icon-flask-blue.svg");
-        --menu-icon-flask-dark: url("./icons/menu-icon-flask-dark.svg");
-        --menu-icon-tags-light: url("./icons/menu-icon-tags-light.svg");
-        --menu-icon-tags-blue: url("./icons/menu-icon-tags-blue.svg");
-        --menu-icon-tags-dark: url("./icons/menu-icon-tags-dark.svg");
-        --spec-menu-icon-home-light: url("./../icons/menu-icon-home-light.svg");
-        --spec-menu-icon-home-blue: url("./../icons/menu-icon-home-blue.svg");
-        --spec-menu-icon-home-dark: url("./../icons/menu-icon-home-dark.svg");
-        --spec-menu-icon-handshake-light: url("./../icons/menu-icon-handshake-light.svg");
-        --spec-menu-icon-handshake-blue: url("./../icons/menu-icon-handshake-blue.svg");
-        --spec-menu-icon-handshake-dark: url("./../icons/menu-icon-handshake-dark.svg");
-        --spec-menu-icon-flask-light: url("./../icons/menu-icon-flask-light.svg");
-        --spec-menu-icon-flask-blue: url("./../icons/menu-icon-flask-blue.svg");
-        --spec-menu-icon-flask-dark: url("./../icons/menu-icon-flask-dark.svg");
-        --spec-menu-icon-tags-light: url("./../icons/menu-icon-tags-light.svg");
-        --spec-menu-icon-tags-blue: url("./../icons/menu-icon-tags-blue.svg");
-        --spec-menu-icon-tags-dark: url("./../icons/menu-icon-tags-dark.svg");
-        --spec-icon-camera-dark: url("./../icons/icon-camera-dark.svg");
-        --spec-icon-file-dark: url("./../icons/icon-file-dark.svg");
-        --spec-icon-link-dark: url("./../icons/icon-link-dark.svg");
-        --spec-icon-external-link-light: url("./../icons/icon-external-link-light.svg");
-        --spec-icon-external-link-blue: url("./../icons/icon-external-link-blue.svg");
-        --spec-icon-external-link-dark: url("./../icons/icon-external-link-dark.svg");
-        --spec-icon-share-light: url("./../icons/icon-share-light.svg");
-        --spec-icon-share-blue: url("./../icons/icon-share-blue.svg");
-        --spec-icon-share-dark: url("./../icons/icon-share-dark.svg");
-        --nav-icon-bars-light: url("./../icons/icon-bars-light.svg");
-        --nav-icon-bars-blue: url("./../icons/icon-bars-blue.svg");
-        --nav-icon-bars-dark: url("./../icons/icon-bars-dark.svg");
-        --trace-icon-clipboard-blue: url("./../icons/icon-clipboard-blue.svg");
-        --trace-icon-clipboard-dark: url("./../icons/icon-clipboard-dark.svg");
-        --trace-icon-clipboard-light: url("./../icons/icon-clipboard-light.svg");
+        --menu-icon-home-fg: url("./icons/menu-icon-home-fg.svg");
+        --menu-icon-home-color: url("./icons/menu-icon-home-color.svg");
+        --menu-icon-home-bg: url("./icons/menu-icon-home-bg.svg");
+        --menu-icon-handshake-fg: url("./icons/menu-icon-handshake-fg.svg");
+        --menu-icon-handshake-color: url("./icons/menu-icon-handshake-color.svg");
+        --menu-icon-handshake-bg: url("./icons/menu-icon-handshake-bg.svg");
+        --menu-icon-flask-fg: url("./icons/menu-icon-flask-fg.svg");
+        --menu-icon-flask-color: url("./icons/menu-icon-flask-color.svg");
+        --menu-icon-flask-bg: url("./icons/menu-icon-flask-bg.svg");
+        --menu-icon-tags-fg: url("./icons/menu-icon-tags-fg.svg");
+        --menu-icon-tags-color: url("./icons/menu-icon-tags-color.svg");
+        --menu-icon-tags-bg: url("./icons/menu-icon-tags-bg.svg");
+        --spec-menu-icon-home-fg: url("./../icons/menu-icon-home-fg.svg");
+        --spec-menu-icon-home-color: url("./../icons/menu-icon-home-color.svg");
+        --spec-menu-icon-home-bg: url("./../icons/menu-icon-home-bg.svg");
+        --spec-menu-icon-handshake-fg: url("./../icons/menu-icon-handshake-fg.svg");
+        --spec-menu-icon-handshake-color: url("./../icons/menu-icon-handshake-color.svg");
+        --spec-menu-icon-handshake-bg: url("./../icons/menu-icon-handshake-bg.svg");
+        --spec-menu-icon-flask-fg: url("./../icons/menu-icon-flask-fg.svg");
+        --spec-menu-icon-flask-color: url("./../icons/menu-icon-flask-color.svg");
+        --spec-menu-icon-flask-bg: url("./../icons/menu-icon-flask-bg.svg");
+        --spec-menu-icon-tags-fg: url("./../icons/menu-icon-tags-fg.svg");
+        --spec-menu-icon-tags-color: url("./../icons/menu-icon-tags-color.svg");
+        --spec-menu-icon-tags-bg: url("./../icons/menu-icon-tags-bg.svg");
+        --spec-icon-camera-bg: url("./../icons/icon-camera-bg.svg");
+        --spec-icon-file-bg: url("./../icons/icon-file-bg.svg");
+        --spec-icon-link-bg: url("./../icons/icon-link-bg.svg");
+        --spec-icon-external-link-fg: url("./../icons/icon-external-link-fg.svg");
+        --spec-icon-external-link-color: url("./../icons/icon-external-link-color.svg");
+        --spec-icon-external-link-bg: url("./../icons/icon-external-link-bg.svg");
+        --spec-icon-share-fg: url("./../icons/icon-share-fg.svg");
+        --spec-icon-share-color: url("./../icons/icon-share-color.svg");
+        --spec-icon-share-bg: url("./../icons/icon-share-bg.svg");
+        --nav-icon-bars-fg: url("./../icons/icon-bars-fg.svg");
+        --nav-icon-bars-color: url("./../icons/icon-bars-color.svg");
+        --nav-icon-bars-bg: url("./../icons/icon-bars-bg.svg");
+        --trace-icon-clipboard-color: url("./../icons/icon-clipboard-color.svg");
+        --trace-icon-clipboard-bg: url("./../icons/icon-clipboard-bg.svg");
+        --trace-icon-clipboard-fg: url("./../icons/icon-clipboard-fg.svg");
     }
 
     html {
@@ -242,7 +242,7 @@
         border: none;
         cursor: pointer;
         background-color: transparent;
-        background-image: var(--spec-icon-share-dark);
+        background-image: var(--spec-icon-share-bg);
         background-repeat: no-repeat;
         background-origin: content-box;
         opacity: 0.6;
@@ -265,7 +265,7 @@
         color: var(--arete-color-foreground);
         padding: 4px 4px;
         cursor: pointer;
-        background-image: var(--trace-icon-clipboard-blue);
+        background-image: var(--trace-icon-clipboard-color);
         background-repeat: no-repeat;
         background-origin: content-box;
     }
@@ -273,7 +273,7 @@
     .stacktrace-copy-btn:hover {
         background-color: var(--arete-color-neutral);
         color: var(--arete-color-background);
-        background-image: var(--trace-icon-clipboard-dark)
+        background-image: var(--trace-icon-clipboard-bg)
     }
 
     /* Add a black background color to the top navigation */
@@ -308,74 +308,74 @@
     }
 
     .topnav a:hover .menu-icon-home {
-        background-image: var(--menu-icon-home-dark)
+        background-image: var(--menu-icon-home-bg)
     }
 
     .topnav a:hover .menu-icon-handshake {
-        background-image: var(--menu-icon-handshake-dark)
+        background-image: var(--menu-icon-handshake-bg)
     }
 
     .topnav a:hover .menu-icon-flask {
-        background-image: var(--menu-icon-flask-dark)
+        background-image: var(--menu-icon-flask-bg)
     }
 
     .topnav a:hover .menu-icon-tags {
-        background-image: var(--menu-icon-tags-dark)
+        background-image: var(--menu-icon-tags-bg)
     }
 
     .topnav a:hover .spec-menu-icon-home {
-        background-image: var(--spec-menu-icon-home-dark)
+        background-image: var(--spec-menu-icon-home-bg)
     }
 
     .topnav a:hover .spec-menu-icon-handshake {
-        background-image: var(--spec-menu-icon-handshake-dark)
+        background-image: var(--spec-menu-icon-handshake-bg)
     }
 
     .topnav a:hover .spec-menu-icon-flask {
-        background-image: var(--spec-menu-icon-flask-dark)
+        background-image: var(--spec-menu-icon-flask-bg)
     }
 
     .topnav a:hover .spec-menu-icon-tags {
-        background-image: var(--spec-menu-icon-tags-dark)
+        background-image: var(--spec-menu-icon-tags-bg)
     }
 
     /* Add a color to the active/current link */
     .topnav a.active {
-        background-color: var(--arete-color-neutral-emph);
-        color: var(--arete-color-foreground);
+        background-color: var(--arete-color-neutral);
+        color: var(--arete-color-background);
         text-decoration: none;
     }
 
     .topnav a.active .menu-icon-home {
-        background-image: var(--menu-icon-home-light)
+        background-image: var(--menu-icon-home-bg)
     }
 
     .topnav a.active .menu-icon-handshake {
-        background-image: var(--menu-icon-handshake-light)
+        background-image: var(--menu-icon-handshake-bg)
     }
 
     .topnav a.active .menu-icon-flask {
-        background-image: var(--menu-icon-flask-light)
+        background-image: var(--menu-icon-flask-bg)
     }
 
     .topnav a.active .menu-icon-tags {
-        background-image: var(--menu-icon-tags-light)
+        background-image: var(--menu-icon-tags-bg)
     }
 
     .topnav a.active .spec-menu-icon-home {
-        background-image: var(--spec-menu-icon-home-light)
+        background-image: var(--spec-menu-icon-home-bg)
     }
 
     .topnav a.active .spec-menu-icon-handshake {
-        background-image: var(--spec-menu-icon-handshake-light)
+        background-image: var(--spec-menu-icon-handshake-bg)
     }
 
     .topnav a.active .spec-menu-icon-flask {
-        background-image: var(--spec-menu-icon-flask-light)
+        background-image: var(--spec-menu-icon-flask-bg)
     }
 
     .topnav a.active .spec-menu-icon-tags {
-        background-image: var(--spec-menu-icon-tags-light)
+        background-image: var(--spec-menu-icon-tags-bg)
     }
 
     nav {
@@ -401,7 +401,7 @@
         border-radius: var(--step-border-radius);
         background-color: var(--arete-color-neutral);
         color: var(--arete-color-background);
-        background-image: var(--nav-icon-bars-dark)
+        background-image: var(--nav-icon-bars-bg)
     }
 
     nav li {
@@ -427,7 +427,7 @@
         background-repeat: no-repeat;
         width:1.25rem;
         height:1.25rem;
-        background-image: var(--menu-icon-home-blue)
+        background-image: var(--menu-icon-home-color)
     }
 
     .menu-icon-handshake {
@@ -438,7 +438,7 @@
         background-repeat: no-repeat;
         width:1.25rem;
         height:1.25rem;
-        background-image: var(--menu-icon-handshake-blue)
+        background-image: var(--menu-icon-handshake-color)
     }
 
     .menu-icon-flask {
@@ -449,7 +449,7 @@
         background-repeat: no-repeat;
         width:1.25rem;
         height:1.25rem;
-        background-image: var(--menu-icon-flask-blue)
+        background-image: var(--menu-icon-flask-color)
     }
 
     .menu-icon-tags {
@@ -460,7 +460,7 @@
         background-repeat: no-repeat;
         width:1.25rem;
         height:1.25rem;
-        background-image: var(--menu-icon-tags-blue)
+        background-image: var(--menu-icon-tags-color)
     }
 
     .spec-menu-icon-home {
@@ -471,7 +471,7 @@
         background-repeat: no-repeat;
         width:1.25rem;
         height:1.25rem;
-        background-image: var(--spec-menu-icon-home-blue)
+        background-image: var(--spec-menu-icon-home-color)
     }
 
     .spec-menu-icon-handshake {
@@ -482,7 +482,7 @@
         background-repeat: no-repeat;
         width:1.25rem;
         height:1.25rem;
-        background-image: var(--spec-menu-icon-handshake-blue)
+        background-image: var(--spec-menu-icon-handshake-color)
     }
 
     .spec-menu-icon-flask {
@@ -493,7 +493,7 @@
         background-repeat: no-repeat;
         width:1.25rem;
         height:1.25rem;
-        background-image: var(--spec-menu-icon-flask-blue)
+        background-image: var(--spec-menu-icon-flask-color)
     }
 
     .spec-menu-icon-tags {
@@ -504,7 +504,7 @@
         background-repeat: no-repeat;
         width:1.25rem;
         height:1.25rem;
-        background-image: var(--spec-menu-icon-tags-blue)
+        background-image: var(--spec-menu-icon-tags-color)
     }
 
     .spec-icon-camera {
@@ -515,7 +515,7 @@
         background-repeat: no-repeat;
         width:1rem;
         height:1rem;
-        background-image: var(--spec-icon-camera-dark)
+        background-image: var(--spec-icon-camera-bg)
     }
 
     .spec-icon-file {
@@ -526,7 +526,7 @@
         background-repeat: no-repeat;
         width:1rem;
         height:1rem;
-        background-image: var(--spec-icon-file-dark)
+        background-image: var(--spec-icon-file-bg)
     }
 
     .nav-icon-bars {
@@ -537,7 +537,7 @@
         background-repeat: no-repeat;
         width:1.25rem;
         height:1.25rem;
-        background-image: var(--nav-icon-bars-blue)
+        background-image: var(--nav-icon-bars-color)
     }
 
     .search-by-tag-btn {
@@ -558,7 +558,7 @@
     }
 
     .search-by-tag-btn:hover > i {
-        background-image: var(--menu-icon-tags-dark)
+        background-image: var(--menu-icon-tags-bg)
     }
 
     .search-by-tag-icon {
@@ -569,7 +569,7 @@
         background-repeat: no-repeat;
         width:1rem;
         height:1rem;
-        background-image: var(--menu-icon-tags-blue);
+        background-image: var(--menu-icon-tags-color);
         opacity: 1;
     }
 
@@ -603,12 +603,12 @@
         background-repeat: no-repeat;
         width:1rem;
         height:1rem;
-        background-image: var(--spec-icon-external-link-blue);
+        background-image: var(--spec-icon-external-link-color);
         opacity: 1;
     }
 
     .see-also:hover > i {
-        background-image: var(--spec-icon-external-link-dark);
+        background-image: var(--spec-icon-external-link-bg);
     }
 
 </style>
