@@ -96,5 +96,37 @@ class CatppuccinLatteColors: AreteColorScheme {
     override val arete_color_neutral_emph = "#1e66f5" //blue
 }
 
+class DraculaColors: AreteColorScheme {
+    override val arete_color_background = "#282A36"
+    override val arete_color_card = "#6272A4"
+    override val arete_color_foreground = "#F8F8F2"
+    override val arete_color_ignored = "#BD93F9"
+    override val arete_color_ignored_emph = "#44475A"
+    override val arete_color_successful = "#50FA7B"
+    override val arete_color_successful_emph = "#44475A"
+    override val arete_color_aborted = "#F1FA8C"
+    override val arete_color_aborted_emph = "#44475A"
+    override val arete_color_failed = "#FF5555"
+    override val arete_color_failed_emph = "#44475A"
+    override val arete_color_neutral = "#8BE9FD"
+    override val arete_color_neutral_emph = "#44475A"
+}
+
+class AlucardColors: AreteColorScheme {
+    override val arete_color_background = "#FFFBEB"
+    override val arete_color_card = "#6C664B"
+    override val arete_color_foreground = "#1F1F1F"
+    override val arete_color_ignored = "#644AC9"
+    override val arete_color_ignored_emph = "#CFCFDE"
+    override val arete_color_successful = "#14710A"
+    override val arete_color_successful_emph = "#CFCFDE"
+    override val arete_color_aborted = "#846E15"
+    override val arete_color_aborted_emph = "#CFCFDE"
+    override val arete_color_failed = "#CB3A2A"
+    override val arete_color_failed_emph = "#CFCFDE"
+    override val arete_color_neutral = "#036A96"
+    override val arete_color_neutral_emph = "#CFCFDE"
+}
+
 
 
