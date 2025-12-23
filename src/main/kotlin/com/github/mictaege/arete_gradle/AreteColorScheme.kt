@@ -128,5 +128,21 @@ class AlucardColors: AreteColorScheme {
     override val arete_color_neutral_emph = "#CFCFDE"
 }
 
+data class AreteColorSchemeProperties(
+    override val arete_color_background: String,
+    override val arete_color_card: String,
+    override val arete_color_foreground: String,
+    override val arete_color_ignored: String,
+    override val arete_color_ignored_emph: String,
+    override val arete_color_successful: String,
+    override val arete_color_successful_emph: String,
+    override val arete_color_aborted: String,
+    override val arete_color_aborted_emph: String,
+    override val arete_color_failed: String,
+    override val arete_color_failed_emph: String,
+    override val arete_color_neutral: String,
+    override val arete_color_neutral_emph: String
+): AreteColorScheme
+
 
 
