@@ -16,7 +16,7 @@ interface AreteColorScheme {
     val arete_color_neutral_emph: String
 }
 
-class AreteClassicColors: AreteColorScheme {
+open class AreteClassicColors: AreteColorScheme {
     override val arete_color_background = "#282a36"
     override val arete_color_card = "#44475a"
     override val arete_color_foreground = "#f8f8f2"
@@ -32,7 +32,7 @@ class AreteClassicColors: AreteColorScheme {
     override val arete_color_neutral_emph = "deepskyblue"
 }
 
-class CatppuccinMochaColors: AreteColorScheme {
+open class CatppuccinMochaColors: AreteColorScheme {
     override val arete_color_background = "#1e1e2e" //base
     override val arete_color_card = "#313244" //surface0
     override val arete_color_foreground = "#cba6f7" //mauve
@@ -48,7 +48,7 @@ class CatppuccinMochaColors: AreteColorScheme {
     override val arete_color_neutral_emph = "#89b4fa" //blue
 }
 
-class CatppuccinMacchiatoColors: AreteColorScheme {
+open class CatppuccinMacchiatoColors: AreteColorScheme {
     override val arete_color_background = "#24273a" //base
     override val arete_color_card = "#363a4f" //surface0
     override val arete_color_foreground = "#c6a0f6" //mauve
@@ -64,7 +64,7 @@ class CatppuccinMacchiatoColors: AreteColorScheme {
     override val arete_color_neutral_emph = "#8aadf4" //blue
 }
 
-class CatppuccinFrappeColors: AreteColorScheme {
+open class CatppuccinFrappeColors: AreteColorScheme {
     override val arete_color_background = "#303446" //base
     override val arete_color_card = "#414559" //surface0
     override val arete_color_foreground = "#ca9ee6" //mauve
@@ -80,7 +80,7 @@ class CatppuccinFrappeColors: AreteColorScheme {
     override val arete_color_neutral_emph = "#8caaee" //blue
 }
 
-class CatppuccinLatteColors: AreteColorScheme {
+open class CatppuccinLatteColors: AreteColorScheme {
     override val arete_color_background = "#eff1f5" //base
     override val arete_color_card = "#ccd0da" //surface0
     override val arete_color_foreground = "#8839ef" //mauve
@@ -96,7 +96,7 @@ class CatppuccinLatteColors: AreteColorScheme {
     override val arete_color_neutral_emph = "#1e66f5" //blue
 }
 
-class DraculaColors: AreteColorScheme {
+open class DraculaColors: AreteColorScheme {
     override val arete_color_background = "#282A36"
     override val arete_color_card = "#6272A4"
     override val arete_color_foreground = "#F8F8F2"
@@ -112,7 +112,7 @@ class DraculaColors: AreteColorScheme {
     override val arete_color_neutral_emph = "#44475A"
 }
 
-class AlucardColors: AreteColorScheme {
+open class AlucardColors: AreteColorScheme {
     override val arete_color_background = "#FFFBEB"
     override val arete_color_card = "#6C664B"
     override val arete_color_foreground = "#1F1F1F"
