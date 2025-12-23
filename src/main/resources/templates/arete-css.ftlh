@@ -1,10 +1,8 @@
+<#include "arete-colors-css.ftlh">
 <style>
     :root {
         --step-border-radius: 6px;
         --border-left-width: 12px;
-        --dracula-dark: #282a36;
-        --dracula-grey: #44475a;
-        --dracula-light: #f8f8f2;
         --menu-icon-home-light: url("./icons/menu-icon-home-light.svg");
         --menu-icon-home-blue: url("./icons/menu-icon-home-blue.svg");
         --menu-icon-home-dark: url("./icons/menu-icon-home-dark.svg");
@@ -52,97 +50,97 @@
 
     body {
         font-family: sans-serif;
-        background-color: var(--dracula-dark);
+        background-color: var(--arete-color-background);
     }
 
     a {
         text-decoration: none;
     }
     a:link, a:visited {
-        color: var(--dracula-dark);
+        color: var(--arete-color-background);
     }
     a:hover {
-        color: var(--dracula-dark);
+        color: var(--arete-color-background);
     }
 
     .ignored-no-hover {
         border-radius: var(--step-border-radius);
-        background-color: lightgray;
-        border-left: var(--border-left-width) solid grey;
+        background-color: var(--arete-color-ignored);
+        border-left: var(--border-left-width) solid var(--arete-color-ignored-emph);
     }
 
     .ignored {
         border-radius: var(--step-border-radius);
-        background-color: lightgray;
-        border-left: var(--border-left-width) solid grey;
+        background-color: var(--arete-color-ignored);
+        border-left: var(--border-left-width) solid var(--arete-color-ignored-emph);
     }
 
     .ignored:hover {
-        background-color: grey;
+        background-color: var(--arete-color-ignored-emph);
     }
 
     .successful-no-hover {
         border-radius: var(--step-border-radius);
-        background-color: palegreen;
-        border-left: var(--border-left-width) solid limegreen;
+        background-color: var(--arete-color-successful);
+        border-left: var(--border-left-width) solid var(--arete-color-successful-emph);
     }
 
     .successful {
         border-radius: var(--step-border-radius);
-        background-color: palegreen;
-        border-left: var(--border-left-width) solid limegreen;
+        background-color: var(--arete-color-successful);
+        border-left: var(--border-left-width) solid var(--arete-color-successful-emph);
     }
 
     .successful:hover {
-        background-color: limegreen;
+        background-color: var(--arete-color-successful-emph);
     }
 
     .aborted-no-hover {
         border-radius: var(--step-border-radius);
-        background-color: lightyellow;
-        border-left: var(--border-left-width) solid yellow;
+        background-color: var(--arete-color-aborted);
+        border-left: var(--border-left-width) solid var(--arete-color-aborted-emph);
     }
 
     .aborted {
         border-radius: var(--step-border-radius);
-        background-color: lightyellow;
-        border-left: var(--border-left-width) solid yellow;
+        background-color: var(--arete-color-aborted);
+        border-left: var(--border-left-width) solid var(--arete-color-aborted-emph);
     }
 
     .aborted:hover {
-        background-color: yellow;
+        background-color: var(--arete-color-aborted-emph);
     }
 
     .failed-no-hover {
         border-radius: var(--step-border-radius);
-        background-color: lightpink;
-        border-left: var(--border-left-width) solid red;
+        background-color: var(--arete-color-failed);
+        border-left: var(--border-left-width) solid var(--arete-color-failed-emph);
     }
 
     .failed {
         border-radius: var(--step-border-radius);
-        background-color: lightpink;
-        border-left: var(--border-left-width) solid red;
+        background-color: var(--arete-color-failed);
+        border-left: var(--border-left-width) solid var(--arete-color-failed-emph);
     }
 
     .failed:hover {
-        background-color: red;
+        background-color: var(--arete-color-failed-emph);
     }
 
     .neutral-no-hover {
         border-radius: var(--step-border-radius);
-        background-color: lightskyblue;
-        border-left: var(--border-left-width) solid deepskyblue;
+        background-color: var(--arete-color-neutral);
+        border-left: var(--border-left-width) solid var(--arete-color-neutral-emph);
     }
 
     .neutral {
         border-radius: var(--step-border-radius);
-        background-color: lightskyblue;
-        border-left: var(--border-left-width) solid deepskyblue;
+        background-color: var(--arete-color-neutral);
+        border-left: var(--border-left-width) solid var(--arete-color-neutral-emph);
     }
 
     .neutral:hover {
-        background-color: deepskyblue;
+        background-color: var(--arete-color-neutral-emph);
     }
 
     .mono {
@@ -159,8 +157,8 @@
     .card {
         transition: 0.3s;
         border-radius: 5px;
-        color: lightskyblue;
-        background-color: var(--dracula-grey);
+        color: var(--arete-color-neutral);
+        background-color: var(--arete-color-card);
         padding-top: 10px;
         padding-right: 25px;
         padding-left: 0;
@@ -168,7 +166,7 @@
     }
 
     .step {
-        color: var(--dracula-dark);
+        color: var(--arete-color-background);
         margin-bottom: 2px;
         padding: 8px;
     }
@@ -194,7 +192,7 @@
         padding-right: 20px;
         padding-left: 40px;
         padding-bottom: 12px;
-        border: 1px solid darkgrey;
+        border: 1px solid var(--arete-color-foreground);
     }
 
     #specList {
@@ -212,7 +210,7 @@
     #specList li a {
         text-decoration: none;
         display: block;
-        color: var(--dracula-dark);
+        color: var(--arete-color-background);
     }
 
     .collapsible {
@@ -261,10 +259,10 @@
         right: 15px;
         width:1.5rem;
         height:1.5rem;
-        background-color: var(--dracula-dark);
+        background-color: var(--arete-color-background);
         border: none;
         border-radius: var(--step-border-radius);
-        color: var(--dracula-light);
+        color: var(--arete-color-foreground);
         padding: 4px 4px;
         cursor: pointer;
         background-image: var(--trace-icon-clipboard-blue);
@@ -273,14 +271,14 @@
     }
 
     .stacktrace-copy-btn:hover {
-        background-color: lightskyblue;
-        color: var(--dracula-dark);
+        background-color: var(--arete-color-neutral);
+        color: var(--arete-color-background);
         background-image: var(--trace-icon-clipboard-dark)
     }
 
     /* Add a black background color to the top navigation */
     .topnav {
-        background-color: var(--dracula-dark);
+        background-color: var(--arete-color-background);
         border-radius: var(--step-border-radius);
         overflow: hidden;
         position: fixed;
@@ -296,7 +294,7 @@
     /* Style the links inside the navigation bar */
     .topnav a {
         float: left;
-        color: lightskyblue;
+        color: var(--arete-color-neutral);
         text-align: center;
         padding: 14px 16px;
         text-decoration: none;
@@ -305,8 +303,8 @@
 
     /* Change the color of links on hover */
     .topnav a:hover {
-        background-color: lightskyblue;
-        color: var(--dracula-dark);
+        background-color: var(--arete-color-neutral);
+        color: var(--arete-color-background);
     }
 
     .topnav a:hover .menu-icon-home {
@@ -343,8 +341,8 @@
 
     /* Add a color to the active/current link */
     .topnav a.active {
-        background-color: deepskyblue;
-        color: var(--dracula-light);
+        background-color: var(--arete-color-neutral-emph);
+        color: var(--arete-color-foreground);
         text-decoration: none;
     }
 
@@ -381,7 +379,7 @@
     }
 
     nav {
-        background-color: var(--dracula-dark);
+        background-color: var(--arete-color-background);
         border-radius: var(--step-border-radius);
         display: flex;
         flex-direction: column;
@@ -401,8 +399,8 @@
 
     nav summary:hover .nav-icon-bars {
         border-radius: var(--step-border-radius);
-        background-color: lightskyblue;
-        color: var(--dracula-dark);
+        background-color: var(--arete-color-neutral);
+        color: var(--arete-color-background);
         background-image: var(--nav-icon-bars-dark)
     }
 
@@ -411,7 +409,7 @@
     }
 
     nav div {
-        color: var(--dracula-dark);
+        color: var(--arete-color-background);
         margin-bottom: 8px;
         padding: 4px;
     }
@@ -550,13 +548,13 @@
         border-radius: var(--step-border-radius);
         border: none;
         cursor: pointer;
-        background-color: var(--dracula-dark);
-        color: lightskyblue;
+        background-color: var(--arete-color-background);
+        color: var(--arete-color-neutral);
     }
 
     .search-by-tag-btn:hover {
-        background-color: lightskyblue;
-        color: var(--dracula-dark);
+        background-color: var(--arete-color-neutral);
+        color: var(--arete-color-background);
     }
 
     .search-by-tag-btn:hover > i {
@@ -588,13 +586,13 @@
         border-radius: var(--step-border-radius);
         border: none;
         cursor: pointer;
-        background-color: var(--dracula-dark);
-        color: lightskyblue;
+        background-color: var(--arete-color-background);
+        color: var(--arete-color-neutral);
     }
 
     a.see-also:hover {
-        background-color: lightskyblue;
-        color: var(--dracula-dark);
+        background-color: var(--arete-color-neutral);
+        color: var(--arete-color-background);
     }
 
     .see-also-icon {

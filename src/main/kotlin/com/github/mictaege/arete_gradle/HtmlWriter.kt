@@ -34,7 +34,7 @@ class HtmlWriter: SpecificationWriter {
 
     override fun writeSpec(step: SpecificationStep) {
         copyScreenshots(step)
-        writeHtmlFile("/spec.ftlh", mapOf("step" to step), File(BuildDir.specsDir, "${step.uniqueHash}.html"))
+        writeHtmlFile("/spec.ftlh", mapOf("step" to step, "colorScheme" to AretePlugin.colorScheme), File(BuildDir.specsDir, "${step.uniqueHash}.html"))
         deleteOriginalScreenshots(step)
     }
 
@@ -74,10 +74,10 @@ class HtmlWriter: SpecificationWriter {
                 specFile.writeText(specSource)
             }
         }
-        writeHtmlFile("/index.ftlh", mapOf("plan" to plan), File(BuildDir.taskDir, "index.html"))
-        writeHtmlFile("/display_names.ftlh", mapOf("plan" to plan), File(BuildDir.taskDir, "display_names.html"))
-        writeHtmlFile("/test_specs.ftlh", mapOf("plan" to plan), File(BuildDir.taskDir, "test_specs.html"))
-        writeHtmlFile("/tags.ftlh", mapOf("plan" to plan), File(BuildDir.taskDir, "tags.html"))
+        writeHtmlFile("/index.ftlh", mapOf("plan" to plan, "colorScheme" to AretePlugin.colorScheme), File(BuildDir.taskDir, "index.html"))
+        writeHtmlFile("/display_names.ftlh", mapOf("plan" to plan, "colorScheme" to AretePlugin.colorScheme), File(BuildDir.taskDir, "display_names.html"))
+        writeHtmlFile("/test_specs.ftlh", mapOf("plan" to plan, "colorScheme" to AretePlugin.colorScheme), File(BuildDir.taskDir, "test_specs.html"))
+        writeHtmlFile("/tags.ftlh", mapOf("plan" to plan, "colorScheme" to AretePlugin.colorScheme), File(BuildDir.taskDir, "tags.html"))
         extractIcons()
     }
 
