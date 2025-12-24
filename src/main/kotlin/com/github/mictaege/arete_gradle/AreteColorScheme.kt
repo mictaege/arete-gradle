@@ -19,7 +19,7 @@ interface AreteColorScheme {
 open class AreteClassicColors: AreteColorScheme {
     override val arete_color_background = "#282a36"
     override val arete_color_card = "#44475a"
-    override val arete_color_foreground = "#f8f8f2"
+    override val arete_color_foreground = "lightskyblue"
     override val arete_color_ignored = "lightgray"
     override val arete_color_ignored_emph = "grey"
     override val arete_color_successful = "palegreen"
