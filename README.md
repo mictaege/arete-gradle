@@ -64,4 +64,44 @@ public class MySeleniumScreenshotTaker implements ScreenshotTaker {
 }
 ```
 
+## Colorschemes
 
+The colorscheme of the reports can be changed by setting the `arete.colorscheme` property in your `build.gradle.kts` file.
+
+Either by using a predefined colorscheme
+
+```Kotlin
+arete {
+    colorScheme = CatppuccinLatteColors()
+}
+```
+
+or by providing a custom colorscheme.
+
+```Kotlin
+arete {
+    colorScheme = object : AreteColorScheme {
+        override val arete_color_background = "#000000"
+        override val arete_color_card = "#111111"
+        override val arete_color_foreground = "#ffffff"
+        override val arete_color_ignored = "gray"
+        override val arete_color_ignored_emph = "darkgray"
+        override val arete_color_successful = "green"
+        override val arete_color_successful_emph = "darkgreen"
+        override val arete_color_aborted = "orange"
+        override val arete_color_aborted_emph = "darkorange"
+        override val arete_color_failed = "red"
+        override val arete_color_failed_emph = "darkred"
+        override val arete_color_neutral = "blue"
+        override val arete_color_neutral_emph = "darkblue"
+    }
+}
+```
+Currently predefined colorschemes are:
+- `AreteClassicColors`
+- `CatppuccinMochaColors`
+- `CatppuccinMacchiatoColors`
+- `CatppuccinFrappeColors`
+- `CatppuccinLatteColors`
+- `DraculaColors`
+- `AlucardColors`

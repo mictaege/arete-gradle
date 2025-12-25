@@ -1,49 +1,51 @@
+<#include "arete-colors-css.ftlh">
 <style>
     :root {
         --step-border-radius: 6px;
         --border-left-width: 12px;
-        --dracula-dark: #282a36;
-        --dracula-grey: #44475a;
-        --dracula-light: #f8f8f2;
-        --menu-icon-home-light: url("./icons/menu-icon-home-light.svg");
-        --menu-icon-home-blue: url("./icons/menu-icon-home-blue.svg");
-        --menu-icon-home-dark: url("./icons/menu-icon-home-dark.svg");
-        --menu-icon-handshake-light: url("./icons/menu-icon-handshake-light.svg");
-        --menu-icon-handshake-blue: url("./icons/menu-icon-handshake-blue.svg");
-        --menu-icon-handshake-dark: url("./icons/menu-icon-handshake-dark.svg");
-        --menu-icon-flask-light: url("./icons/menu-icon-flask-light.svg");
-        --menu-icon-flask-blue: url("./icons/menu-icon-flask-blue.svg");
-        --menu-icon-flask-dark: url("./icons/menu-icon-flask-dark.svg");
-        --menu-icon-tags-light: url("./icons/menu-icon-tags-light.svg");
-        --menu-icon-tags-blue: url("./icons/menu-icon-tags-blue.svg");
-        --menu-icon-tags-dark: url("./icons/menu-icon-tags-dark.svg");
-        --spec-menu-icon-home-light: url("./../icons/menu-icon-home-light.svg");
-        --spec-menu-icon-home-blue: url("./../icons/menu-icon-home-blue.svg");
-        --spec-menu-icon-home-dark: url("./../icons/menu-icon-home-dark.svg");
-        --spec-menu-icon-handshake-light: url("./../icons/menu-icon-handshake-light.svg");
-        --spec-menu-icon-handshake-blue: url("./../icons/menu-icon-handshake-blue.svg");
-        --spec-menu-icon-handshake-dark: url("./../icons/menu-icon-handshake-dark.svg");
-        --spec-menu-icon-flask-light: url("./../icons/menu-icon-flask-light.svg");
-        --spec-menu-icon-flask-blue: url("./../icons/menu-icon-flask-blue.svg");
-        --spec-menu-icon-flask-dark: url("./../icons/menu-icon-flask-dark.svg");
-        --spec-menu-icon-tags-light: url("./../icons/menu-icon-tags-light.svg");
-        --spec-menu-icon-tags-blue: url("./../icons/menu-icon-tags-blue.svg");
-        --spec-menu-icon-tags-dark: url("./../icons/menu-icon-tags-dark.svg");
-        --spec-icon-camera-dark: url("./../icons/icon-camera-dark.svg");
-        --spec-icon-file-dark: url("./../icons/icon-file-dark.svg");
-        --spec-icon-link-dark: url("./../icons/icon-link-dark.svg");
-        --spec-icon-external-link-light: url("./../icons/icon-external-link-light.svg");
-        --spec-icon-external-link-blue: url("./../icons/icon-external-link-blue.svg");
-        --spec-icon-external-link-dark: url("./../icons/icon-external-link-dark.svg");
-        --spec-icon-share-light: url("./../icons/icon-share-light.svg");
-        --spec-icon-share-blue: url("./../icons/icon-share-blue.svg");
-        --spec-icon-share-dark: url("./../icons/icon-share-dark.svg");
-        --nav-icon-bars-light: url("./../icons/icon-bars-light.svg");
-        --nav-icon-bars-blue: url("./../icons/icon-bars-blue.svg");
-        --nav-icon-bars-dark: url("./../icons/icon-bars-dark.svg");
-        --trace-icon-clipboard-blue: url("./../icons/icon-clipboard-blue.svg");
-        --trace-icon-clipboard-dark: url("./../icons/icon-clipboard-dark.svg");
-        --trace-icon-clipboard-light: url("./../icons/icon-clipboard-light.svg");
+        --menu-icon-home-fg: url("./icons/menu-icon-home-fg.svg");
+        --menu-icon-home-neutral: url("./icons/menu-icon-home-neutral.svg");
+        --menu-icon-home-bg: url("./icons/menu-icon-home-bg.svg");
+        --menu-icon-handshake-fg: url("./icons/menu-icon-handshake-fg.svg");
+        --menu-icon-handshake-neutral: url("./icons/menu-icon-handshake-neutral.svg");
+        --menu-icon-handshake-bg: url("./icons/menu-icon-handshake-bg.svg");
+        --menu-icon-flask-fg: url("./icons/menu-icon-flask-fg.svg");
+        --menu-icon-flask-neutral: url("./icons/menu-icon-flask-neutral.svg");
+        --menu-icon-flask-bg: url("./icons/menu-icon-flask-bg.svg");
+        --menu-icon-tags-fg: url("./icons/menu-icon-tags-fg.svg");
+        --menu-icon-tags-neutral: url("./icons/menu-icon-tags-neutral.svg");
+        --menu-icon-tags-bg: url("./icons/menu-icon-tags-bg.svg");
+        --spec-menu-icon-home-fg: url("./../icons/menu-icon-home-fg.svg");
+        --spec-menu-icon-home-neutral: url("./../icons/menu-icon-home-neutral.svg");
+        --spec-menu-icon-home-bg: url("./../icons/menu-icon-home-bg.svg");
+        --spec-menu-icon-handshake-fg: url("./../icons/menu-icon-handshake-fg.svg");
+        --spec-menu-icon-handshake-neutral: url("./../icons/menu-icon-handshake-neutral.svg");
+        --spec-menu-icon-handshake-bg: url("./../icons/menu-icon-handshake-bg.svg");
+        --spec-menu-icon-flask-fg: url("./../icons/menu-icon-flask-fg.svg");
+        --spec-menu-icon-flask-neutral: url("./../icons/menu-icon-flask-neutral.svg");
+        --spec-menu-icon-flask-bg: url("./../icons/menu-icon-flask-bg.svg");
+        --spec-menu-icon-tags-fg: url("./../icons/menu-icon-tags-fg.svg");
+        --spec-menu-icon-tags-neutral: url("./../icons/menu-icon-tags-neutral.svg");
+        --spec-menu-icon-tags-bg: url("./../icons/menu-icon-tags-bg.svg");
+        --spec-icon-camera-bg: url("./../icons/icon-camera-bg.svg");
+        --spec-icon-file-fg: url("./../icons/icon-file-fg.svg");
+        --spec-icon-file-neutral: url("./../icons/icon-file-neutral.svg");
+        --spec-icon-file-bg: url("./../icons/icon-file-bg.svg");
+        --spec-icon-link-fg: url("./../icons/icon-link-fg.svg");
+        --spec-icon-link-neutral: url("./../icons/icon-link-neutral.svg");
+        --spec-icon-link-bg: url("./../icons/icon-link-bg.svg");
+        --spec-icon-external-link-fg: url("./../icons/icon-external-link-fg.svg");
+        --spec-icon-external-link-neutral: url("./../icons/icon-external-link-neutral.svg");
+        --spec-icon-external-link-bg: url("./../icons/icon-external-link-bg.svg");
+        --spec-icon-share-fg: url("./../icons/icon-share-fg.svg");
+        --spec-icon-share-neutral: url("./../icons/icon-share-neutral.svg");
+        --spec-icon-share-bg: url("./../icons/icon-share-bg.svg");
+        --nav-icon-bars-fg: url("./../icons/icon-bars-fg.svg");
+        --nav-icon-bars-neutral: url("./../icons/icon-bars-neutral.svg");
+        --nav-icon-bars-bg: url("./../icons/icon-bars-bg.svg");
+        --trace-icon-clipboard-fg: url("./../icons/icon-clipboard-fg.svg");
+        --trace-icon-clipboard-neutral: url("./../icons/icon-clipboard-neutral.svg");
+        --trace-icon-clipboard-bg: url("./../icons/icon-clipboard-bg.svg");
     }
 
     html {
@@ -52,97 +54,97 @@
 
     body {
         font-family: sans-serif;
-        background-color: var(--dracula-dark);
+        background-color: var(--arete-color-background);
     }
 
     a {
         text-decoration: none;
     }
     a:link, a:visited {
-        color: var(--dracula-dark);
+        color: var(--arete-color-background);
     }
     a:hover {
-        color: var(--dracula-dark);
+        color: var(--arete-color-background);
     }
 
     .ignored-no-hover {
         border-radius: var(--step-border-radius);
-        background-color: lightgray;
-        border-left: var(--border-left-width) solid grey;
+        background-color: var(--arete-color-ignored);
+        border-left: var(--border-left-width) solid var(--arete-color-ignored-emph);
     }
 
     .ignored {
         border-radius: var(--step-border-radius);
-        background-color: lightgray;
-        border-left: var(--border-left-width) solid grey;
+        background-color: var(--arete-color-ignored);
+        border-left: var(--border-left-width) solid var(--arete-color-ignored-emph);
     }
 
     .ignored:hover {
-        background-color: grey;
+        background-color: var(--arete-color-ignored-emph);
     }
 
     .successful-no-hover {
         border-radius: var(--step-border-radius);
-        background-color: palegreen;
-        border-left: var(--border-left-width) solid limegreen;
+        background-color: var(--arete-color-successful);
+        border-left: var(--border-left-width) solid var(--arete-color-successful-emph);
     }
 
     .successful {
         border-radius: var(--step-border-radius);
-        background-color: palegreen;
-        border-left: var(--border-left-width) solid limegreen;
+        background-color: var(--arete-color-successful);
+        border-left: var(--border-left-width) solid var(--arete-color-successful-emph);
     }
 
     .successful:hover {
-        background-color: limegreen;
+        background-color: var(--arete-color-successful-emph);
     }
 
     .aborted-no-hover {
         border-radius: var(--step-border-radius);
-        background-color: lightyellow;
-        border-left: var(--border-left-width) solid yellow;
+        background-color: var(--arete-color-aborted);
+        border-left: var(--border-left-width) solid var(--arete-color-aborted-emph);
     }
 
     .aborted {
         border-radius: var(--step-border-radius);
-        background-color: lightyellow;
-        border-left: var(--border-left-width) solid yellow;
+        background-color: var(--arete-color-aborted);
+        border-left: var(--border-left-width) solid var(--arete-color-aborted-emph);
     }
 
     .aborted:hover {
-        background-color: yellow;
+        background-color: var(--arete-color-aborted-emph);
     }
 
     .failed-no-hover {
         border-radius: var(--step-border-radius);
-        background-color: lightpink;
-        border-left: var(--border-left-width) solid red;
+        background-color: var(--arete-color-failed);
+        border-left: var(--border-left-width) solid var(--arete-color-failed-emph);
     }
 
     .failed {
         border-radius: var(--step-border-radius);
-        background-color: lightpink;
-        border-left: var(--border-left-width) solid red;
+        background-color: var(--arete-color-failed);
+        border-left: var(--border-left-width) solid var(--arete-color-failed-emph);
     }
 
     .failed:hover {
-        background-color: red;
+        background-color: var(--arete-color-failed-emph);
     }
 
     .neutral-no-hover {
         border-radius: var(--step-border-radius);
-        background-color: lightskyblue;
-        border-left: var(--border-left-width) solid deepskyblue;
+        background-color: var(--arete-color-neutral);
+        border-left: var(--border-left-width) solid var(--arete-color-neutral-emph);
     }
 
     .neutral {
         border-radius: var(--step-border-radius);
-        background-color: lightskyblue;
-        border-left: var(--border-left-width) solid deepskyblue;
+        background-color: var(--arete-color-neutral);
+        border-left: var(--border-left-width) solid var(--arete-color-neutral-emph);
     }
 
     .neutral:hover {
-        background-color: deepskyblue;
+        background-color: var(--arete-color-neutral-emph);
     }
 
     .mono {
@@ -159,16 +161,13 @@
     .card {
         transition: 0.3s;
         border-radius: 5px;
-        color: lightskyblue;
-        background-color: var(--dracula-grey);
-        padding-top: 10px;
-        padding-right: 25px;
-        padding-left: 0;
-        padding-bottom: 10px;
+        color: var(--arete-color-foreground);
+        background-color: var(--arete-color-card);
+        padding: 10px 25px 10px 0;
     }
 
     .step {
-        color: var(--dracula-dark);
+        color: var(--arete-color-background);
         margin-bottom: 2px;
         padding: 8px;
     }
@@ -190,11 +189,8 @@
     #searchInput {
         width: 100%;
         border-radius: var(--step-border-radius);
-        padding-top: 12px;
-        padding-right: 20px;
-        padding-left: 40px;
-        padding-bottom: 12px;
-        border: 1px solid darkgrey;
+        padding: 12px 20px 12px 40px;
+        border: 1px solid var(--arete-color-foreground);
     }
 
     #specList {
@@ -212,7 +208,7 @@
     #specList li a {
         text-decoration: none;
         display: block;
-        color: var(--dracula-dark);
+        color: var(--arete-color-background);
     }
 
     .collapsible {
@@ -244,7 +240,7 @@
         border: none;
         cursor: pointer;
         background-color: transparent;
-        background-image: var(--spec-icon-share-dark);
+        background-image: var(--spec-icon-share-bg);
         background-repeat: no-repeat;
         background-origin: content-box;
         opacity: 0.6;
@@ -261,26 +257,26 @@
         right: 15px;
         width:1.5rem;
         height:1.5rem;
-        background-color: var(--dracula-dark);
+        background-color: var(--arete-color-background);
         border: none;
         border-radius: var(--step-border-radius);
-        color: var(--dracula-light);
+        color: var(--arete-color-foreground);
         padding: 4px 4px;
         cursor: pointer;
-        background-image: var(--trace-icon-clipboard-blue);
+        background-image: var(--trace-icon-clipboard-fg);
         background-repeat: no-repeat;
         background-origin: content-box;
     }
 
     .stacktrace-copy-btn:hover {
-        background-color: lightskyblue;
-        color: var(--dracula-dark);
-        background-image: var(--trace-icon-clipboard-dark)
+        background-color: var(--arete-color-foreground);
+        color: var(--arete-color-background);
+        background-image: var(--trace-icon-clipboard-bg)
     }
 
-    /* Add a black background color to the top navigation */
+    /* Add a background color to the top navigation */
     .topnav {
-        background-color: var(--dracula-dark);
+        background-color: var(--arete-color-background);
         border-radius: var(--step-border-radius);
         overflow: hidden;
         position: fixed;
@@ -296,7 +292,7 @@
     /* Style the links inside the navigation bar */
     .topnav a {
         float: left;
-        color: lightskyblue;
+        color: var(--arete-color-foreground);
         text-align: center;
         padding: 14px 16px;
         text-decoration: none;
@@ -305,83 +301,83 @@
 
     /* Change the color of links on hover */
     .topnav a:hover {
-        background-color: lightskyblue;
-        color: var(--dracula-dark);
+        background-color: var(--arete-color-foreground);
+        color: var(--arete-color-background);
     }
 
     .topnav a:hover .menu-icon-home {
-        background-image: var(--menu-icon-home-dark)
+        background-image: var(--menu-icon-home-bg)
     }
 
     .topnav a:hover .menu-icon-handshake {
-        background-image: var(--menu-icon-handshake-dark)
+        background-image: var(--menu-icon-handshake-bg)
     }
 
     .topnav a:hover .menu-icon-flask {
-        background-image: var(--menu-icon-flask-dark)
+        background-image: var(--menu-icon-flask-bg)
     }
 
     .topnav a:hover .menu-icon-tags {
-        background-image: var(--menu-icon-tags-dark)
+        background-image: var(--menu-icon-tags-bg)
     }
 
     .topnav a:hover .spec-menu-icon-home {
-        background-image: var(--spec-menu-icon-home-dark)
+        background-image: var(--spec-menu-icon-home-bg)
     }
 
     .topnav a:hover .spec-menu-icon-handshake {
-        background-image: var(--spec-menu-icon-handshake-dark)
+        background-image: var(--spec-menu-icon-handshake-bg)
     }
 
     .topnav a:hover .spec-menu-icon-flask {
-        background-image: var(--spec-menu-icon-flask-dark)
+        background-image: var(--spec-menu-icon-flask-bg)
     }
 
     .topnav a:hover .spec-menu-icon-tags {
-        background-image: var(--spec-menu-icon-tags-dark)
+        background-image: var(--spec-menu-icon-tags-bg)
     }
 
     /* Add a color to the active/current link */
     .topnav a.active {
-        background-color: deepskyblue;
-        color: var(--dracula-light);
+        background-color: var(--arete-color-foreground);
+        color: var(--arete-color-background);
         text-decoration: none;
     }
 
     .topnav a.active .menu-icon-home {
-        background-image: var(--menu-icon-home-light)
+        background-image: var(--menu-icon-home-bg)
     }
 
     .topnav a.active .menu-icon-handshake {
-        background-image: var(--menu-icon-handshake-light)
+        background-image: var(--menu-icon-handshake-bg)
     }
 
     .topnav a.active .menu-icon-flask {
-        background-image: var(--menu-icon-flask-light)
+        background-image: var(--menu-icon-flask-bg)
     }
 
     .topnav a.active .menu-icon-tags {
-        background-image: var(--menu-icon-tags-light)
+        background-image: var(--menu-icon-tags-bg)
     }
 
     .topnav a.active .spec-menu-icon-home {
-        background-image: var(--spec-menu-icon-home-light)
+        background-image: var(--spec-menu-icon-home-bg)
     }
 
     .topnav a.active .spec-menu-icon-handshake {
-        background-image: var(--spec-menu-icon-handshake-light)
+        background-image: var(--spec-menu-icon-handshake-bg)
     }
 
     .topnav a.active .spec-menu-icon-flask {
-        background-image: var(--spec-menu-icon-flask-light)
+        background-image: var(--spec-menu-icon-flask-bg)
     }
 
     .topnav a.active .spec-menu-icon-tags {
-        background-image: var(--spec-menu-icon-tags-light)
+        background-image: var(--spec-menu-icon-tags-bg)
     }
 
     nav {
-        background-color: var(--dracula-dark);
+        background-color: var(--arete-color-background);
         border-radius: var(--step-border-radius);
         display: flex;
         flex-direction: column;
@@ -401,9 +397,9 @@
 
     nav summary:hover .nav-icon-bars {
         border-radius: var(--step-border-radius);
-        background-color: lightskyblue;
-        color: var(--dracula-dark);
-        background-image: var(--nav-icon-bars-dark)
+        background-color: var(--arete-color-foreground);
+        color: var(--arete-color-background);
+        background-image: var(--nav-icon-bars-bg)
     }
 
     nav li {
@@ -411,7 +407,7 @@
     }
 
     nav div {
-        color: var(--dracula-dark);
+        color: var(--arete-color-background);
         margin-bottom: 8px;
         padding: 4px;
     }
@@ -429,7 +425,7 @@
         background-repeat: no-repeat;
         width:1.25rem;
         height:1.25rem;
-        background-image: var(--menu-icon-home-blue)
+        background-image: var(--menu-icon-home-fg)
     }
 
     .menu-icon-handshake {
@@ -440,7 +436,7 @@
         background-repeat: no-repeat;
         width:1.25rem;
         height:1.25rem;
-        background-image: var(--menu-icon-handshake-blue)
+        background-image: var(--menu-icon-handshake-fg)
     }
 
     .menu-icon-flask {
@@ -451,7 +447,7 @@
         background-repeat: no-repeat;
         width:1.25rem;
         height:1.25rem;
-        background-image: var(--menu-icon-flask-blue)
+        background-image: var(--menu-icon-flask-fg)
     }
 
     .menu-icon-tags {
@@ -462,7 +458,7 @@
         background-repeat: no-repeat;
         width:1.25rem;
         height:1.25rem;
-        background-image: var(--menu-icon-tags-blue)
+        background-image: var(--menu-icon-tags-fg)
     }
 
     .spec-menu-icon-home {
@@ -473,7 +469,7 @@
         background-repeat: no-repeat;
         width:1.25rem;
         height:1.25rem;
-        background-image: var(--spec-menu-icon-home-blue)
+        background-image: var(--spec-menu-icon-home-fg)
     }
 
     .spec-menu-icon-handshake {
@@ -484,7 +480,7 @@
         background-repeat: no-repeat;
         width:1.25rem;
         height:1.25rem;
-        background-image: var(--spec-menu-icon-handshake-blue)
+        background-image: var(--spec-menu-icon-handshake-fg)
     }
 
     .spec-menu-icon-flask {
@@ -495,7 +491,7 @@
         background-repeat: no-repeat;
         width:1.25rem;
         height:1.25rem;
-        background-image: var(--spec-menu-icon-flask-blue)
+        background-image: var(--spec-menu-icon-flask-fg)
     }
 
     .spec-menu-icon-tags {
@@ -506,7 +502,7 @@
         background-repeat: no-repeat;
         width:1.25rem;
         height:1.25rem;
-        background-image: var(--spec-menu-icon-tags-blue)
+        background-image: var(--spec-menu-icon-tags-fg)
     }
 
     .spec-icon-camera {
@@ -517,7 +513,7 @@
         background-repeat: no-repeat;
         width:1rem;
         height:1rem;
-        background-image: var(--spec-icon-camera-dark)
+        background-image: var(--spec-icon-camera-bg)
     }
 
     .spec-icon-file {
@@ -528,7 +524,7 @@
         background-repeat: no-repeat;
         width:1rem;
         height:1rem;
-        background-image: var(--spec-icon-file-dark)
+        background-image: var(--spec-icon-file-bg)
     }
 
     .nav-icon-bars {
@@ -539,7 +535,7 @@
         background-repeat: no-repeat;
         width:1.25rem;
         height:1.25rem;
-        background-image: var(--nav-icon-bars-blue)
+        background-image: var(--nav-icon-bars-fg)
     }
 
     .search-by-tag-btn {
@@ -550,17 +546,17 @@
         border-radius: var(--step-border-radius);
         border: none;
         cursor: pointer;
-        background-color: var(--dracula-dark);
-        color: lightskyblue;
+        background-color: var(--arete-color-background);
+        color: var(--arete-color-foreground);
     }
 
     .search-by-tag-btn:hover {
-        background-color: lightskyblue;
-        color: var(--dracula-dark);
+        background-color: var(--arete-color-foreground);
+        color: var(--arete-color-background);
     }
 
     .search-by-tag-btn:hover > i {
-        background-image: var(--menu-icon-tags-dark)
+        background-image: var(--menu-icon-tags-bg)
     }
 
     .search-by-tag-icon {
@@ -571,7 +567,7 @@
         background-repeat: no-repeat;
         width:1rem;
         height:1rem;
-        background-image: var(--menu-icon-tags-blue);
+        background-image: var(--menu-icon-tags-fg);
         opacity: 1;
     }
 
@@ -588,13 +584,13 @@
         border-radius: var(--step-border-radius);
         border: none;
         cursor: pointer;
-        background-color: var(--dracula-dark);
-        color: lightskyblue;
+        background-color: var(--arete-color-background);
+        color: var(--arete-color-foreground);
     }
 
     a.see-also:hover {
-        background-color: lightskyblue;
-        color: var(--dracula-dark);
+        background-color: var(--arete-color-foreground);
+        color: var(--arete-color-background);
     }
 
     .see-also-icon {
@@ -605,12 +601,12 @@
         background-repeat: no-repeat;
         width:1rem;
         height:1rem;
-        background-image: var(--spec-icon-external-link-blue);
+        background-image: var(--spec-icon-external-link-fg);
         opacity: 1;
     }
 
     .see-also:hover > i {
-        background-image: var(--spec-icon-external-link-dark);
+        background-image: var(--spec-icon-external-link-bg);
     }
 
 </style>
