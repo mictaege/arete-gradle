@@ -151,13 +151,6 @@
         font-family: monospace;
     }
 
-    .stamp {
-        font-family: monospace;
-        font-style: italic;
-        font-size: 0.7em;
-        float:right;
-    }
-
     .card {
         transition: 0.3s;
         border-radius: 5px;
@@ -170,6 +163,31 @@
         color: var(--arete-color-background);
         margin-bottom: 2px;
         padding: 8px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .step-display {
+        display: flex;
+        gap: 12px;
+        justify-content: flex-start;
+        align-items: center;
+        white-space: nowrap;
+    }
+
+    .step-content {
+        display: flex;
+        justify-content: stretch;
+        align-items: center;
+        white-space: nowrap;
+        width: 100%;
+    }
+
+    .stamp {
+        font-family: monospace;
+        font-style: italic;
+        font-size: 0.7em;
+        margin-left: auto;
     }
 
     .narrative {
@@ -182,8 +200,7 @@
     }
 
     .flex-container > div {
-        flex-grow: 1;
-        flex-basis: 0;
+        flex: 1;
     }
 
     #searchInput {
@@ -222,7 +239,7 @@
         margin-left: 5px;
     }
 
-    .content {
+    .overflow-content {
         max-height: 0;
         overflow: hidden;
         border: none;
@@ -609,4 +626,13 @@
         background-image: var(--spec-icon-external-link-bg);
     }
 
+    table {
+        width: clamp(30%, 75%, 95%);
+        flex-shrink: 0;
+        table-layout: fixed;
+    }
+
+    th, td {
+        text-align: left;
+    }
 </style>

@@ -15,6 +15,20 @@
     <div class="card main">
         <#assign level = 0>
 
+        <#macro stepDisplay step>
+            <#if "${step.type}" == "EXAMPLE_GRID_INSTANCE">
+                <table>
+                    <tr>
+                        <#list step.gridRowData as data>
+                            <td>${data}</td>
+                        </#list>
+                    </tr>
+                </table>
+            <#else>
+                <span>${step.displayName}</span>
+            </#if>
+        </#macro>
+
         <#macro stamp step>
             <#if "${step.type}" == "SPEC">
                 <div class="stamp">
@@ -23,7 +37,7 @@
                         <div>${step.testClassName}</div>
                 </div>
             <#elseif "${step.resultState}" == "ABORTED" || "${step.resultState}" == "FAILED">
-                <span class="stamp">${step.timeOnly}</span>
+                <span class="stamp">${step.timeStampLong}</span>
             </#if>
         </#macro>
 
@@ -78,9 +92,9 @@
             </#if>
         </#macro>
 
-        <#macro dumpSteps step>
-            <#assign vMargin = 0>
-            <#assign vMargin = 0>
+        <#macro dumpSteps step parent=step>
+            <#assign vMargin = 2>
+            <#assign vMargin = 2>
             <#assign fWeight = "normal">
             <#assign noHoverSuffix = "-no-hover">
             <#assign collapsible = "">
@@ -99,64 +113,86 @@
             <#assign indent = 25>
             <div style="margin-left: ${indent}px; margin-bottom: ${vMargin}; margin-top: ${vMargin}">
 
+                <#if parent.isFirst(step) && parent.type == "EXAMPLE_GRID_CONTAINER">
+                    <div class="neutral-no-hover step" style="margin-bottom: ${vMargin}; margin-top: ${vMargin};  font-weight: normal">
+                        <div class="step-display">
+                            <table>
+                                <tr>
+                                    <#list parent.gridColumns as column>
+                                        <th>${column}</th>
+                                    </#list>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </#if>
+
                 <#if "${step.resultState}" == "IGNORED">
                     <div class="ignored${noHoverSuffix} step ${collapsible}" style="font-weight: ${fWeight}">
-                        ${step.displayName}
-                        <#if step.hasScreenshot>
-                            <i class="spec-icon-camera"></i>
-                        </#if>
-                        <@stamp step/>
-                        <@anchor step/>
+                        <div class="step-display">
+                            <@stepDisplay step/>
+                            <#if step.hasScreenshot>
+                                <i class="spec-icon-camera"></i>
+                            </#if>
+                            <@anchor step/>
+                            <@stamp step/>
+                        </div>
                     </div>
                     <#if step.hasScreenshot>
-                        <div class="content">
+                        <div class="overflow-content">
                             <img src="./${step.uniqueHash}.png"/>
                         </div>
                     </#if>
                 <#elseif "${step.resultState}" == "SUCCESSFUL">
                     <div class="successful${noHoverSuffix} step ${collapsible}" style="font-weight: ${fWeight}">
-                        ${step.displayName}
-                        <#if step.hasScreenshot>
-                            <i class="spec-icon-camera"></i>
-                        </#if>
-                        <@stamp step/>
-                        <@anchor step/>
+                        <div class="step-display">
+                            <@stepDisplay step/>
+                            <#if step.hasScreenshot>
+                                <i class="spec-icon-camera"></i>
+                            </#if>
+                            <@anchor step/>
+                            <@stamp step/>
+                        </div>
                     </div>
                     <#if step.hasScreenshot>
-                        <div class="content">
+                        <div class="overflow-content">
                             <img src="./${step.uniqueHash}.png"/>
                         </div>
                     </#if>
                 <#elseif "${step.resultState}" == "ABORTED">
                     <div class="aborted${noHoverSuffix} step ${collapsible}" style="font-weight: ${fWeight}">
-                        ${step.displayName}
-                        <#if step.hasScreenshot>
-                            <i class="spec-icon-camera"></i>
-                        </#if>
-                        <@stamp step/>
-                        <@anchor step/>
+                        <div class="step-display">
+                            <@stepDisplay step/>
+                            <#if step.hasScreenshot>
+                                <i class="spec-icon-camera"></i>
+                            </#if>
+                            <@anchor step/>
+                            <@stamp step/>
+                        </div>
                     </div>
                     <#if step.hasScreenshot>
-                        <div class="content">
+                        <div class="overflow-content">
                             <img src="./${step.uniqueHash}.png"/>
                         </div>
                     </#if>
                 <#elseif "${step.resultState}" == "FAILED">
                     <div class="failed${noHoverSuffix} step ${collapsible}" style="font-weight: ${fWeight}">
-                        <div style="padding-bottom: 4px">
-                            ${step.displayName}
+                        <div class="step-display" style="padding-bottom: 4px">
+                            <@stepDisplay step/>
                             <#if step.hasScreenshot>
                                 <i class="spec-icon-camera"></i>
                             </#if>
                             <i class="spec-icon-file"></i>
-                            <@stamp step/>
                             <@anchor step/>
+                            <@stamp step/>
                         </div>
                         <#if step.hasErrorMsg>
-<pre><code class="language-javastacktrace">${step.errorMsg}</code></pre>
+                            <div class="step-content">
+<pre style="width: 100%;"><code class="language-javastacktrace">${step.errorMsg}</code></pre>
+                            </div>
                         </#if>
                     </div>
-                    <div class="content">
+                    <div class="overflow-content">
                         <#if step.hasScreenshot>
                             <img src="./${step.uniqueHash}.png"/>
                         </#if>
@@ -165,10 +201,15 @@
                     </div>
                 <#else>
                     <div class="step ${collapsible}" style="font-weight: ${fWeight}">
-                        ${step.resultState.sign} ${step.displayName}
+                        <div class="step-display" style="padding-bottom: 4px">
+                            <@stepDisplay step/>
+                            <#if step.hasScreenshot>
+                                <i class="spec-icon-camera"></i>
+                            </#if>
+                        </div>
                     </div>
                     <#if step.hasScreenshot>
-                        <div class="content">
+                        <div class="overflow-content">
                             <img src="./${step.uniqueHash}.png"/>
                         </div>
                     </#if>
@@ -196,13 +237,13 @@
                 <#if "${step.type}" == "SPEC" || "${step.type}" == "FEATURE">
                     <#list step.stepsReversed as childStep>
                         <#assign level++>
-                        <@dumpSteps childStep/>
+                        <@dumpSteps childStep step/>
                         <#assign level-->
                     </#list>
                 <#else>
                     <#list step.steps as childStep>
                         <#assign level++>
-                        <@dumpSteps childStep/>
+                        <@dumpSteps childStep step/>
                         <#assign level-->
                     </#list>
                 </#if>
@@ -219,7 +260,7 @@
             </details>
         </nav>
 
-        <@dumpSteps step/>
+        <@dumpSteps step=step/>
     </div>
 
 

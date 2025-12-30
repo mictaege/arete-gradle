@@ -1,5 +1,6 @@
 package com.github.mictaege.arete_gradle
 
+import com.github.mictaege.arete.ExampleGrid
 import com.github.mictaege.arete.Narrative
 import com.github.mictaege.arete.SeeAlso
 import com.github.mictaege.arete.SeeAlsoDeclaration
@@ -23,8 +24,10 @@ enum class StepType(val container: Boolean) {
     THEN(false),
     DESCRIBE(true),
     IT_SHOULD(false),
-    EXAMPLE_TEMPLATE(true),
-    EXAMPLE_INSTANCE(false)
+    EXAMPLE_CONTAINER(true),
+    EXAMPLE_INSTANCE(false),
+    EXAMPLE_GRID_CONTAINER(true),
+    EXAMPLE_GRID_INSTANCE(false)
 }
 
 enum class ResultState(val sign: String) {
@@ -39,6 +42,10 @@ abstract class SpecificationNode {
     abstract fun add(step: SpecificationStep): Boolean
 
     abstract fun addResult(testId: TestIdentifier, testResult: TestExecutionResult): Boolean
+
+    fun isFirst(step: SpecificationStep): Boolean {
+        return steps.firstOrNull() == step
+    }
 
     fun findFirst(predicate: (SpecificationStep) -> Boolean): SpecificationStep? {
         var step: SpecificationStep? = null
@@ -278,5 +285,11 @@ class SpecificationStep(
             else -> resultState
         }
     }
+
+    val gridColumns: Array<String>
+        get() = testId.getAnnotation(ExampleGrid::class.java)?.columns ?: arrayOf()
+    val gridHeader get() = "| ${gridColumns.joinToString(" | ")} |"
+    val gridRowData: List<String>
+        get() = displayName.split("|").map { it.trim() }.filter { it.isNotEmpty() }
 
 }
