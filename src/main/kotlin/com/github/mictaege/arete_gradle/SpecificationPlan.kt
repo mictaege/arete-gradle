@@ -1,5 +1,6 @@
 package com.github.mictaege.arete_gradle
 
+import com.github.mictaege.arete.ExampleCsv
 import com.github.mictaege.arete.ExampleGrid
 import com.github.mictaege.arete.Narrative
 import com.github.mictaege.arete.SeeAlso
@@ -287,7 +288,15 @@ class SpecificationStep(
     }
 
     val gridColumns: Array<String>
-        get() = testId.getAnnotation(ExampleGrid::class.java)?.columns ?: arrayOf()
+        get() {
+            if (testId.isAnnotated(ExampleGrid::class.java)) {
+                return testId.getAnnotation(ExampleGrid::class.java)?.columns ?: arrayOf()
+            } else if (testId.isAnnotated(ExampleCsv::class.java)) {
+                return testId.getAnnotation(ExampleCsv::class.java)?.columns ?: arrayOf()
+            }
+            return arrayOf()
+
+        }
     val gridHeader get() = "| ${gridColumns.joinToString(" | ")} |"
     val gridRowData: List<String>
         get() = displayName.split("|").map { it.trim() }.filter { it.isNotEmpty() }
