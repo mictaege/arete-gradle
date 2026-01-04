@@ -4,7 +4,6 @@ import freemarker.template.Configuration
 import freemarker.template.Configuration.VERSION_2_3_32
 import freemarker.template.Template
 import freemarker.template.TemplateExceptionHandler
-import net.lingala.zip4j.ZipFile
 import java.io.File
 import java.io.StringWriter
 import java.nio.file.Files
@@ -34,12 +33,12 @@ object Freemaker {
 class HtmlWriter: SpecificationWriter {
 
     override fun writeSpec(step: SpecificationStep) {
-        copyScreenshots(step)
+        copyResources(step)
         writeHtmlFile("/spec.ftlh", mapOf("step" to step, "colorScheme" to AretePlugin.colorScheme), File(BuildDir.specsDir, "${step.uniqueHash}.html"))
         deleteOriginalScreenshots(step)
     }
 
-    private fun copyScreenshots(step: SpecificationStep) {
+    private fun copyResources(step: SpecificationStep) {
         step.screenshot?.also {
             try {
                 val target = File(BuildDir.specsDir, "${step.uniqueHash}.png")
@@ -48,7 +47,18 @@ class HtmlWriter: SpecificationWriter {
             } catch (ignore: Exception) {
             }
         }
-        step.steps.forEach { copyScreenshots(it) }
+        if (step.hasNarrative) {
+            step.narrative?.images?.forEach { i ->
+                val target = File(BuildDir.specsDir, i.imageFileName ?: "")
+                target.mkdirs()
+                Files.copy(
+                    i.imageUri?.toURL()?.openStream() ?: throw IllegalStateException("Image not found: ${i.imageUri}"),
+                    target.toPath(),
+                    REPLACE_EXISTING
+                )
+            }
+        }
+        step.steps.forEach { copyResources(it) }
     }
 
     private fun deleteOriginalScreenshots(step: SpecificationStep) {

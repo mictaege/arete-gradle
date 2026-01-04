@@ -4,6 +4,7 @@
     <title>${step.displayName}</title>
     <#include "arete-css.ftlh">
     <#include "prism-css.ftlh">
+    <#include "image-grid-css.ftlh">
 </head>
 <body>
     <div class="topnav">
@@ -231,6 +232,24 @@
                         <#list step.narrative.lines as line>
                             <p class="narrative">${line}</p>
                         </#list>
+                        <#if step.narrative.hasImages>
+                            <#assign imgIdx = 0>
+                            <#assign modalId = "${step.uniqueHash}Modal">
+                            <div class="image-grid-row">
+                                <#list step.narrative.images as img>
+                                    <#assign imgIdx++>
+                                    <div class="image-grid-column">
+                                        <#assign imgId = "${step.uniqueHash}Img${imgIdx}">
+                                        <img id="${imgId}" onclick="openModal('${modalId}', '${imgId}')"
+                                             src="./${img.imageFileName}"/>
+                                    </div>
+                                </#list>
+                            </div>
+                            <div id="${modalId}" class="image-grid-modal">
+                                <span class="image-grid-modal-close" onclick="closeModal('${modalId}')">&times;</span>
+                                <img class="image-grid-modal-content" id="modal-image">
+                            </div>
+                        </#if>
                     </div>
                 </#if>
 
@@ -296,6 +315,7 @@
         }
     </script>
     <#include "prism-js.ftlh">
+    <#include "image-grid-js.ftlh">
 
 </body>
 </html>
