@@ -241,13 +241,23 @@
                                     <div class="image-grid-column">
                                         <#assign imgId = "${step.uniqueHash}Img${imgIdx}">
                                         <img id="${imgId}" onclick="openModal('${modalId}', '${imgId}')"
-                                             src="./${img.imageFileName}"/>
+                                             src="./${img.fileName}"/>
                                     </div>
                                 </#list>
                             </div>
                             <div id="${modalId}" class="image-grid-modal">
                                 <span class="image-grid-modal-close" onclick="closeModal('${modalId}')">&times;</span>
                                 <img class="image-grid-modal-content" id="modal-image">
+                            </div>
+                        </#if>
+                        <#if step.narrative.hasAttachments>
+                            <div class="attachments">
+                                <#list step.narrative.attachments as atmnt>
+                                    <a href="./${atmnt.fileName}" target="_blank" class="attachment">
+                                        <i class="attachment-icon"></i>
+                                        ${atmnt.fileName}
+                                    </a>
+                                </#list>
                             </div>
                         </#if>
                     </div>

@@ -7,9 +7,7 @@ import freemarker.template.TemplateExceptionHandler
 import java.io.File
 import java.io.StringWriter
 import java.nio.file.Files
-import java.nio.file.OpenOption
 import java.nio.file.StandardCopyOption.REPLACE_EXISTING
-import java.nio.file.StandardOpenOption
 import java.nio.file.StandardOpenOption.CREATE
 import java.nio.file.StandardOpenOption.TRUNCATE_EXISTING
 
@@ -52,12 +50,12 @@ class HtmlWriter: SpecificationWriter {
             }
         }
         if (step.hasNarrative) {
-            step.narrative?.images?.forEach { i ->
-                val target = File(BuildDir.specsDir, i.imageFileName)
+            step.narrative?.resources?.forEach { i ->
+                val target = File(BuildDir.specsDir, i.fileName)
                 target.parentFile.mkdirs()
                 Files.write(
                     target.toPath(),
-                    i.readImage(),
+                    i.readResource(),
                     CREATE,
                     TRUNCATE_EXISTING
                 )
