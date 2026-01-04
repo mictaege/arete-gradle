@@ -16,7 +16,7 @@
     .image-grid-column img {
         margin-top: 8px;
         vertical-align: middle;
-        width: 100%;
+        width: 98%;
         border-radius: 5px;
         cursor: pointer;
         transition: 0.3s;
@@ -45,9 +45,9 @@
     .image-grid-modal-content {
         margin: auto;
         display: block;
-        width: 80%;
-        max-width: 98%;
-        max-height: 87%;
+        width: 98%;
+        height: 87%;
+        object-fit: contain;
     }
 
     /* Add Animation - Zoom in the Modal */
