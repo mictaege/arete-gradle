@@ -7,7 +7,11 @@ import freemarker.template.TemplateExceptionHandler
 import java.io.File
 import java.io.StringWriter
 import java.nio.file.Files
+import java.nio.file.OpenOption
 import java.nio.file.StandardCopyOption.REPLACE_EXISTING
+import java.nio.file.StandardOpenOption
+import java.nio.file.StandardOpenOption.CREATE
+import java.nio.file.StandardOpenOption.TRUNCATE_EXISTING
 
 
 object BuildDir {
@@ -42,19 +46,20 @@ class HtmlWriter: SpecificationWriter {
         step.screenshot?.also {
             try {
                 val target = File(BuildDir.specsDir, "${step.uniqueHash}.png")
-                target.mkdirs()
+                target.parentFile.mkdirs()
                 Files.copy(it.toPath(), target.toPath(), REPLACE_EXISTING)
             } catch (ignore: Exception) {
             }
         }
         if (step.hasNarrative) {
             step.narrative?.images?.forEach { i ->
-                val target = File(BuildDir.specsDir, i.imageFileName ?: "")
-                target.mkdirs()
-                Files.copy(
-                    i.imageUri?.toURL()?.openStream() ?: throw IllegalStateException("Image not found: ${i.imageUri}"),
+                val target = File(BuildDir.specsDir, i.imageFileName)
+                target.parentFile.mkdirs()
+                Files.write(
                     target.toPath(),
-                    REPLACE_EXISTING
+                    i.readImage(),
+                    CREATE,
+                    TRUNCATE_EXISTING
                 )
             }
         }

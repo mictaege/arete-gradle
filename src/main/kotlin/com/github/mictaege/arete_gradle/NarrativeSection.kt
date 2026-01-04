@@ -1,25 +1,43 @@
 package com.github.mictaege.arete_gradle
 
 import com.github.mictaege.arete.Narrative
+import net.sourceforge.plantuml.FileFormat
+import net.sourceforge.plantuml.FileFormatOption
+import net.sourceforge.plantuml.SourceStringReader
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
 import java.io.UncheckedIOException
 import java.net.URI
+import java.util.*
 
 class NarrativeSection(annotation: Narrative) {
     val header = annotation.header
     val lines = annotation.value.toList()
-    val images: List<Image> = annotation.imageResourcePath
+    val pictures: List<Picture> = annotation.imageResourcePath
         .filter { it.isNotBlank() }
-        .map { Image(it) }
+        .map { Picture(it) }
+    val hasPictures: Boolean = pictures.isNotEmpty()
+    val diagrams: List<PlantUmlDiagram> = annotation.plantUml
+        .filter { it.isNotBlank() }
+        .map { PlantUmlDiagram(it.trimIndent()) }
+    val hasDiagrams: Boolean = diagrams.isNotEmpty()
+    
+    val images: List<Image> = pictures + diagrams
     val hasImages: Boolean = images.isNotEmpty()
 }
 
-class Image(val imagePath: String) {
-    val imageUri: URI? = imagePath.let { javaClass.classLoader?.getResource(it)?.toURI() }
-    val imageFileName: String? = imageUri?.let { File(it) }?.name
+interface Image {
 
-    fun readImage(): ByteArray? {
+    val imageFileName: String
+    fun readImage(): ByteArray
+}
+
+class Picture(val imagePath: String): Image {
+    val imageUri: URI? = imagePath.let { javaClass.classLoader?.getResource(it)?.toURI() }
+    override val imageFileName: String = imageUri?.let { File(it) }?.name ?: imagePath.split("/").last()
+
+    override fun readImage(): ByteArray {
         imagePath.let { path ->
             val inputStream = javaClass.classLoader?.getResourceAsStream(path)
             requireNotNull(inputStream) { "Image not found: $path" }
@@ -29,5 +47,33 @@ class Image(val imagePath: String) {
                 throw UncheckedIOException("Failed to read image: $path", e)
             }
         }
+    }
+}
+
+class PlantUmlDiagram(val diagramSrc: String): Image {
+    override val imageFileName: String = "diagram-${UUID.randomUUID()}.svg"
+    override fun readImage(): ByteArray {
+        try {
+            val effectiveSrc = ensureSmetana(ensureTheme(diagramSrc))
+            val reader = SourceStringReader(effectiveSrc)
+            val outputStream = ByteArrayOutputStream()
+            val fileFormatOption = FileFormatOption(FileFormat.SVG)
+            reader.outputImage(outputStream, fileFormatOption)
+            return outputStream.toByteArray()
+        } catch (e: IOException) {
+            throw UncheckedIOException("Failed to generate PlantUML diagram", e)
+        }
+    }
+
+    private fun ensureTheme(src: String): String = if (src.contains("!theme")) {
+        src
+    } else {
+        "@startuml\n!theme " + AretePlugin.colorScheme.arete_plantuml_theme + "\n" + src.removePrefix("@startuml\n")
+    }
+
+    private fun ensureSmetana(src: String): String = if (src.contains("!pragma layout smetana")) {
+        src
+    } else {
+        "@startuml\n!pragma layout smetana\n" + src.removePrefix("@startuml\n")
     }
 }

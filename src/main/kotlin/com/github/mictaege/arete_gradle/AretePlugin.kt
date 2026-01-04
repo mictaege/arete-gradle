@@ -24,6 +24,7 @@ class AretePlugin: Plugin<Project> {
         const val ARETE_COLOR_FAILED_EMPH = "io.github.mictaege.arete_gradle.arete_color_failed_emph"
         const val ARETE_COLOR_NEUTRAL = "io.github.mictaege.arete_gradle.arete_color_neutral"
         const val ARETE_COLOR_NEUTRAL_EMPH = "io.github.mictaege.arete_gradle.arete_color_neutral_emph"
+        const val ARETE_PLANTUML_THEME = "io.github.mictaege.arete_gradle.arete_plantuml_theme"
         val colorScheme: AreteColorScheme
             get() = AreteColorSchemeProperties(
                 System.getProperty(ARETE_COLOR_BACKGROUND) ?: AreteClassicColors().arete_color_background,
@@ -38,7 +39,8 @@ class AretePlugin: Plugin<Project> {
                 System.getProperty(ARETE_COLOR_FAILED) ?: AreteClassicColors().arete_color_failed,
                 System.getProperty(ARETE_COLOR_FAILED_EMPH) ?: AreteClassicColors().arete_color_failed_emph,
                 System.getProperty(ARETE_COLOR_NEUTRAL) ?: AreteClassicColors().arete_color_neutral,
-                System.getProperty(ARETE_COLOR_NEUTRAL_EMPH) ?: AreteClassicColors().arete_color_neutral_emph
+                System.getProperty(ARETE_COLOR_NEUTRAL_EMPH) ?: AreteClassicColors().arete_color_neutral_emph,
+                System.getProperty(ARETE_PLANTUML_THEME) ?: AreteClassicColors().arete_plantuml_theme
             )
     }
 
@@ -68,6 +70,7 @@ class AretePlugin: Plugin<Project> {
                 testTask.systemProperties[ARETE_COLOR_FAILED_EMPH] = scheme.arete_color_failed_emph
                 testTask.systemProperties[ARETE_COLOR_NEUTRAL] = scheme.arete_color_neutral
                 testTask.systemProperties[ARETE_COLOR_NEUTRAL_EMPH] = scheme.arete_color_neutral_emph
+                testTask.systemProperties[ARETE_PLANTUML_THEME] = scheme.arete_plantuml_theme
             })
         })
     }
