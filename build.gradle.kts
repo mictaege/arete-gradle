@@ -2,12 +2,12 @@ import org.jreleaser.model.Active
 import org.jreleaser.model.Signing
 
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "1.9.22"
+    id("org.jetbrains.kotlin.jvm") version "2.3.0"
     `java-gradle-plugin`
     `maven-publish`
-    id("com.gradle.plugin-publish") version "1.2.1"
+    id("com.gradle.plugin-publish") version "2.0.0"
     signing
-    id("org.jreleaser") version "1.18.0"
+    id("org.jreleaser") version "1.22.0"
 }
 
 group = "io.github.mictaege"
@@ -38,11 +38,11 @@ repositories {
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib")
-    implementation("org.junit.platform:junit-platform-launcher:1.10.2")
+    implementation("org.junit.platform:junit-platform-launcher:1.14.1")
     implementation("io.github.mictaege:arete:2025.1-rc1")
-    implementation("org.fusesource.jansi:jansi:2.4.1")
-    implementation("com.google.guava:guava:33.2.0-jre")
-    implementation("org.freemarker:freemarker:2.3.32")
+    implementation("org.fusesource.jansi:jansi:2.4.2")
+    implementation("com.google.guava:guava:33.5.0-jre")
+    implementation("org.freemarker:freemarker:2.3.34")
     implementation("net.sourceforge.plantuml:plantuml-mit:1.2025.10")
     implementation("org.commonmark:commonmark:0.27.0")
 }
@@ -78,13 +78,12 @@ kotlin {
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
-    kotlinOptions {
-        jvmTarget = "11"
-        languageVersion = "1.6"
-        apiVersion = "1.6"
+    compilerOptions {
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11)
+        languageVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_1)
+        apiVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_1)
     }
 }
-
 tasks.javadoc {
     if (JavaVersion.current().isJava9Compatible) {
         (options as StandardJavadocDocletOptions).addBooleanOption("html5", true)
