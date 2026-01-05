@@ -43,7 +43,8 @@ dependencies {
     implementation("org.fusesource.jansi:jansi:2.4.1")
     implementation("com.google.guava:guava:33.2.0-jre")
     implementation("org.freemarker:freemarker:2.3.32")
-    implementation("net.lingala.zip4j:zip4j:2.11.5")
+    implementation("net.sourceforge.plantuml:plantuml-mit:1.2025.10")
+    implementation("org.commonmark:commonmark:0.21.0")
 }
 
 tasks.register("generateResources") {

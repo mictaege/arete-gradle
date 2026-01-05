@@ -195,6 +195,10 @@
         margin: 0;
     }
 
+    .narrative a {
+        text-decoration: underline;
+    }
+
     .flex-container {
         display: flex;
     }
@@ -289,6 +293,54 @@
         background-color: var(--arete-color-foreground);
         color: var(--arete-color-background);
         background-image: var(--trace-icon-clipboard-bg)
+    }
+
+    .attachments {
+        display: flex;
+        margin-top: 10px;
+        gap: 12px;
+        justify-content: flex-start;
+        align-items: center;
+        white-space: nowrap;
+        opacity: 0.6
+    }
+
+    a.attachment {
+        text-decoration:none;
+        font-size: smaller;
+        appearance: none;
+        display: inline-flex;
+        transition: 0.3s;
+        padding: 4px;
+        margin-top: 4px;
+        margin-bottom: 4px;
+        gap: 2px;
+        border-radius: var(--step-border-radius);
+        border: none;
+        cursor: pointer;
+        background-color: var(--arete-color-background);
+        color: var(--arete-color-foreground);
+    }
+
+    a.attachment:hover {
+        background-color: var(--arete-color-foreground);
+        color: var(--arete-color-background);
+    }
+
+    .attachment-icon {
+        display: inline-block;
+        vertical-align: middle;
+        background-size: contain;
+        background-position: center center;
+        background-repeat: no-repeat;
+        width:1rem;
+        height:1rem;
+        background-image: var(--spec-icon-file-fg);
+        opacity: 1;
+    }
+
+    .attachment:hover > i {
+        background-image: var(--spec-icon-file-bg);
     }
 
     /* Add a background color to the top navigation */
