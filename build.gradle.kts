@@ -44,7 +44,7 @@ dependencies {
     implementation("com.google.guava:guava:33.2.0-jre")
     implementation("org.freemarker:freemarker:2.3.32")
     implementation("net.sourceforge.plantuml:plantuml-mit:1.2025.10")
-    implementation("org.commonmark:commonmark:0.21.0")
+    implementation("org.commonmark:commonmark:0.27.0")
 }
 
 tasks.register("generateResources") {
