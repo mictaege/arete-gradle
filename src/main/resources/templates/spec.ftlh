@@ -229,8 +229,12 @@
                 <#if step.hasNarrative>
                     <div class="neutral-no-hover step" style="margin-bottom: ${vMargin}; margin-top: ${vMargin};  font-weight: normal">
                         <p class="narrative" style="font-weight: ${fWeight}">${step.narrative.header}</p>
-                        <#list step.narrative.lines as line>
-                            <p class="narrative">${line}</p>
+                        <#list step.narrative.formattedLines as line>
+                            <div class="narrative">
+                                <#noautoesc>
+                                    ${line}
+                                </#noautoesc>
+                            </div>
                         </#list>
                         <#if step.narrative.hasImages>
                             <#assign imgIdx = 0>

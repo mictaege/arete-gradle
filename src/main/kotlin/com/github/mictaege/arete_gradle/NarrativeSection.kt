@@ -4,6 +4,8 @@ import com.github.mictaege.arete.Narrative
 import net.sourceforge.plantuml.FileFormat
 import net.sourceforge.plantuml.FileFormatOption
 import net.sourceforge.plantuml.SourceStringReader
+import org.commonmark.parser.Parser
+import org.commonmark.renderer.html.HtmlRenderer
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
@@ -14,6 +16,14 @@ import java.util.*
 class NarrativeSection(annotation: Narrative) {
     val header = annotation.header
     val lines = annotation.value.toList()
+    
+    private val parser = Parser.builder().build()
+    private val renderer = HtmlRenderer.builder().build()
+
+    val formattedLines = lines.map { l -> 
+        val document = parser.parse(l.trim())
+        renderer.render(document).trim()
+    }
 
     val pictures: List<Picture> = annotation.imageResourcePath
         .filter { it.isNotBlank() }

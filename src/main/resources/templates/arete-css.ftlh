@@ -195,6 +195,10 @@
         margin: 0;
     }
 
+    .narrative a {
+        text-decoration: underline;
+    }
+
     .flex-container {
         display: flex;
     }
