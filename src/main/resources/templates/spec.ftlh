@@ -94,6 +94,9 @@
         </#macro>
 
         <#macro dumpSteps step parent=step>
+            <#if step.resultState.hidden>
+                <#return/>
+            </#if>
             <#assign vMargin = 2>
             <#assign vMargin = 2>
             <#assign fWeight = "normal">

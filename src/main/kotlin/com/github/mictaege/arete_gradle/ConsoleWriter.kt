@@ -16,6 +16,7 @@ class ConsoleWriter: SpecificationWriter {
     }
 
     private fun collect(intend: Int, buffer: StringBuffer, step: SpecificationStep) {
+        if (step.resultState.hidden) return
         if (step.type.container) {
             buffer.append("\n")
         }
