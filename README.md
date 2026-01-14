@@ -25,6 +25,31 @@ plugins {
 The reports generated for the `arete` specifications will be written to the `<your_project>/build/reports/arete/<task>/index.html` folder.
 This is a parallel structure to the gradle test reporting structure `<your_project>/build/reports/test/<task>/index.html`.
 
+### Excluding disabled test in the report
+
+Per default disabled tests are included in the report. This is useful to indicate that a feature or
+scenario is not yet implemented or does it need further discussion and this fact should obviously reflected in the report.
+
+```Java
+@Scenario
+@Disabled("Needs further discussion with the product owner")
+class ShowOrderHistory {
+    ...
+}
+```
+
+In other situations a test is disabled because it's not applicable for the current environment or because of a certain
+version of the product. In this case it's better to exclude the test from the report of this environment or version. To
+exlude a disabled test from the report add the `@HiddenIfDisabled` annotation to the feature, scenario or method.
+
+```Java
+@Scenario
+@EnabledIf(com.github.mictaege.travel_agency.Feature.MONITARIZATION)
+@HiddenIfDisabled
+class ShowAdvertisement {
+    ...
+}
+```
 
 ## Screenshot-Taking
 
