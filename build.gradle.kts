@@ -20,9 +20,9 @@ gradlePlugin {
         create("aretePlugin") {
             id = "io.github.mictaege.arete"
             displayName = "Arete Plugin"
-            description = "Gradle reporting plugin for the Arete JUnit5 testing framework."
+            description = "Gradle reporting plugin for the Arete JUnit6 testing framework."
             implementationClass = "com.github.mictaege.arete_gradle.AretePlugin"
-            tags.set(listOf("testing", "junit5", "bdd", "agile"))
+            tags.set(listOf("testing", "junit6", "bdd", "agile"))
         }
     }
 }
@@ -38,7 +38,7 @@ repositories {
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib")
-    implementation("org.junit.platform:junit-platform-launcher:1.14.1")
+    implementation("org.junit.platform:junit-platform-launcher:6.0.2")
     implementation("io.github.mictaege:arete:2025.1-rc1")
     implementation("org.fusesource.jansi:jansi:2.4.2")
     implementation("com.google.guava:guava:33.5.0-jre")
@@ -65,8 +65,8 @@ tasks.test {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
     withJavadocJar()
     withSourcesJar()
 }
@@ -79,7 +79,7 @@ kotlin {
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
     compilerOptions {
-        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11)
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
         languageVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_1)
         apiVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_1)
     }
