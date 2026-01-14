@@ -1,13 +1,17 @@
+import org.jreleaser.model.Active
+import org.jreleaser.model.Signing
+
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "1.9.22"
+    id("org.jetbrains.kotlin.jvm") version "2.3.0"
     `java-gradle-plugin`
     `maven-publish`
-    id("com.gradle.plugin-publish") version "1.2.1"
+    id("com.gradle.plugin-publish") version "2.0.0"
     signing
+    id("org.jreleaser") version "1.22.0"
 }
 
 group = "io.github.mictaege"
-version = "2024.2"
+version = "2026.1-rc1"
 
 gradlePlugin {
     website.set("https://github.com/mictaege/arete-gradle")
@@ -16,9 +20,9 @@ gradlePlugin {
         create("aretePlugin") {
             id = "io.github.mictaege.arete"
             displayName = "Arete Plugin"
-            description = "Gradle reporting plugin for the Arete JUnit5 testing framework."
+            description = "Gradle reporting plugin for the Arete JUnit6 testing framework."
             implementationClass = "com.github.mictaege.arete_gradle.AretePlugin"
-            tags.set(listOf("testing", "junit5", "bdd", "agile"))
+            tags.set(listOf("testing", "junit6", "bdd", "agile"))
         }
     }
 }
@@ -34,12 +38,13 @@ repositories {
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib")
-    implementation("org.junit.platform:junit-platform-launcher:1.10.2")
-    implementation("io.github.mictaege:arete:2024.2")
-    implementation("org.fusesource.jansi:jansi:2.4.1")
-    implementation("com.google.guava:guava:33.2.0-jre")
-    implementation("org.freemarker:freemarker:2.3.32")
-    implementation("net.lingala.zip4j:zip4j:2.11.5")
+    implementation("org.junit.platform:junit-platform-launcher:6.0.2")
+    implementation("io.github.mictaege:arete:2026.1-rc1")
+    implementation("org.fusesource.jansi:jansi:2.4.2")
+    implementation("com.google.guava:guava:33.5.0-jre")
+    implementation("org.freemarker:freemarker:2.3.34")
+    implementation("net.sourceforge.plantuml:plantuml-mit:1.2025.10")
+    implementation("org.commonmark:commonmark:0.27.0")
 }
 
 tasks.register("generateResources") {
@@ -60,26 +65,25 @@ tasks.test {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
     withJavadocJar()
     withSourcesJar()
 }
 
 kotlin {
     jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(11))
+        languageVersion.set(JavaLanguageVersion.of(21))
     }
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
-    kotlinOptions {
-        jvmTarget = "11"
-        languageVersion = "1.6"
-        apiVersion = "1.6"
+    compilerOptions {
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
+        languageVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_1)
+        apiVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_1)
     }
 }
-
 tasks.javadoc {
     if (JavaVersion.current().isJava9Compatible) {
         (options as StandardJavadocDocletOptions).addBooleanOption("html5", true)
@@ -124,17 +128,42 @@ publishing {
     }
     repositories {
         maven {
-            val releasesRepoUrl = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
-            val snapshotsRepoUrl = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
-            url = if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl
-            credentials {
-                username = if (hasProperty("ossrhUsername")) property("ossrhUsername") as String else ""
-                password = if (hasProperty("ossrhPassword")) property("ossrhPassword") as String else ""
-            }
+            name = "staging"
+            url = uri(layout.buildDirectory.dir("staging").get().asFile.toURI())
         }
     }
 }
 
-signing {
-    sign(publishing.publications["mavenJava"])
+jreleaser {
+    project {
+        copyright.set("Michael Taege")
+        description.set("This repository contains the Arete Gradle Plugin.")
+    }
+    signing {
+        active.set(Active.ALWAYS)
+        armored.set(true)
+        checksums.set(true)
+        mode.set(Signing.Mode.FILE)
+        passphrase.set(if (hasProperty("centralPortalKeyPwd")) property("centralPortalKeyPwd") as String else "")
+        publicKey.set(if (hasProperty("centralPortalPublicKey")) property("centralPortalPublicKey") as String else "")
+        secretKey.set(if (hasProperty("centralPortalSecretKey")) property("centralPortalSecretKey") as String else "")
+    }
+    deploy {
+        maven {
+            mavenCentral {
+                create("sonatype") {
+                    active.set(Active.ALWAYS)
+                    url = "https://central.sonatype.com/api/v1/publisher"
+                    username.set(if (hasProperty("centralPortalUsr")) property("centralPortalUsr") as String else "")
+                    password.set(if (hasProperty("centralPortalPwd")) property("centralPortalPwd") as String else "")
+                    stagingRepository(layout.buildDirectory.dir("staging").get().asFile.path)
+                }
+            }
+        }
+    }
+    release {
+        github {
+            enabled.set(false)
+        }
+    }
 }

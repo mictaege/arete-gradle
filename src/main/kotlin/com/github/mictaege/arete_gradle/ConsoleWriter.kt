@@ -16,6 +16,7 @@ class ConsoleWriter: SpecificationWriter {
     }
 
     private fun collect(intend: Int, buffer: StringBuffer, step: SpecificationStep) {
+        if (step.resultState.hidden) return
         if (step.type.container) {
             buffer.append("\n")
         }
@@ -41,6 +42,12 @@ class ConsoleWriter: SpecificationWriter {
             buffer.append("\n")
         }
         buffer.append(tabs).append(displayStrg).append("\n")
+        if (step.type == StepType.EXAMPLE_GRID_CONTAINER) {
+            val seperator = "${tabs}$tab    @|white ${IntRange(1, step.gridHeader.length).map { "-" }.joinToString("")}|@\n"
+            buffer.append(seperator)
+            buffer.append("${tabs}$tab    @|white ${step.gridHeader}|@\n")
+            buffer.append(seperator)
+        }
         if (step.type == StepType.SPEC) {
             buffer.append("${tabs}@|white ________________________________________|@\n")
         }

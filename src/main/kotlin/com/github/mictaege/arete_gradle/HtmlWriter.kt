@@ -4,11 +4,12 @@ import freemarker.template.Configuration
 import freemarker.template.Configuration.VERSION_2_3_32
 import freemarker.template.Template
 import freemarker.template.TemplateExceptionHandler
-import net.lingala.zip4j.ZipFile
 import java.io.File
 import java.io.StringWriter
 import java.nio.file.Files
 import java.nio.file.StandardCopyOption.REPLACE_EXISTING
+import java.nio.file.StandardOpenOption.CREATE
+import java.nio.file.StandardOpenOption.TRUNCATE_EXISTING
 
 
 object BuildDir {
@@ -16,6 +17,7 @@ object BuildDir {
     val areteDir = File(reportDir,"arete")
     val taskDir = File(areteDir, System.getProperty(AretePlugin.TASK_NAME_PROPERTY))
     val specsDir = File(taskDir, "specs")
+    val iconsDir = File(taskDir, "icons")
 }
 
 object Freemaker {
@@ -33,21 +35,33 @@ object Freemaker {
 class HtmlWriter: SpecificationWriter {
 
     override fun writeSpec(step: SpecificationStep) {
-        copyScreenshots(step)
-        writeHtmlFile("/spec.ftlh", mapOf("step" to step), File(BuildDir.specsDir, "${step.uniqueHash}.html"))
+        copyResources(step)
+        writeHtmlFile("/spec.ftlh", mapOf("step" to step, "colorScheme" to AretePlugin.colorScheme), File(BuildDir.specsDir, "${step.uniqueHash}.html"))
         deleteOriginalScreenshots(step)
     }
 
-    private fun copyScreenshots(step: SpecificationStep) {
+    private fun copyResources(step: SpecificationStep) {
         step.screenshot?.also {
             try {
                 val target = File(BuildDir.specsDir, "${step.uniqueHash}.png")
-                target.mkdirs()
+                target.parentFile.mkdirs()
                 Files.copy(it.toPath(), target.toPath(), REPLACE_EXISTING)
             } catch (ignore: Exception) {
             }
         }
-        step.steps.forEach { copyScreenshots(it) }
+        if (step.hasNarrative) {
+            step.narrative?.resources?.forEach { i ->
+                val target = File(BuildDir.specsDir, i.fileName)
+                target.parentFile.mkdirs()
+                Files.write(
+                    target.toPath(),
+                    i.readResource(),
+                    CREATE,
+                    TRUNCATE_EXISTING
+                )
+            }
+        }
+        step.steps.forEach { copyResources(it) }
     }
 
     private fun deleteOriginalScreenshots(step: SpecificationStep) {
@@ -74,10 +88,10 @@ class HtmlWriter: SpecificationWriter {
                 specFile.writeText(specSource)
             }
         }
-        writeHtmlFile("/index.ftlh", mapOf("plan" to plan), File(BuildDir.taskDir, "index.html"))
-        writeHtmlFile("/display_names.ftlh", mapOf("plan" to plan), File(BuildDir.taskDir, "display_names.html"))
-        writeHtmlFile("/test_specs.ftlh", mapOf("plan" to plan), File(BuildDir.taskDir, "test_specs.html"))
-        writeHtmlFile("/tags.ftlh", mapOf("plan" to plan), File(BuildDir.taskDir, "tags.html"))
+        writeHtmlFile("/index.ftlh", mapOf("plan" to plan, "colorScheme" to AretePlugin.colorScheme), File(BuildDir.taskDir, "index.html"))
+        writeHtmlFile("/display_names.ftlh", mapOf("plan" to plan, "colorScheme" to AretePlugin.colorScheme), File(BuildDir.taskDir, "display_names.html"))
+        writeHtmlFile("/test_specs.ftlh", mapOf("plan" to plan, "colorScheme" to AretePlugin.colorScheme), File(BuildDir.taskDir, "test_specs.html"))
+        writeHtmlFile("/tags.ftlh", mapOf("plan" to plan, "colorScheme" to AretePlugin.colorScheme), File(BuildDir.taskDir, "tags.html"))
         extractIcons()
     }
 
@@ -111,12 +125,35 @@ class HtmlWriter: SpecificationWriter {
 
     private fun extractIcons() {
         File(BuildDir.taskDir, "icons").deleteRecursively()
-        val zipFile = File(BuildDir.taskDir, "icons.zip")
-        javaClass.getResourceAsStream("/icons.zip")?.let {
-            Files.copy(it, zipFile.toPath(), REPLACE_EXISTING)
-            ZipFile(zipFile).extractAll(BuildDir.taskDir.absolutePath)
-            zipFile.delete()
+
+        listOf(
+            "icon-bars",
+            "icon-camera",
+            "icon-clipboard",
+            "icon-external-link",
+            "icon-file",
+            "icon-link",
+            "icon-share",
+            "menu-icon-flask",
+            "menu-icon-handshake",
+            "menu-icon-home",
+            "menu-icon-tags"
+        ).forEach {
+            writeSvgFile("/$it.ftlh", AretePlugin.colorScheme.arete_color_background, File(BuildDir.iconsDir, "$it-bg.svg"))
+            writeSvgFile("/$it.ftlh", AretePlugin.colorScheme.arete_color_foreground, File(BuildDir.iconsDir, "$it-fg.svg"))
+            writeSvgFile("/$it.ftlh", AretePlugin.colorScheme.arete_color_neutral, File(BuildDir.iconsDir, "$it-color.svg"))
         }
+    }
+
+    private fun writeSvgFile(
+        tmplFile: String,
+        foreground: String,
+        target: File
+    ) {
+        val temp: Template = Freemaker.cfg.getTemplate(tmplFile)
+        val stringWriter = StringWriter()
+        temp.process(mapOf("foreground" to foreground), stringWriter)
+        target.createAndWrite(stringWriter.toString())
     }
 
 }

@@ -1,9 +1,12 @@
 package com.github.mictaege.arete_gradle
 
+import com.github.mictaege.arete.ExampleCsv
+import com.github.mictaege.arete.ExampleGrid
 import com.github.mictaege.arete.Narrative
 import com.github.mictaege.arete.SeeAlso
 import com.github.mictaege.arete.SeeAlsoDeclaration
 import com.github.mictaege.arete.Spec
+import com.github.mictaege.arete.HiddenIfDisabled
 import org.junit.platform.engine.TestExecutionResult
 import org.junit.platform.engine.TestExecutionResult.Status
 import org.junit.platform.launcher.TestIdentifier
@@ -23,12 +26,17 @@ enum class StepType(val container: Boolean) {
     THEN(false),
     DESCRIBE(true),
     IT_SHOULD(false),
-    EXAMPLE_TEMPLATE(true),
-    EXAMPLE_INSTANCE(false)
+    EXAMPLE_CONTAINER(true),
+    EXAMPLE_INSTANCE(false),
+    EXAMPLE_GRID_CONTAINER(true),
+    EXAMPLE_GRID_INSTANCE(false)
 }
 
 enum class ResultState(val sign: String) {
-    FAILED("[x]"), ABORTED("[*]"), IGNORED("[/]"), SUCCESSFUL("[+]")
+    FAILED("[x]"), ABORTED("[*]"), IGNORED("[/]"), HIDDEN("[#]"), SUCCESSFUL("[+]");
+
+    val hidden: Boolean
+        get() = this == ResultState.HIDDEN
 }
 
 abstract class SpecificationNode {
@@ -39,6 +47,10 @@ abstract class SpecificationNode {
     abstract fun add(step: SpecificationStep): Boolean
 
     abstract fun addResult(testId: TestIdentifier, testResult: TestExecutionResult): Boolean
+
+    fun isFirst(step: SpecificationStep): Boolean {
+        return steps.firstOrNull() == step
+    }
 
     fun findFirst(predicate: (SpecificationStep) -> Boolean): SpecificationStep? {
         var step: SpecificationStep? = null
@@ -217,12 +229,14 @@ class SpecificationStep(
                 null
             }
         }
+    val hiddenIfDisabled: Boolean
+        get() = testId.isAnnotated(HiddenIfDisabled::class.java)
     val resultState: ResultState
         get() = when(testResult?.status) {
             Status.SUCCESSFUL -> ResultState.SUCCESSFUL
             Status.ABORTED -> ResultState.ABORTED
             Status.FAILED -> ResultState.FAILED
-            null -> ResultState.IGNORED
+            null -> if (hiddenIfDisabled) ResultState.HIDDEN else ResultState.IGNORED
         }
     val errorMsg: String
         get() = testResult?.throwable?.map { t -> t.localizedMessage }?.map { m -> m.trim() }?.orElse("") ?: ""
@@ -278,5 +292,19 @@ class SpecificationStep(
             else -> resultState
         }
     }
+
+    val gridColumns: Array<String>
+        get() {
+            if (testId.isAnnotated(ExampleGrid::class.java)) {
+                return testId.getAnnotation(ExampleGrid::class.java)?.columns ?: arrayOf()
+            } else if (testId.isAnnotated(ExampleCsv::class.java)) {
+                return testId.getAnnotation(ExampleCsv::class.java)?.columns ?: arrayOf()
+            }
+            return arrayOf()
+
+        }
+    val gridHeader get() = "| ${gridColumns.joinToString(" | ")} |"
+    val gridRowData: List<String>
+        get() = displayName.split("|").map { it.trim() }.filter { it.isNotEmpty() }
 
 }
