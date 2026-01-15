@@ -2,7 +2,7 @@
 
 [![Gradle Plugin Portal](https://img.shields.io/gradle-plugin-portal/v/io.github.mictaege.arete)](https://plugins.gradle.org/plugin/io.github.mictaege.arete)
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.mictaege/arete-gradle.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22io.github.mictaege%22%20AND%20a:%22arete-gradle%22)
-[![Maven Central](https://img.shields.io/maven-central/v/org.junit.jupiter/junit-jupiter/5.10.2.svg?color=25a162&label=Jupiter)](https://central.sonatype.com/artifact/org.junit.jupiter/junit-jupiter/5.10.2)
+[![Maven Central](https://img.shields.io/maven-central/v/org.junit.jupiter/junit-jupiter/6.0.2.svg?color=25a162&label=Jupiter)](https://central.sonatype.com/artifact/org.junit.jupiter/junit-jupiter/5.10.2)
 [![Apache License 2.0](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
 
 Gradle reporting plugin for the [Arete](https://github.com/mictaege/arete) JUnit6 testing framework.
@@ -101,7 +101,17 @@ arete {
 }
 ```
 
-or by providing a custom colorscheme.
+overriding a predefined colorscheme
+
+```Kotlin
+arete {
+    colorScheme = object : CatppuccinFrappeColors() {
+        override var arete_plantuml_theme = "amiga"
+    }
+}
+```
+
+or by providing an own custom colorscheme.
 
 ```Kotlin
 arete {
@@ -119,6 +129,7 @@ arete {
         override val arete_color_failed_emph = "darkred"
         override val arete_color_neutral = "blue"
         override val arete_color_neutral_emph = "darkblue"
+        override val arete_plantuml_theme = "amiga"
     }
 }
 ```

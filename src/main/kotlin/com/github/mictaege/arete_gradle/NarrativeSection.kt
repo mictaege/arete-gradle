@@ -89,7 +89,7 @@ class PlantUmlDiagram(val diagramSrc: String): Image {
     private fun ensureTheme(src: String): String = if (src.contains("!theme")) {
         src
     } else {
-        "@startuml\n!theme " + AretePlugin.colorScheme.arete_plantuml_theme + "\n" + src.removePrefix("@startuml\n")
+        "@startuml\n!theme " + AreteColorSchemeProvider.colorScheme.arete_plantuml_theme + "\n" + src.removePrefix("@startuml\n")
     }
 
     private fun ensureSmetana(src: String): String = if (src.contains("!pragma layout smetana")) {

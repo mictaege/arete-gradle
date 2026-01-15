@@ -55,6 +55,9 @@
                 <ul>
                     <#list step.stepsReversed as childStep>
                         <#if childStep.type.container>
+                            <#if childStep.resultState.hidden>
+                                <#return/>
+                            </#if>
                             <#if "${childStep.cumulatedState()}" == "IGNORED">
                                 <li>
                                     <div class="ignored">
