@@ -101,7 +101,17 @@ arete {
 }
 ```
 
-or by providing a custom colorscheme.
+overriding a predefined colorscheme
+
+```Kotlin
+arete {
+    colorScheme = object : CatppuccinFrappeColors() {
+        override var arete_plantuml_theme = "amiga"
+    }
+}
+```
+
+or by providing an own custom colorscheme.
 
 ```Kotlin
 arete {
@@ -119,6 +129,7 @@ arete {
         override val arete_color_failed_emph = "darkred"
         override val arete_color_neutral = "blue"
         override val arete_color_neutral_emph = "darkblue"
+        override val arete_plantuml_theme = "amiga"
     }
 }
 ```

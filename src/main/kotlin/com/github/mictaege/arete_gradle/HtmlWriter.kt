@@ -36,7 +36,7 @@ class HtmlWriter: SpecificationWriter {
 
     override fun writeSpec(step: SpecificationStep) {
         copyResources(step)
-        writeHtmlFile("/spec.ftlh", mapOf("step" to step, "colorScheme" to AretePlugin.colorScheme), File(BuildDir.specsDir, "${step.uniqueHash}.html"))
+        writeHtmlFile("/spec.ftlh", mapOf("step" to step, "colorScheme" to AreteColorSchemeProvider.colorScheme), File(BuildDir.specsDir, "${step.uniqueHash}.html"))
         deleteOriginalScreenshots(step)
     }
 
@@ -46,7 +46,7 @@ class HtmlWriter: SpecificationWriter {
                 val target = File(BuildDir.specsDir, "${step.uniqueHash}.png")
                 target.parentFile.mkdirs()
                 Files.copy(it.toPath(), target.toPath(), REPLACE_EXISTING)
-            } catch (ignore: Exception) {
+            } catch (_: Exception) {
             }
         }
         if (step.hasNarrative) {
@@ -68,7 +68,7 @@ class HtmlWriter: SpecificationWriter {
         step.screenshot?.also {
             try {
                 it.delete()
-            } catch (ignore: Exception) {
+            } catch (_: Exception) {
             }
         }
         step.steps.forEach { deleteOriginalScreenshots(it) }
@@ -88,10 +88,10 @@ class HtmlWriter: SpecificationWriter {
                 specFile.writeText(specSource)
             }
         }
-        writeHtmlFile("/index.ftlh", mapOf("plan" to plan, "colorScheme" to AretePlugin.colorScheme), File(BuildDir.taskDir, "index.html"))
-        writeHtmlFile("/display_names.ftlh", mapOf("plan" to plan, "colorScheme" to AretePlugin.colorScheme), File(BuildDir.taskDir, "display_names.html"))
-        writeHtmlFile("/test_specs.ftlh", mapOf("plan" to plan, "colorScheme" to AretePlugin.colorScheme), File(BuildDir.taskDir, "test_specs.html"))
-        writeHtmlFile("/tags.ftlh", mapOf("plan" to plan, "colorScheme" to AretePlugin.colorScheme), File(BuildDir.taskDir, "tags.html"))
+        writeHtmlFile("/index.ftlh", mapOf("plan" to plan, "colorScheme" to AreteColorSchemeProvider.colorScheme), File(BuildDir.taskDir, "index.html"))
+        writeHtmlFile("/display_names.ftlh", mapOf("plan" to plan, "colorScheme" to AreteColorSchemeProvider.colorScheme), File(BuildDir.taskDir, "display_names.html"))
+        writeHtmlFile("/test_specs.ftlh", mapOf("plan" to plan, "colorScheme" to AreteColorSchemeProvider.colorScheme), File(BuildDir.taskDir, "test_specs.html"))
+        writeHtmlFile("/tags.ftlh", mapOf("plan" to plan, "colorScheme" to AreteColorSchemeProvider.colorScheme), File(BuildDir.taskDir, "tags.html"))
         extractIcons()
     }
 
@@ -139,9 +139,9 @@ class HtmlWriter: SpecificationWriter {
             "menu-icon-home",
             "menu-icon-tags"
         ).forEach {
-            writeSvgFile("/$it.ftlh", AretePlugin.colorScheme.arete_color_background, File(BuildDir.iconsDir, "$it-bg.svg"))
-            writeSvgFile("/$it.ftlh", AretePlugin.colorScheme.arete_color_foreground, File(BuildDir.iconsDir, "$it-fg.svg"))
-            writeSvgFile("/$it.ftlh", AretePlugin.colorScheme.arete_color_neutral, File(BuildDir.iconsDir, "$it-color.svg"))
+            writeSvgFile("/$it.ftlh", AreteColorSchemeProvider.colorScheme.arete_color_background, File(BuildDir.iconsDir, "$it-bg.svg"))
+            writeSvgFile("/$it.ftlh", AreteColorSchemeProvider.colorScheme.arete_color_foreground, File(BuildDir.iconsDir, "$it-fg.svg"))
+            writeSvgFile("/$it.ftlh", AreteColorSchemeProvider.colorScheme.arete_color_neutral, File(BuildDir.iconsDir, "$it-color.svg"))
         }
     }
 
