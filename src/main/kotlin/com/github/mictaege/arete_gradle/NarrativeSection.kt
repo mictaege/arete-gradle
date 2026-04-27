@@ -72,13 +72,13 @@ class Picture(val imagePath: String): Image {
 }
 
 class PlantUmlDiagram(val diagramSrc: String): Image {
-    override val fileName: String = "diagram-${UUID.randomUUID()}.svg"
+    override val fileName: String = "diagram-${UUID.randomUUID()}.png"
     override fun readResource(): ByteArray {
         try {
-            val effectiveSrc = ensureSmetana(ensureTheme(diagramSrc))
+            val effectiveSrc = ensureMetadata(diagramSrc)
             val reader = SourceStringReader(effectiveSrc)
             val outputStream = ByteArrayOutputStream()
-            val fileFormatOption = FileFormatOption(FileFormat.SVG)
+            val fileFormatOption = FileFormatOption(FileFormat.PNG)
             reader.outputImage(outputStream, fileFormatOption)
             return outputStream.toByteArray()
         } catch (e: IOException) {
@@ -86,16 +86,28 @@ class PlantUmlDiagram(val diagramSrc: String): Image {
         }
     }
 
-    private fun ensureTheme(src: String): String = if (src.contains("!theme")) {
-        src
-    } else {
-        "@startuml\n!theme " + AreteColorSchemeProvider.colorScheme.arete_plantuml_theme + "\n" + src.removePrefix("@startuml\n")
-    }
+    private fun ensureMetadata(src: String): String {
+        val metadata = listOf(
+            "!pragma layout smetana",
+            "!theme ${AreteColorSchemeProvider.colorScheme.arete_plantuml_theme}",
+            "scale 32"
+        )
 
-    private fun ensureSmetana(src: String): String = if (src.contains("!pragma layout smetana")) {
-        src
-    } else {
-        "@startuml\n!pragma layout smetana\n" + src.removePrefix("@startuml\n")
+        val metadataLineRegex = Regex("""^\s*(!pragma\s+layout\b.*|!theme\b.*|scale\b.*)\s*$""")
+        val startLineRegex = Regex("""^\s*@start\w*\b.*$""")
+
+        val lines = src.lines()
+            .filterNot { it.matches(metadataLineRegex) }
+            .toMutableList()
+
+        val startIndex = lines.indexOfFirst { it.matches(startLineRegex) }
+
+        return if (startIndex >= 0) {
+            lines.addAll(startIndex + 1, metadata)
+            lines.joinToString("\n")
+        } else {
+            (metadata + lines).joinToString("\n")
+        }
     }
 }
 
