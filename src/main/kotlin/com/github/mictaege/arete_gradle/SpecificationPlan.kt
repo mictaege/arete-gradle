@@ -1,12 +1,6 @@
 package com.github.mictaege.arete_gradle
 
-import com.github.mictaege.arete.ExampleCsv
-import com.github.mictaege.arete.ExampleGrid
-import com.github.mictaege.arete.Narrative
-import com.github.mictaege.arete.SeeAlso
-import com.github.mictaege.arete.SeeAlsoDeclaration
-import com.github.mictaege.arete.Spec
-import com.github.mictaege.arete.HiddenIfDisabled
+import com.github.mictaege.arete.*
 import org.junit.platform.engine.TestExecutionResult
 import org.junit.platform.engine.TestExecutionResult.Status
 import org.junit.platform.launcher.TestIdentifier
@@ -131,7 +125,7 @@ class SpecificationPlan: SpecificationNode() {
     }
 
     fun specsOrderedByTags(): List<SpecificationStep> {
-        return steps.filter { it.tags.isNotEmpty() }.sortedWith { s1, s2 -> s1.tags.compareTo(s2.tags) }
+        return steps.sortedWith { s1, s2 -> s1.testTags.compareTo(s2.testTags) }
     }
 
     fun specSummaries(): PlanSummaries {
@@ -146,24 +140,11 @@ class SpecificationPlan: SpecificationNode() {
         return PlanSummaries(flatFilter { it.type == StepType.DESCRIBE })
     }
 
-    fun allTags(): Set<String> {
-        val all = mutableSetOf<String>()
-        steps.forEach {s ->
-            s.tags.split(" ")
-                .map { it.trim()}
-                .filter { it.isNotEmpty() }
-                .map {t ->
-                    if(t.startsWith("#")) {
-                        t.substring(1)
-                    } else {
-                        t
-                    }
-                }
-                .forEach { t ->
-                    all.add(t)
-                }
-        }
-        return all.toSortedSet()
+    fun allTags(): Map<StereoTypes, Set<TestTag>> {
+        return steps
+            .flatMap { it.testTags.tags }
+            .groupBy { it.stereoType }
+            .mapValues { it.value.toSortedSet() }
     }
 
     private fun writeIfSpec(testId: TestIdentifier) {
@@ -215,7 +196,6 @@ class SpecificationStep(
     val timeStamp: ZonedDateTime = ZonedDateTime.now()
     val timeStampLong: String = timeStamp.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM, FormatStyle.MEDIUM))
     val timeOnly: String = timeStamp.format(DateTimeFormatter.ofPattern("HH:mm:ss.SSS"))
-    val tags: String = testId.tags.map({ t -> t.name }).sorted().joinToString(" ") { n -> "#$n" }
     val hasNarrative: Boolean = testId.isAnnotated(Narrative::class.java)
     val narrative: NarrativeSection? = testId.getAnnotation(Narrative::class.java)?.let { NarrativeSection(it) }
     val hasSeeAlsoRefs: Boolean = testId.isAnnotated(SeeAlsoDeclaration::class.java) || testId.isAnnotated(SeeAlso::class.java)
@@ -229,6 +209,7 @@ class SpecificationStep(
                 null
             }
         }
+    val testTags: TestTags = TestTags(testId)
     val hiddenIfDisabled: Boolean
         get() = testId.isAnnotated(HiddenIfDisabled::class.java)
     val resultState: ResultState

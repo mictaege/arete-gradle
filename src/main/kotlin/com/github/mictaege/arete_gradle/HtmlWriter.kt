@@ -127,17 +127,27 @@ class HtmlWriter: SpecificationWriter {
         File(BuildDir.taskDir, "icons").deleteRecursively()
 
         listOf(
+            "icon-calendar",
             "icon-bars",
+            "icon-bell",
+            "icon-broadcast",
+            "icon-buffer",
+            "icon-building",
             "icon-camera",
             "icon-clipboard",
             "icon-external-link",
             "icon-file",
+            "icon-gear",
             "icon-link",
+            "icon-scroll",
             "icon-share",
-            "menu-icon-flask",
-            "menu-icon-handshake",
-            "menu-icon-home",
-            "menu-icon-tags"
+            "icon-tag",
+            "icon-users",
+            "icon-flask",
+            "icon-handshake",
+            "icon-home",
+            "icon-sitemap",
+            "icon-tags"
         ).forEach {
             writeSvgFile("/$it.ftlh", AreteColorSchemeProvider.colorScheme.arete_color_background, File(BuildDir.iconsDir, "$it-bg.svg"))
             writeSvgFile("/$it.ftlh", AreteColorSchemeProvider.colorScheme.arete_color_foreground, File(BuildDir.iconsDir, "$it-fg.svg"))

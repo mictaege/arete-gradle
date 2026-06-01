@@ -3,49 +3,132 @@
     :root {
         --step-border-radius: 6px;
         --border-left-width: 12px;
-        --menu-icon-home-fg: url("./icons/menu-icon-home-fg.svg");
-        --menu-icon-home-neutral: url("./icons/menu-icon-home-neutral.svg");
-        --menu-icon-home-bg: url("./icons/menu-icon-home-bg.svg");
-        --menu-icon-handshake-fg: url("./icons/menu-icon-handshake-fg.svg");
-        --menu-icon-handshake-neutral: url("./icons/menu-icon-handshake-neutral.svg");
-        --menu-icon-handshake-bg: url("./icons/menu-icon-handshake-bg.svg");
-        --menu-icon-flask-fg: url("./icons/menu-icon-flask-fg.svg");
-        --menu-icon-flask-neutral: url("./icons/menu-icon-flask-neutral.svg");
-        --menu-icon-flask-bg: url("./icons/menu-icon-flask-bg.svg");
-        --menu-icon-tags-fg: url("./icons/menu-icon-tags-fg.svg");
-        --menu-icon-tags-neutral: url("./icons/menu-icon-tags-neutral.svg");
-        --menu-icon-tags-bg: url("./icons/menu-icon-tags-bg.svg");
-        --spec-menu-icon-home-fg: url("./../icons/menu-icon-home-fg.svg");
-        --spec-menu-icon-home-neutral: url("./../icons/menu-icon-home-neutral.svg");
-        --spec-menu-icon-home-bg: url("./../icons/menu-icon-home-bg.svg");
-        --spec-menu-icon-handshake-fg: url("./../icons/menu-icon-handshake-fg.svg");
-        --spec-menu-icon-handshake-neutral: url("./../icons/menu-icon-handshake-neutral.svg");
-        --spec-menu-icon-handshake-bg: url("./../icons/menu-icon-handshake-bg.svg");
-        --spec-menu-icon-flask-fg: url("./../icons/menu-icon-flask-fg.svg");
-        --spec-menu-icon-flask-neutral: url("./../icons/menu-icon-flask-neutral.svg");
-        --spec-menu-icon-flask-bg: url("./../icons/menu-icon-flask-bg.svg");
-        --spec-menu-icon-tags-fg: url("./../icons/menu-icon-tags-fg.svg");
-        --spec-menu-icon-tags-neutral: url("./../icons/menu-icon-tags-neutral.svg");
-        --spec-menu-icon-tags-bg: url("./../icons/menu-icon-tags-bg.svg");
-        --spec-icon-camera-bg: url("./../icons/icon-camera-bg.svg");
-        --spec-icon-file-fg: url("./../icons/icon-file-fg.svg");
-        --spec-icon-file-neutral: url("./../icons/icon-file-neutral.svg");
-        --spec-icon-file-bg: url("./../icons/icon-file-bg.svg");
-        --spec-icon-link-fg: url("./../icons/icon-link-fg.svg");
-        --spec-icon-link-neutral: url("./../icons/icon-link-neutral.svg");
-        --spec-icon-link-bg: url("./../icons/icon-link-bg.svg");
-        --spec-icon-external-link-fg: url("./../icons/icon-external-link-fg.svg");
-        --spec-icon-external-link-neutral: url("./../icons/icon-external-link-neutral.svg");
-        --spec-icon-external-link-bg: url("./../icons/icon-external-link-bg.svg");
-        --spec-icon-share-fg: url("./../icons/icon-share-fg.svg");
-        --spec-icon-share-neutral: url("./../icons/icon-share-neutral.svg");
-        --spec-icon-share-bg: url("./../icons/icon-share-bg.svg");
-        --nav-icon-bars-fg: url("./../icons/icon-bars-fg.svg");
-        --nav-icon-bars-neutral: url("./../icons/icon-bars-neutral.svg");
-        --nav-icon-bars-bg: url("./../icons/icon-bars-bg.svg");
-        --trace-icon-clipboard-fg: url("./../icons/icon-clipboard-fg.svg");
-        --trace-icon-clipboard-neutral: url("./../icons/icon-clipboard-neutral.svg");
-        --trace-icon-clipboard-bg: url("./../icons/icon-clipboard-bg.svg");
+        --page-icon-bars-bg: url("./../icons/icon-bars-bg.svg");
+        --page-icon-bars-fg: url("./../icons/icon-bignoredars-fg.svg");
+        --page-icon-bars-neutral: url("./../icons/icon-bars-neutral.svg");
+        --page-icon-bell-bg: url("./../icons/icon-bell-bg.svg");
+        --page-icon-bell-fg: url("./../icons/icon-bell-fg.svg");
+        --page-icon-bell-neutral: url("./../icons/icon-bell-neutral.svg");
+        --page-icon-broadcast-bg: url("./../icons/icon-broadcast-bg.svg");
+        --page-icon-broadcast-fg: url("./../icons/icon-broadcast-fg.svg");
+        --page-icon-broadcast-neutral: url("./../icons/icon-broadcast-neutral.svg");
+        --page-icon-buffer-bg: url("./../icons/icon-buffer-bg.svg");
+        --page-icon-buffer-fg: url("./../icons/icon-buffer-fg.svg");
+        --page-icon-buffer-neutral: url("./../icons/icon-buffer-neutral.svg");
+        --page-icon-building-bg: url("./../icons/icon-building-bg.svg");
+        --page-icon-building-fg: url("./../icons/icon-building-fg.svg");
+        --page-icon-building-neutral: url("./../icons/icon-building-neutral.svg");
+        --page-icon-calendar-bg: url("./../icons/icon-calendar-bg.svg");
+        --page-icon-calendar-fg: url("./../icons/icon-calendar-fg.svg");
+        --page-icon-calendar-neutral: url("./../icons/icon-calendar-neutral.svg");
+        --page-icon-camera-bg: url("./../icons/icon-camera-bg.svg");
+        --page-icon-camera-fg: url("./../icons/icon-camera-fg.svg");
+        --page-icon-camera-neutral: url("./../icons/icon-camera-neutral.svg");
+        --page-icon-clipboard-bg: url("./../icons/icon-clipboard-bg.svg");
+        --page-icon-clipboard-fg: url("./../icons/icon-clipboard-fg.svg");
+        --page-icon-clipboard-neutral: url("./../icons/icon-clipboard-neutral.svg");
+        --page-icon-external-link-bg: url(/.."./icons/icon-external-link-bg.svg");
+        --page-icon-external-link-fg: url(/.."./icons/icon-external-link-fg.svg");
+        --page-icon-external-link-neutral: url(/.."./icons/icon-external-link-neutral.svg");
+        --page-icon-file-bg: url("./../icons/icon-file-bg.svg");
+        --page-icon-file-fg: url("./../icons/icon-file-fg.svg");
+        --page-icon-file-neutral: url("./../icons/icon-file-neutral.svg");
+        --page-icon-flask-bg: url("./../icons/icon-flask-bg.svg");
+        --page-icon-flask-fg: url("./../icons/icon-flask-fg.svg");
+        --page-icon-flask-neutral: url("./../icons/icon-flask-neutral.svg");
+        --page-icon-gear-bg: url("./../icons/icon-gear-bg.svg");
+        --page-icon-gear-fg: url("./../icons/icon-gear-fg.svg");
+        --page-icon-gear-neutral: url("./../icons/icon-gear-neutral.svg");
+        --page-icon-handshake-bg: url("./../icons/icon-handshake-bg.svg");
+        --page-icon-handshake-fg: url("./../icons/icon-handshake-fg.svg");
+        --page-icon-handshake-neutral: url("./../icons/icon-handshake-neutral.svg");
+        --page-icon-home-bg: url("./../icons/icon-home-bg.svg");
+        --page-icon-home-fg: url("./../icons/icon-home-fg.svg");
+        --page-icon-home-neutral: url("./../icons/icon-home-neutral.svg");
+        --page-icon-link-bg: url("./../icons/icon-link-bg.svg");
+        --page-icon-link-fg: url("./../icons/icon-link-fg.svg");
+        --page-icon-link-neutral: url("./../icons/icon-link-neutral.svg");
+        --page-icon-scroll-bg: url("./../icons/icon-scroll-bg.svg");
+        --page-icon-scroll-fg: url("./../icons/icon-scroll-fg.svg");
+        --page-icon-scroll-neutral: url("./../icons/icon-scroll-neutral.svg");
+        --page-icon-share-bg: url("./../icons/icon-share-bg.svg");
+        --page-icon-share-fg: url("./../icons/icon-share-fg.svg");
+        --page-icon-share-neutral: url("./../icons/icon-share-neutral.svg");
+        --page-icon-sitemap-bg: url("./../icons/icon-sitemap-bg.svg");
+        --page-icon-sitemap-fg: url("./../icons/icon-sitemap-fg.svg");
+        --page-icon-sitemap-neutral: url("./../icons/icon-sitemap-neutral.svg");
+        --page-icon-tag-bg: url("./../icons/icon-tag-bg.svg");
+        --page-icon-tag-fg: url("./../icons/icon-tag-fg.svg");
+        --page-icon-tag-neutral: url("./../icons/icon-tag-neutral.svg");
+        --page-icon-tags-bg: url("./../icons/icon-tags-bg.svg");
+        --page-icon-tags-fg: url("./../icons/icon-tags-fg.svg");
+        --page-icon-tags-neutral: url("./../icons/icon-tags-neutral.svg");
+        --page-icon-users-bg: url("./../icons/icon-users-bg.svg");
+        --page-icon-users-fg: url("./../icons/icon-users-fg.svg");
+        --page-icon-users-neutral: url("./../icons/icon-users-neutral.svg");
+        --root-icon-bars-bg: url("./icons/icon-bars-bg.svg");
+        --root-icon-bars-fg: url("./icons/icon-bars-fg.svg");
+        --root-icon-bars-neutral: url("./icons/icon-bars-neutral.svg");
+        --root-icon-bell-bg: url("./icons/icon-bell-bg.svg");
+        --root-icon-bell-fg: url("./icons/icon-bell-fg.svg");
+        --root-icon-bell-neutral: url("./icons/icon-bell-neutral.svg");
+        --root-icon-broadcast-bg: url("./icons/icon-broadcast-bg.svg");
+        --root-icon-broadcast-fg: url("./icons/icon-broadcast-fg.svg");
+        --root-icon-broadcast-neutral: url("./icons/icon-broadcast-neutral.svg");
+        --root-icon-buffer-bg: url("./icons/icon-buffer-bg.svg");
+        --root-icon-buffer-fg: url("./icons/icon-buffer-fg.svg");
+        --root-icon-buffer-neutral: url("./icons/icon-buffer-neutral.svg");
+        --root-icon-building-bg: url("./icons/icon-building-bg.svg");
+        --root-icon-building-fg: url("./icons/icon-building-fg.svg");
+        --root-icon-building-neutral: url("./icons/icon-building-neutral.svg");
+        --root-icon-calendar-bg: url("./icons/icon-calendar-bg.svg");
+        --root-icon-calendar-fg: url("./icons/icon-calendar-fg.svg");
+        --root-icon-calendar-neutral: url("./icons/icon-calendar-neutral.svg");
+        --root-icon-camera-bg: url("./icons/icon-camera-bg.svg");
+        --root-icon-camera-fg: url("./icons/icon-camera-fg.svg");
+        --root-icon-camera-neutral: url("./icons/icon-camera-neutral.svg");
+        --root-icon-clipboard-bg: url("./icons/icon-clipboard-bg.svg");
+        --root-icon-clipboard-fg: url("./icons/icon-clipboard-fg.svg");
+        --root-icon-clipboard-neutral: url("./icons/icon-clipboard-neutral.svg");
+        --root-icon-external-link-bg: url("./icons/icon-external-link-bg.svg");
+        --root-icon-external-link-fg: url("./icons/icon-external-link-fg.svg");
+        --root-icon-external-link-neutral: url("./icons/icon-external-link-neutral.svg");
+        --root-icon-file-bg: url("./icons/icon-file-bg.svg");
+        --root-icon-file-fg: url("./icons/icon-file-fg.svg");
+        --root-icon-file-neutral: url("./icons/icon-file-neutral.svg");
+        --root-icon-flask-bg: url("./icons/icon-flask-bg.svg");
+        --root-icon-flask-fg: url("./icons/icon-flask-fg.svg");
+        --root-icon-flask-neutral: url("./icons/icon-flask-neutral.svg");
+        --root-icon-gear-bg: url("./icons/icon-gear-bg.svg");
+        --root-icon-gear-fg: url("./icons/icon-gear-fg.svg");
+        --root-icon-gear-neutral: url("./icons/icon-gear-neutral.svg");
+        --root-icon-handshake-bg: url("./icons/icon-handshake-bg.svg");
+        --root-icon-handshake-fg: url("./icons/icon-handshake-fg.svg");
+        --root-icon-handshake-neutral: url("./icons/icon-handshake-neutral.svg");
+        --root-icon-home-bg: url("./icons/icon-home-bg.svg");
+        --root-icon-home-fg: url("./icons/icon-home-fg.svg");
+        --root-icon-home-neutral: url("./icons/icon-home-neutral.svg");
+        --root-icon-link-bg: url("./icons/icon-link-bg.svg");
+        --root-icon-link-fg: url("./icons/icon-link-fg.svg");
+        --root-icon-link-neutral: url("./icons/icon-link-neutral.svg");
+        --root-icon-scroll-bg: url("./icons/icon-scroll-bg.svg");
+        --root-icon-scroll-fg: url("./icons/icon-scroll-fg.svg");
+        --root-icon-scroll-neutral: url("./icons/icon-scroll-neutral.svg");
+        --root-icon-share-bg: url("./icons/icon-share-bg.svg");
+        --root-icon-share-fg: url("./icons/icon-share-fg.svg");
+        --root-icon-share-neutral: url("./icons/icon-share-neutral.svg");
+        --root-icon-sitemap-bg: url("./icons/icon-sitemap-bg.svg");
+        --root-icon-sitemap-fg: url("./icons/icon-sitemap-fg.svg");
+        --root-icon-sitemap-neutral: url("./icons/icon-sitemap-neutral.svg");
+        --root-icon-tag-bg: url("./icons/icon-tag-bg.svg");
+        --root-icon-tag-fg: url("./icons/icon-tag-fg.svg");
+        --root-icon-tag-neutral: url("./icons/icon-tag-neutral.svg");
+        --root-icon-tags-bg: url("./icons/icon-tags-bg.svg");
+        --root-icon-tags-fg: url("./icons/icon-tags-fg.svg");
+        --root-icon-tags-neutral: url("./icons/icon-tags-neutral.svg");
+        --root-icon-users-bg: url("./icons/icon-users-bg.svg");
+        --root-icon-users-fg: url("./icons/icon-users-fg.svg");
+        --root-icon-users-neutral: url("./icons/icon-users-neutral.svg");
     }
 
     html {
@@ -261,7 +344,7 @@
         border: none;
         cursor: pointer;
         background-color: transparent;
-        background-image: var(--spec-icon-share-bg);
+        background-image: var(--page-icon-share-bg);
         background-repeat: no-repeat;
         background-origin: content-box;
         opacity: 0.6;
@@ -284,7 +367,7 @@
         color: var(--arete-color-foreground);
         padding: 4px 4px;
         cursor: pointer;
-        background-image: var(--trace-icon-clipboard-fg);
+        background-image: var(--page-icon-clipboard-fg);
         background-repeat: no-repeat;
         background-origin: content-box;
     }
@@ -292,7 +375,7 @@
     .stacktrace-copy-btn:hover {
         background-color: var(--arete-color-foreground);
         color: var(--arete-color-background);
-        background-image: var(--trace-icon-clipboard-bg)
+        background-image: var(--page-icon-clipboard-bg)
     }
 
     .attachments {
@@ -335,12 +418,12 @@
         background-repeat: no-repeat;
         width:1rem;
         height:1rem;
-        background-image: var(--spec-icon-file-fg);
+        background-image: var(--page-icon-file-fg);
         opacity: 1;
     }
 
     .attachment:hover > i {
-        background-image: var(--spec-icon-file-bg);
+        background-image: var(--page-icon-file-bg);
     }
 
     /* Add a background color to the top navigation */
@@ -375,35 +458,35 @@
     }
 
     .topnav a:hover .menu-icon-home {
-        background-image: var(--menu-icon-home-bg)
+        background-image: var(--root-icon-home-bg)
     }
 
     .topnav a:hover .menu-icon-handshake {
-        background-image: var(--menu-icon-handshake-bg)
+        background-image: var(--root-icon-handshake-bg)
     }
 
     .topnav a:hover .menu-icon-flask {
-        background-image: var(--menu-icon-flask-bg)
+        background-image: var(--root-icon-flask-bg)
     }
 
     .topnav a:hover .menu-icon-tags {
-        background-image: var(--menu-icon-tags-bg)
+        background-image: var(--root-icon-tags-bg)
     }
 
     .topnav a:hover .spec-menu-icon-home {
-        background-image: var(--spec-menu-icon-home-bg)
+        background-image: var(--page-icon-home-bg)
     }
 
     .topnav a:hover .spec-menu-icon-handshake {
-        background-image: var(--spec-menu-icon-handshake-bg)
+        background-image: var(--page-icon-handshake-bg)
     }
 
     .topnav a:hover .spec-menu-icon-flask {
-        background-image: var(--spec-menu-icon-flask-bg)
+        background-image: var(--page-icon-flask-bg)
     }
 
     .topnav a:hover .spec-menu-icon-tags {
-        background-image: var(--spec-menu-icon-tags-bg)
+        background-image: var(--page-icon-tags-bg)
     }
 
     /* Add a color to the active/current link */
@@ -414,35 +497,35 @@
     }
 
     .topnav a.active .menu-icon-home {
-        background-image: var(--menu-icon-home-bg)
+        background-image: var(--root-icon-home-bg)
     }
 
     .topnav a.active .menu-icon-handshake {
-        background-image: var(--menu-icon-handshake-bg)
+        background-image: var(--root-icon-handshake-bg)
     }
 
     .topnav a.active .menu-icon-flask {
-        background-image: var(--menu-icon-flask-bg)
+        background-image: var(--root-icon-flask-bg)
     }
 
     .topnav a.active .menu-icon-tags {
-        background-image: var(--menu-icon-tags-bg)
+        background-image: var(--root-icon-tags-bg)
     }
 
     .topnav a.active .spec-menu-icon-home {
-        background-image: var(--spec-menu-icon-home-bg)
+        background-image: var(--page-icon-home-bg)
     }
 
     .topnav a.active .spec-menu-icon-handshake {
-        background-image: var(--spec-menu-icon-handshake-bg)
+        background-image: var(--page-icon-handshake-bg)
     }
 
     .topnav a.active .spec-menu-icon-flask {
-        background-image: var(--spec-menu-icon-flask-bg)
+        background-image: var(--page-icon-flask-bg)
     }
 
     .topnav a.active .spec-menu-icon-tags {
-        background-image: var(--spec-menu-icon-tags-bg)
+        background-image: var(--page-icon-tags-bg)
     }
 
     nav {
@@ -468,7 +551,7 @@
         border-radius: var(--step-border-radius);
         background-color: var(--arete-color-foreground);
         color: var(--arete-color-background);
-        background-image: var(--nav-icon-bars-bg)
+        background-image: var(--page-icon-bars-bg)
     }
 
     nav li {
@@ -494,7 +577,7 @@
         background-repeat: no-repeat;
         width:1.25rem;
         height:1.25rem;
-        background-image: var(--menu-icon-home-fg)
+        background-image: var(--root-icon-home-fg)
     }
 
     .menu-icon-handshake {
@@ -505,7 +588,7 @@
         background-repeat: no-repeat;
         width:1.25rem;
         height:1.25rem;
-        background-image: var(--menu-icon-handshake-fg)
+        background-image: var(--root-icon-handshake-fg)
     }
 
     .menu-icon-flask {
@@ -516,7 +599,7 @@
         background-repeat: no-repeat;
         width:1.25rem;
         height:1.25rem;
-        background-image: var(--menu-icon-flask-fg)
+        background-image: var(--root-icon-flask-fg)
     }
 
     .menu-icon-tags {
@@ -527,7 +610,7 @@
         background-repeat: no-repeat;
         width:1.25rem;
         height:1.25rem;
-        background-image: var(--menu-icon-tags-fg)
+        background-image: var(--root-icon-tags-fg)
     }
 
     .spec-menu-icon-home {
@@ -538,7 +621,7 @@
         background-repeat: no-repeat;
         width:1.25rem;
         height:1.25rem;
-        background-image: var(--spec-menu-icon-home-fg)
+        background-image: var(--page-icon-home-fg)
     }
 
     .spec-menu-icon-handshake {
@@ -549,7 +632,7 @@
         background-repeat: no-repeat;
         width:1.25rem;
         height:1.25rem;
-        background-image: var(--spec-menu-icon-handshake-fg)
+        background-image: var(--page-icon-handshake-fg)
     }
 
     .spec-menu-icon-flask {
@@ -560,7 +643,7 @@
         background-repeat: no-repeat;
         width:1.25rem;
         height:1.25rem;
-        background-image: var(--spec-menu-icon-flask-fg)
+        background-image: var(--page-icon-flask-fg)
     }
 
     .spec-menu-icon-tags {
@@ -571,7 +654,7 @@
         background-repeat: no-repeat;
         width:1.25rem;
         height:1.25rem;
-        background-image: var(--spec-menu-icon-tags-fg)
+        background-image: var(--page-icon-tags-fg)
     }
 
     .spec-icon-camera {
@@ -582,7 +665,7 @@
         background-repeat: no-repeat;
         width:1rem;
         height:1rem;
-        background-image: var(--spec-icon-camera-bg)
+        background-image: var(--page-icon-camera-bg)
     }
 
     .spec-icon-file {
@@ -593,7 +676,7 @@
         background-repeat: no-repeat;
         width:1rem;
         height:1rem;
-        background-image: var(--spec-icon-file-bg)
+        background-image: var(--page-icon-file-bg)
     }
 
     .nav-icon-bars {
@@ -604,40 +687,7 @@
         background-repeat: no-repeat;
         width:1.25rem;
         height:1.25rem;
-        background-image: var(--nav-icon-bars-fg)
-    }
-
-    .search-by-tag-btn {
-        display: inline-flex;
-        transition: 0.3s;
-        padding: 4px;
-        gap: 2px;
-        border-radius: var(--step-border-radius);
-        border: none;
-        cursor: pointer;
-        background-color: var(--arete-color-background);
-        color: var(--arete-color-foreground);
-    }
-
-    .search-by-tag-btn:hover {
-        background-color: var(--arete-color-foreground);
-        color: var(--arete-color-background);
-    }
-
-    .search-by-tag-btn:hover > i {
-        background-image: var(--menu-icon-tags-bg)
-    }
-
-    .search-by-tag-icon {
-        display: inline-block;
-        vertical-align: middle;
-        background-size: contain;
-        background-position: center center;
-        background-repeat: no-repeat;
-        width:1rem;
-        height:1rem;
-        background-image: var(--menu-icon-tags-fg);
-        opacity: 1;
+        background-image: var(--page-icon-bars-fg)
     }
 
     a.see-also {
@@ -670,12 +720,243 @@
         background-repeat: no-repeat;
         width:1rem;
         height:1rem;
-        background-image: var(--spec-icon-external-link-fg);
+        background-image: var(--page-icon-external-link-fg);
         opacity: 1;
     }
 
     .see-also:hover > i {
-        background-image: var(--spec-icon-external-link-bg);
+        background-image: var(--page-icon-external-link-bg);
+    }
+
+    a.tagged {
+        text-decoration:none;
+        font-size: smaller;
+        appearance: none;
+        display: inline-flex;
+        transition: 0.3s;
+        padding: 4px;
+        margin-top: 4px;
+        margin-bottom: 4px;
+        gap: 2px;
+        border-radius: var(--step-border-radius);
+        border: none;
+        cursor: pointer;
+        background-color: var(--arete-color-background);
+        color: var(--arete-color-foreground);
+    }
+
+    a.tagged:hover {
+        background-color: var(--arete-color-foreground);
+        color: var(--arete-color-background);
+    }
+
+    .tagged-icon {
+        display: inline-block;
+        vertical-align: middle;
+        background-size: contain;
+        background-position: center center;
+        background-repeat: no-repeat;
+        width:1rem;
+        height:1rem;
+    }
+
+    .tagged-actor {
+        background-image: var(--page-icon-users-fg);
+    }
+
+    .tagged:hover > i.tagged-actor {
+        background-image: var(--page-icon-users-bg);
+    }
+
+    .tagged-entity {
+        background-image: var(--page-icon-buffer-fg);
+    }
+
+    .tagged:hover > i.tagged-entity {
+        background-image: var(--page-icon-buffer-bg);
+    }
+
+    .tagged-event {
+        background-image: var(--page-icon-bell-fg);
+    }
+
+    .tagged:hover > i.tagged-event {
+        background-image: var(--page-icon-bell-bg);
+    }
+
+    .tagged-external {
+        background-image: var(--page-icon-broadcast-fg);
+    }
+
+    .tagged:hover > i.tagged-external {
+        background-image: var(--page-icon-broadcast-bg);
+    }
+
+    .tagged-rule {
+        background-image: var(--page-icon-scroll-fg);
+    }
+
+    .tagged:hover > i.tagged-rule {
+        background-image: var(--page-icon-scroll-bg);
+    }
+
+    .tagged-schedule {
+        background-image: var(--page-icon-calendar-fg);
+    }
+
+    .tagged:hover > i.tagged-schedule {
+        background-image: var(--page-icon-calendar-bg);
+    }
+
+    .tagged-tag {
+        background-image: var(--page-icon-tag-fg);
+    }
+
+    .tagged:hover > i.tagged-tag {
+        background-image: var(--page-icon-tag-bg);
+    }
+
+    .tagged-unit {
+        background-image: var(--page-icon-building-fg);
+    }
+
+    .tagged:hover > i.tagged-unit {
+        background-image: var(--page-icon-building-bg);
+    }
+
+    .tagged-workflow {
+        background-image: var(--page-icon-gear-fg);
+    }
+
+    .tagged:hover > i.tagged-workflow {
+        background-image: var(--page-icon-gear-bg);
+    }
+
+    .card-tagged,
+    .search-tagged {
+        text-decoration:none;
+        font-size: smaller;
+        appearance: none;
+        display: inline-flex;
+        transition: 0.3s;
+        padding: 4px;
+        gap: 2px;
+        border-radius: var(--step-border-radius);
+        border: none;
+        cursor: pointer;
+        background-color: var(--arete-color-background);
+        color: var(--arete-color-foreground);
+    }
+
+    .search-tagged {
+        margin-top: 4px;
+        margin-bottom: 4px;
+    }
+
+    .search-tagged:hover {
+        background-color: var(--arete-color-foreground);
+        color: var(--arete-color-background);
+    }
+
+    .card-tagged-icon,
+    .search-tagged-icon {
+        display: inline-block;
+        vertical-align: middle;
+        background-size: contain;
+        background-position: center center;
+        background-repeat: no-repeat;
+        width:1rem;
+        height:1rem;
+    }
+
+    .card-tagged-actor,
+    .search-tagged-actor {
+        background-image: var(--root-icon-users-fg);
+    }
+
+    .search-tagged:hover > i.search-tagged-actor {
+        background-image: var(--root-icon-users-bg);
+    }
+
+    .card-tagged-entity,
+    .search-tagged-entity {
+        background-image: var(--root-icon-buffer-fg);
+    }
+
+    .search-tagged:hover > i.search-tagged-entity {
+        background-image: var(--root-icon-buffer-bg);
+    }
+
+    .card-tagged-event,
+    .search-tagged-event {
+        background-image: var(--root-icon-bell-fg);
+    }
+
+    .search-tagged:hover > i.search-tagged-event {
+        background-image: var(--root-icon-bell-bg);
+    }
+
+    .card-tagged-external,
+    .search-tagged-external {
+        background-image: var(--root-icon-broadcast-fg);
+    }
+
+    .search-tagged:hover > i.search-tagged-external {
+        background-image: var(--root-icon-broadcast-bg);
+    }
+
+    .card-tagged-rule,
+    .search-tagged-rule {
+        background-image: var(--root-icon-scroll-fg);
+    }
+
+    .search-tagged:hover > i.search-tagged-rule {
+        background-image: var(--root-icon-scroll-bg);
+    }
+
+    .card-tagged-schedule,
+    .search-tagged-schedule {
+        background-image: var(--root-icon-calendar-fg);
+    }
+
+    .search-tagged:hover > i.search-tagged-schedule {
+        background-image: var(--root-icon-calendar-bg);
+    }
+
+    .card-tagged-domain,
+    .search-tagged-domain {
+        background-image: var(--root-icon-sitemap-fg);
+    }
+
+    .search-tagged:hover > i.search-tagged-domain {
+        background-image: var(--root-icon-sitemap-bg);
+    }
+
+    .card-tagged-tag,
+    .search-tagged-tag {
+        background-image: var(--root-icon-tag-fg);
+    }
+
+    .search-tagged:hover > i.search-tagged-tag {
+        background-image: var(--root-icon-tag-bg);
+    }
+
+    .card-tagged-unit,
+    .search-tagged-unit {
+        background-image: var(--root-icon-building-fg);
+    }
+
+    .search-tagged:hover > i.search-tagged-unit {
+        background-image: var(--root-icon-building-bg);
+    }
+
+    .card-tagged-workflow,
+    .search-tagged-workflow {
+        background-image: var(--root-icon-gear-fg);
+    }
+
+    .search-tagged:hover > i.search-tagged-workflow {
+        background-image: var(--root-icon-gear-bg);
     }
 
     table {

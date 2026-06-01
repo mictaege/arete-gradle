@@ -13,53 +13,61 @@
     </div>
     <div class="card main">
         <div style="padding: 0; margin: 16px">
-            <#list plan.allTags() as tag>
-                <button class="search-by-tag-btn" onclick="searchByTag('#${tag}')">
-                    <i class="search-by-tag-icon"></i>
-                    ${tag}
-                </button>
+            <#list plan.allTags() as type, tags>
+                <div style="display: flex; align-items: center; flex-wrap: wrap; column-gap: 8px;">
+                    <i class="search-tagged-icon search-${type.iconClass}"></i>
+                    <#noautoesc>
+                        ${type.title}:
+                    </#noautoesc>
+                    <#list tags as tag>
+                        <button class="search-tagged" onclick="searchByTag('${tag.tagName}')">
+                            ${tag.tagName}
+                        </button>
+                    </#list>
+                </div>
             </#list>
         </div>
         <div style="padding: 0; margin: 16px">
             <input type="text" id="searchInput" onkeyup="searchFunction()" placeholder="Search for Tags.."/>
         </div>
         <ul id="specList">
+            <#macro specCardContent spec>
+                <a href="./specs/${spec.uniqueHash}.html">
+                    <div style="display: flex; align-items: center; flex-wrap: wrap; column-gap: 8px; float: left;">
+                        <#list spec.testTags.tags as tag>
+                            <div class="card-tagged">
+                                <div style="display: none">#${tag.tagName}</div>
+                                <i class="card-tagged-icon search-${tag.stereoType.iconClass}"></i>
+                                <#noautoesc>
+                                    ${tag.tagName}
+                                </#noautoesc>
+                            </div>
+                        </#list>
+                    </div>
+                    <span style="float:right; font-weight:500;">${spec.displayName}</span>
+                </a>
+            </#macro>
             <#list plan.specsOrderedByTags() as spec>
                 <#if !spec.resultState.hidden>
                     <#if "${spec.cumulatedState()}" == "IGNORED">
                         <li class="ignored step">
-                            <a href="./specs/${spec.uniqueHash}.html">
-                                <span class="mono">${spec.tags}</span>
-                                <span style="float:right;">${spec.displayName}</span>
-                            </a>
+                            <@specCardContent spec=spec />
                         </li>
                     <#elseif "${spec.cumulatedState()}" == "SUCCESSFUL">
                         <li class="successful step">
-                            <a href="./specs/${spec.uniqueHash}.html">
-                                <span class="mono">${spec.tags}</span>
-                                <span style="float:right;">${spec.displayName}</span>
-                            </a>
+                            <@specCardContent spec=spec />
                         </li>
                     <#elseif "${spec.cumulatedState()}" == "ABORTED">
                         <li class="aborted step">
-                            <a href="./specs/${spec.uniqueHash}.html">
-                                <span class="mono">${spec.tags}</span>
-                                <span style="float:right;">${spec.displayName}</span>
-                            </a>
+                            <@specCardContent spec=spec />
                         </li>
                     <#elseif "${spec.cumulatedState()}" == "FAILED">
                         <li class="failed step">
-                            <a href="./specs/${spec.uniqueHash}.html">
-                                <span class="mono">${spec.tags}</span>
-                                <span style="float:right;">${spec.displayName}</span>
-                            </a>
+                            <@specCardContent spec=spec />
                         </li>
                     <#else>
                         <li class="step">
-                            <a href="./specs/${spec.uniqueHash}.html">
-                                <span class="mono">${spec.tags}</span>
-                                <span style="float:right;">${spec.displayName}</span>
-                            </a>
+                            <@specCardContent spec=spec />
                         </li>
                     </#if>
                 </#if>
@@ -74,6 +82,15 @@
             searchInput.value = tag;
             searchFunction()
         }
+
+        window.addEventListener("DOMContentLoaded", function () {
+            const params = new URLSearchParams(window.location.search);
+            const tag = params.get("t");
+
+            if (tag) {
+                searchByTag(tag);
+            }
+        });
     </script>
 
     <#include "search-js.ftlh">

@@ -36,3 +36,22 @@ fun <A: Annotation>TestIdentifier.getAnnotation(annotation: Class<A>): A? {
         else -> null
     }
 }
+
+val TestIdentifier.sourceAnnotations: Array<Annotation>
+    get() = when (val source = this.source.orElse(null)) {
+        is ClassSource -> source.javaClass.annotations
+        is MethodSource -> source.javaMethod.annotations
+        else -> emptyArray()
+    }
+
+//fun <A : Annotation> TestIdentifier.getMetaAnnotation(metaAnnotation: Class<A>): List<A> {
+//    return sourceAnnotations
+//        .filter { it.annotationClass.java.isAnnotationPresent(metaAnnotation) }
+//        .map { it.annotationClass.java.getAnnotation(metaAnnotation)
+//    }
+//}
+//
+//fun TestIdentifier.hasMetaAnnotation(metaAnnotation: Class<out Annotation>): Boolean {
+//    return getMetaAnnotation(metaAnnotation).isNotEmpty()
+//}
+

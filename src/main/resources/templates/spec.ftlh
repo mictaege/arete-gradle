@@ -115,7 +115,7 @@
             </#if>
             <#if step.type.container>
                 <#assign vMargin = 15>
-                <#assign fWeight = "bolder">
+                <#assign fWeight = "bold">
             </#if>
             <#assign indent = 25>
             <div style="margin-left: ${indent}px; margin-bottom: ${vMargin}; margin-top: ${vMargin}">
@@ -221,6 +221,15 @@
                         </div>
                     </#if>
                 </#if>
+
+                <#list step.testTags.tags as tag>
+                    <a href="./../tags.html?t=${tag.tagName}" class="tagged">
+                        <i class="tagged-icon ${tag.stereoType.iconClass}"></i>
+                        <#noautoesc>
+                            ${tag.tagName}
+                        </#noautoesc>
+                    </a>
+                </#list>
 
                 <#if step.hasSeeAlsoRefs>
                     <#assign startComment="<!--%%%%%">

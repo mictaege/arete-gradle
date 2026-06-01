@@ -38,6 +38,7 @@ repositories {
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib")
+    implementation("org.junit.jupiter:junit-jupiter-api:6.0.2")
     implementation("org.junit.platform:junit-platform-launcher:6.0.2")
     implementation("io.github.mictaege:arete:2026.2")
     implementation("org.fusesource.jansi:jansi:2.4.2")

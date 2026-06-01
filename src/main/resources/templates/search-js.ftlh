@@ -3,7 +3,7 @@
         // Declare variables
         var input, filter, ul, li, a, i, txtValue;
         input = document.getElementById('searchInput');
-        filter = input.value.toUpperCase();
+        filter = '#' + input.value.toUpperCase();
         ul = document.getElementById("specList");
         li = ul.getElementsByTagName('li');
 
