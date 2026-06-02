@@ -142,6 +142,7 @@ class SpecificationPlan: SpecificationNode() {
 
     fun allTags(): Map<StereoTypes, Set<TestTag>> {
         return steps
+            .filter { it.resultState != ResultState.HIDDEN }
             .flatMap { it.testTags.tags }
             .groupBy { it.stereoType }
             .mapValues { it.value.toSortedSet() }
