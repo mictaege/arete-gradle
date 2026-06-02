@@ -254,18 +254,27 @@
                         <#if step.narrative.hasImages>
                             <#assign imgIdx = 0>
                             <#assign modalId = "${step.uniqueHash}Modal">
+                            <#assign imageCount = step.narrative.images?size>
                             <div class="image-grid-row">
                                 <#list step.narrative.images as img>
                                     <#assign imgIdx++>
                                     <div class="image-grid-column">
                                         <#assign imgId = "${step.uniqueHash}Img${imgIdx}">
-                                        <img id="${imgId}" onclick="openModal('${modalId}', '${imgId}')"
+                                        <img id="${imgId}"
+                                             data-modal-index="${imgIdx - 1}"
+                                             onclick="openModal('${modalId}', '${imgId}')"
                                              src="./${img.fileName}"/>
                                     </div>
                                 </#list>
                             </div>
                             <div id="${modalId}" class="image-grid-modal">
                                 <span class="image-grid-modal-close" onclick="closeModal('${modalId}')">&times;</span>
+                                <#if imageCount gt 1>
+                                    <button class="image-grid-modal-control image-grid-modal-prev"
+                                            onclick="changeModalImage('${modalId}', -1)">&#10094;</button>
+                                    <button class="image-grid-modal-control image-grid-modal-next"
+                                            onclick="changeModalImage('${modalId}', 1)">&#10095;</button>
+                                </#if>
                                 <img class="image-grid-modal-content" id="modal-image">
                             </div>
                         </#if>

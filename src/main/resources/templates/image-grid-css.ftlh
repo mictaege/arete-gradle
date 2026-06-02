@@ -67,6 +67,7 @@
         top: 5%;
         right: 35px;
         color: var(--arete-color-foreground);
+        background-color: rgba(0, 0, 0, 0.25);
         font-size: 40px;
         font-weight: bold;
         transition: 0.3s;
@@ -75,8 +76,39 @@
     .image-grid-modal-close:hover,
     .image-grid-modal-close:focus {
         color: var(--arete-color-foreground);
+        background-color: rgba(0, 0, 0, 0.65);
         text-decoration: none;
         cursor: pointer;
+    }
+
+    .image-grid-modal-control {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--arete-color-foreground);
+        background-color: rgba(0, 0, 0, 0.25);
+        border: none;
+        cursor: pointer;
+        padding: 16px;
+        font-size: 32px;
+        font-weight: bold;
+        user-select: none;
+    }
+
+    .image-grid-modal-control:hover,
+    .image-grid-modal-control:focus {
+        color: var(--arete-color-foreground);
+        background-color: rgba(0, 0, 0, 0.65);
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .image-grid-modal-prev {
+        left: 24px;
+    }
+
+    .image-grid-modal-next {
+        right: 24px;
     }
 
     /* 100% Image Width on Smaller Screens */
