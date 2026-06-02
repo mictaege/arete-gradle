@@ -274,6 +274,7 @@
                                             onclick="changeModalImage('${modalId}', -1)">&#10094;</button>
                                     <button class="image-grid-modal-control image-grid-modal-next"
                                             onclick="changeModalImage('${modalId}', 1)">&#10095;</button>
+                                    <div class="image-grid-modal-counter"></div>
                                 </#if>
                                 <img class="image-grid-modal-content" id="modal-image">
                             </div>

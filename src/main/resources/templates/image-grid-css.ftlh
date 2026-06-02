@@ -111,6 +111,19 @@
         right: 24px;
     }
 
+    .image-grid-modal-counter {
+        position: absolute;
+        top: 90%;
+        left: 50%;
+        transform: translateY(-50%);
+        color: var(--arete-color-foreground);
+        background-color: rgba(0, 0, 0, 0.25);
+        border: none;
+        padding: 16px;
+        font-size: 24px;
+        user-select: none;
+    }
+
     /* 100% Image Width on Smaller Screens */
     @media only screen and (max-width: 700px){
         .image-grid-modal-content {

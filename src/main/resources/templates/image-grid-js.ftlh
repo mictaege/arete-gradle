@@ -4,6 +4,7 @@
     function openModal(modalId, imgId) {
         let modal = document.getElementById(modalId);
         let image = document.getElementById(imgId);
+        let images = getModalImages(modalId);
 
         modal.style.display = "block";
         modal.dataset.currentImageIndex = image.dataset.modalIndex;
@@ -11,6 +12,8 @@
 
         let modalContent = modal.querySelector('.image-grid-modal-content');
         modalContent.src = image.src;
+
+        updateModalImageCounter(modal, images.length);
     }
 
     function closeModal(modalId) {
@@ -25,7 +28,7 @@
 
     function changeModalImage(modalId, direction) {
         let modal = document.getElementById(modalId);
-        let images = document.querySelectorAll("img[onclick*=\"openModal('" + modalId + "'\"]");
+        let images = getModalImages(modalId);
 
         if (images.length <= 1) {
             return;
@@ -44,6 +47,23 @@
 
         let modalContent = modal.querySelector('.image-grid-modal-content');
         modalContent.src = images[nextIndex].src;
+
+        updateModalImageCounter(modal, images.length);
+    }
+
+    function getModalImages(modalId) {
+        return document.querySelectorAll("img[onclick*=\"openModal('" + modalId + "'\"]");
+    }
+
+    function updateModalImageCounter(modal, imageCount) {
+        let counter = modal.querySelector('.image-grid-modal-counter');
+
+        if (!counter) {
+            return;
+        }
+
+        let currentIndex = parseInt(modal.dataset.currentImageIndex || "0", 10);
+        counter.textContent = (currentIndex + 1) + "/" + imageCount;
     }
 
     document.addEventListener("keydown", function(event) {
