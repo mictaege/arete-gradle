@@ -20,7 +20,7 @@
 </div>
 <div class="card main">
     <div style="padding: 0; margin: 16px">
-        <#list plan.allTags() as type, tags>
+        <#list plan.allTestTags() as type, tags>
             <div style="display: flex; align-items: center; flex-wrap: wrap; column-gap: 8px;">
                 <i class="search-tagged-icon search-${type.iconClass}"></i>
                 <#noautoesc>
@@ -38,7 +38,7 @@
         <#macro specCardContent spec>
             <a href="./specs/${spec.uniqueHash}.html">
                 <div style="display: flex; align-items: center; flex-wrap: wrap; column-gap: 8px; float: left;">
-                    <#list spec.testTags.tags as tag>
+                    <#list spec.allTestTags as tag>
                         <div class="card-tagged">
                             <div style="display: none">#${tag.tagName}</div>
                             <i class="card-tagged-icon search-${tag.stereoType.iconClass}"></i>
@@ -54,23 +54,23 @@
         <#list plan.specsOrderedByTags() as spec>
             <#if !spec.resultState.hidden>
                 <#if "${spec.cumulatedState()}" == "IGNORED">
-                    <li class="ignored step" data-tags="<#list spec.testTags.tags as tag>${tag.tagName}<#sep>|</#list>">
+                    <li class="ignored step" data-tags="<#list spec.allTestTags as tag>${tag.tagName}<#sep>|</#list>">
                         <@specCardContent spec=spec />
                     </li>
                 <#elseif "${spec.cumulatedState()}" == "SUCCESSFUL">
-                    <li class="successful step" data-tags="<#list spec.testTags.tags as tag>${tag.tagName}<#sep>|</#list>">
+                    <li class="successful step" data-tags="<#list spec.allTestTags as tag>${tag.tagName}<#sep>|</#list>">
                         <@specCardContent spec=spec />
                     </li>
                 <#elseif "${spec.cumulatedState()}" == "ABORTED">
-                    <li class="aborted step" data-tags="<#list spec.testTags.tags as tag>${tag.tagName}<#sep>|</#list>">
+                    <li class="aborted step" data-tags="<#list spec.allTestTags as tag>${tag.tagName}<#sep>|</#list>">
                         <@specCardContent spec=spec />
                     </li>
                 <#elseif "${spec.cumulatedState()}" == "FAILED">
-                    <li class="failed step" data-tags="<#list spec.testTags.tags as tag>${tag.tagName}<#sep>|</#list>">
+                    <li class="failed step" data-tags="<#list spec.allTestTags as tag>${tag.tagName}<#sep>|</#list>">
                         <@specCardContent spec=spec />
                     </li>
                 <#else>
-                    <li class="step" data-tags="<#list spec.testTags.tags as tag>${tag.tagName}<#sep>|</#list>">
+                    <li class="step" data-tags="<#list spec.allTestTags as tag>${tag.tagName}<#sep>|</#list>">
                         <@specCardContent spec=spec />
                     </li>
                 </#if>

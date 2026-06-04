@@ -6,23 +6,27 @@ import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Tags
 import org.junit.platform.launcher.TestIdentifier
 
-class TestTags(testId: TestIdentifier) : Comparable<TestTags> {
-    val tags: List<TestTag> = testId.sourceAnnotations
-        .flatMap { annotation ->
-            val stereoType: StereoType? = annotation.annotationClass.java.getAnnotation(StereoType::class.java)
+class TestTags(step: SpecificationStep) : Comparable<TestTags> {
+    val tags: List<TestTag> = if (step.isTestTemplate) {
+        emptyList()
+    } else {
+        step.testId.sourceAnnotations
+            .flatMap { annotation ->
+                val stereoType: StereoType? = annotation.annotationClass.java.getAnnotation(StereoType::class.java)
 
-            when (annotation) {
-                is Tag -> listOf(TestTag(annotation, stereoType))
+                when (annotation) {
+                    is Tag -> listOf(TestTag(annotation, stereoType))
 
-                is Tags -> annotation.value
-                    .map { tag -> TestTag(tag, stereoType) }
+                    is Tags -> annotation.value
+                        .map { tag -> TestTag(tag, stereoType) }
 
-                else -> annotation.annotationClass.java
-                    .getAnnotationsByType(Tag::class.java)
-                    .map { tag -> TestTag(tag, stereoType) }
+                    else -> annotation.annotationClass.java
+                        .getAnnotationsByType(Tag::class.java)
+                        .map { tag -> TestTag(tag, stereoType) }
+                }
             }
-        }
-        .sorted()
+            .sorted()
+    }
 
     override fun compareTo(other: TestTags): Int {
         return tags.compareLexicographically(other.tags)

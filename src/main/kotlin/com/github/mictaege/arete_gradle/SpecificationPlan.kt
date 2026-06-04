@@ -14,6 +14,8 @@ import java.time.format.FormatStyle
 enum class StepType(val container: Boolean) {
     SPEC(true),
     FEATURE(true),
+    JOURNEY(true),
+    STEP(false),
     SCENARIO(true),
     GIVEN(false),
     WHEN(false),
@@ -132,6 +134,13 @@ class SpecificationPlan: SpecificationNode() {
         return PlanSummaries(steps)
     }
 
+    fun journeySummaries(): PlanSummaries {
+        return PlanSummaries(flatFilter {
+            it.type == StepType.JOURNEY &&
+            it.steps.none { child -> child.type == StepType.JOURNEY }
+        })
+    }
+
     fun scenarioSummaries(): PlanSummaries {
         return PlanSummaries(flatFilter { it.type == StepType.SCENARIO })
     }
@@ -140,8 +149,8 @@ class SpecificationPlan: SpecificationNode() {
         return PlanSummaries(flatFilter { it.type == StepType.DESCRIBE })
     }
 
-    fun allTags(): Map<StereoTypes, Set<TestTag>> {
-        return steps
+    fun allTestTags(): Map<StereoTypes, Set<TestTag>> {
+        return flatFilter { true }
             .filter { it.resultState != ResultState.HIDDEN }
             .flatMap { it.testTags.tags }
             .groupBy { it.stereoType }
@@ -197,9 +206,10 @@ class SpecificationStep(
     val timeStamp: ZonedDateTime = ZonedDateTime.now()
     val timeStampLong: String = timeStamp.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM, FormatStyle.MEDIUM))
     val timeOnly: String = timeStamp.format(DateTimeFormatter.ofPattern("HH:mm:ss.SSS"))
-    val hasNarrative: Boolean = testId.isAnnotated(Narrative::class.java)
+    val isTestTemplate: Boolean = testId.isTestTemplate
+    val hasNarrative: Boolean = !isTestTemplate && testId.isAnnotated(Narrative::class.java)
     val narrative: NarrativeSection? = testId.getAnnotation(Narrative::class.java)?.let { NarrativeSection(it) }
-    val hasSeeAlsoRefs: Boolean = testId.isAnnotated(SeeAlsoDeclaration::class.java) || testId.isAnnotated(SeeAlso::class.java)
+    val hasSeeAlsoRefs: Boolean = !isTestTemplate && (testId.isAnnotated(SeeAlsoDeclaration::class.java) || testId.isAnnotated(SeeAlso::class.java))
     val seeAlsoRefs: ReferenceTargets?
         get() {
             return if (testId.isAnnotated(SeeAlsoDeclaration::class.java)) {
@@ -210,9 +220,14 @@ class SpecificationStep(
                 null
             }
         }
-    val testTags: TestTags = TestTags(testId)
+    val testTags: TestTags = TestTags(this)
+    val allTestTags: Set<TestTag>
+        get() = testTags.tags.toSortedSet() + flatFilter { true }
+            .filter { it.resultState != ResultState.HIDDEN }
+            .flatMap { it.testTags.tags }
+            .toSortedSet()
     val hiddenIfDisabled: Boolean
-        get() = testId.isAnnotated(HiddenIfDisabled::class.java)
+        get() = testId.isAnnotated(HiddenIfDisabled::class.java) || testId.isAnnotated(Step::class.java)
     val resultState: ResultState
         get() = when(testResult?.status) {
             Status.SUCCESSFUL -> ResultState.SUCCESSFUL

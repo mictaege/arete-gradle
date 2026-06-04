@@ -44,14 +44,7 @@ val TestIdentifier.sourceAnnotations: Array<Annotation>
         else -> emptyArray()
     }
 
-//fun <A : Annotation> TestIdentifier.getMetaAnnotation(metaAnnotation: Class<A>): List<A> {
-//    return sourceAnnotations
-//        .filter { it.annotationClass.java.isAnnotationPresent(metaAnnotation) }
-//        .map { it.annotationClass.java.getAnnotation(metaAnnotation)
-//    }
-//}
-//
-//fun TestIdentifier.hasMetaAnnotation(metaAnnotation: Class<out Annotation>): Boolean {
-//    return getMetaAnnotation(metaAnnotation).isNotEmpty()
-//}
+val TestIdentifier.isTestTemplate: Boolean
+    get() = this.uniqueId.contains("template-invocation")
+
 
