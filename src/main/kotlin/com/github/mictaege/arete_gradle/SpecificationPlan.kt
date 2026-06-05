@@ -3,6 +3,7 @@ package com.github.mictaege.arete_gradle
 import com.github.mictaege.arete.*
 import org.junit.platform.engine.TestExecutionResult
 import org.junit.platform.engine.TestExecutionResult.Status
+import org.junit.platform.engine.reporting.ReportEntry
 import org.junit.platform.launcher.TestIdentifier
 import java.io.File
 import java.io.PrintWriter
@@ -99,6 +100,12 @@ class SpecificationPlan: SpecificationNode() {
         var hit = false
         steps.forEach { hit = hit || it.addResult(testId, testResult) }
         writeIfSpec(testId)
+        return hit
+    }
+
+    fun addReportEntry(testId: TestIdentifier, entry: ReportEntry): Boolean {
+        var hit = false
+        steps.forEach { hit = hit || it.addReportEntry(testId, entry) }
         return hit
     }
 
@@ -264,6 +271,16 @@ class SpecificationStep(
         }
     val hasScreenshot: Boolean
         get() = screenshot != null
+    val stdoutEntries = mutableListOf<String>()
+    val stdout: String
+        get() = stdoutEntries.joinToString("\n").trim()
+    val hasStdout: Boolean
+        get() = stdout.isNotEmpty()
+    val stderrEntries = mutableListOf<String>()
+    val stderr: String
+        get() = stderrEntries.joinToString("\n").trim()
+    val hasStderr: Boolean
+        get() = stderr.isNotEmpty()
 
     override fun add(step: SpecificationStep): Boolean {
         return if (step.parentId == uniqueId) {
@@ -282,6 +299,24 @@ class SpecificationStep(
         } else {
             var hit = false
             steps.forEach { hit = hit || it.addResult(testId, testResult) }
+            hit
+        }
+    }
+
+    fun addReportEntry(testId: TestIdentifier, entry: ReportEntry): Boolean {
+        return if (this.testId.uniqueId == testId.uniqueId) {
+            entry.keyValuePairs["stdout"]
+                ?.takeIf { it.isNotBlank() }
+                ?.let { stdoutEntries.add(it) }
+
+            entry.keyValuePairs["stderr"]
+                ?.takeIf { it.isNotBlank() }
+                ?.let { stderrEntries.add(it) }
+
+            true
+        } else {
+            var hit = false
+            steps.forEach { hit = hit || it.addReportEntry(testId, entry) }
             hit
         }
     }

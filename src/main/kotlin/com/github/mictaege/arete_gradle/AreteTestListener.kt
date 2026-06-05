@@ -2,6 +2,7 @@ package com.github.mictaege.arete_gradle
 
 import com.github.mictaege.arete.*
 import org.junit.platform.engine.TestExecutionResult
+import org.junit.platform.engine.reporting.ReportEntry
 import org.junit.platform.launcher.TestExecutionListener
 import org.junit.platform.launcher.TestIdentifier
 import org.junit.platform.launcher.TestPlan
@@ -59,6 +60,10 @@ class AreteTestListener: TestExecutionListener {
 
     override fun testPlanExecutionFinished(testPlan: TestPlan) {
         specPlan.finishPlan()
+    }
+
+    override fun reportingEntryPublished(testIdentifier: TestIdentifier, entry: ReportEntry) {
+        specPlan.addReportEntry(testIdentifier, entry)
     }
 
 }

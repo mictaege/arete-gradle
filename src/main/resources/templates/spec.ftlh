@@ -195,7 +195,7 @@
                         </div>
                         <#if step.hasErrorMsg>
                             <div class="step-content">
-<pre style="width: 100%;"><code class="language-javastacktrace">${step.errorMsg}</code></pre>
+<pre style="width: 100%;"><code class="language-javastacktrace">${step.errorMsg?html}</code></pre>
                             </div>
                         </#if>
                     </div>
@@ -203,8 +203,19 @@
                         <#if step.hasScreenshot>
                             <img src="./${step.uniqueHash}.png"/>
                         </#if>
-                        <textarea  type="text" id="${step.uniqueHash}StackTrace" style="display: none;">${step.stackTrace}</textarea>
-<pre><button onclick="traceToClipboard('${step.uniqueHash}StackTrace');" class="stacktrace-copy-btn"></button><code class="language-javastacktrace">${step.stackTrace}</code></pre>
+                        <textarea  type="text" id="${step.uniqueHash}StackTrace" style="display: none;">${step.stackTrace?html}</textarea>
+<pre><button onclick="traceToClipboard('${step.uniqueHash}StackTrace');" class="stacktrace-copy-btn"></button><code class="language-javastacktrace">${step.stackTrace?html}</code></pre>
+                        <#if step.hasStdout>
+                            <textarea  type="text" id="${step.uniqueHash}Stdout" style="display: none;">${step.stdout?html}</textarea>
+<pre><button onclick="traceToClipboard('${step.uniqueHash}Stdout');" class="stacktrace-copy-btn"></button><code class="language-text">Stdout:
+${step.stdout?html}</code></pre>
+                        </#if>
+                        <#if step.hasStderr>
+                            <span>Stderr:</span>
+                            <textarea  type="text" id="${step.uniqueHash}Stderr" style="display: none;">${step.stderr?html}</textarea>
+<pre><button onclick="traceToClipboard('${step.uniqueHash}Stderr');" class="stacktrace-copy-btn"></button><code class="language-text">Stderr:
+${step.stderr?html}</code></pre>
+                        </#if>
                     </div>
                 <#else>
                     <div class="step ${collapsible}" style="font-weight: ${fWeight}">
