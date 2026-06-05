@@ -10,6 +10,8 @@ import java.io.StringWriter
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
+import java.util.SortedMap
+import java.util.SortedSet
 
 enum class StepType(val container: Boolean) {
     SPEC(true),
@@ -149,12 +151,13 @@ class SpecificationPlan: SpecificationNode() {
         return PlanSummaries(flatFilter { it.type == StepType.DESCRIBE })
     }
 
-    fun allTestTags(): Map<StereoTypes, Set<TestTag>> {
+    fun allTestTags(): SortedMap<StereoTypes, SortedSet<TestTag>> {
         return flatFilter { true }
             .filter { it.resultState != ResultState.HIDDEN }
             .flatMap { it.testTags.tags }
             .groupBy { it.stereoType }
             .mapValues { it.value.toSortedSet() }
+            .toSortedMap()
     }
 
     private fun writeIfSpec(testId: TestIdentifier) {
@@ -221,11 +224,13 @@ class SpecificationStep(
             }
         }
     val testTags: TestTags = TestTags(this)
-    val allTestTags: Set<TestTag>
-        get() = testTags.tags.toSortedSet() + flatFilter { true }
-            .filter { it.resultState != ResultState.HIDDEN }
-            .flatMap { it.testTags.tags }
-            .toSortedSet()
+    val allTestTags: SortedSet<TestTag>
+        get() = (
+                testTags.tags +
+                        flatFilter { true }
+                            .filter { it.resultState != ResultState.HIDDEN }
+                            .flatMap { it.testTags.tags }
+                ).toSortedSet()
     val hiddenIfDisabled: Boolean
         get() = testId.isAnnotated(HiddenIfDisabled::class.java) || testId.isAnnotated(Step::class.java)
     val resultState: ResultState

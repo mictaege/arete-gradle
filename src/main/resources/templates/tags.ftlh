@@ -51,26 +51,27 @@
                 <span style="float:right; font-weight:500;">${spec.displayName}</span>
             </a>
         </#macro>
+        <#macro dataTags spec><#list spec.allTestTags as tag>${tag.tagName}<#sep>|</#list></#macro>
         <#list plan.specsOrderedByTags() as spec>
             <#if !spec.resultState.hidden>
                 <#if "${spec.cumulatedState()}" == "IGNORED">
-                    <li class="ignored step" data-tags="<#list spec.allTestTags as tag>${tag.tagName}<#sep>|</#list>">
+                    <li class="ignored step" data-tags="<@dataTags spec=spec />">
                         <@specCardContent spec=spec />
                     </li>
                 <#elseif "${spec.cumulatedState()}" == "SUCCESSFUL">
-                    <li class="successful step" data-tags="<#list spec.allTestTags as tag>${tag.tagName}<#sep>|</#list>">
+                    <li class="successful step" data-tags="<@dataTags spec=spec />">
                         <@specCardContent spec=spec />
                     </li>
                 <#elseif "${spec.cumulatedState()}" == "ABORTED">
-                    <li class="aborted step" data-tags="<#list spec.allTestTags as tag>${tag.tagName}<#sep>|</#list>">
+                    <li class="aborted step" data-tags="<@dataTags spec=spec />">
                         <@specCardContent spec=spec />
                     </li>
                 <#elseif "${spec.cumulatedState()}" == "FAILED">
-                    <li class="failed step" data-tags="<#list spec.allTestTags as tag>${tag.tagName}<#sep>|</#list>">
+                    <li class="failed step" data-tags="<@dataTags spec=spec />">
                         <@specCardContent spec=spec />
                     </li>
                 <#else>
-                    <li class="step" data-tags="<#list spec.allTestTags as tag>${tag.tagName}<#sep>|</#list>">
+                    <li class="step" data-tags="<@dataTags spec=spec />">
                         <@specCardContent spec=spec />
                     </li>
                 </#if>
@@ -92,7 +93,12 @@
         const specs = document.querySelectorAll("#specList li");
 
         specs.forEach(function (spec) {
-            const specTags = spec.dataset.tags ? spec.dataset.tags.split("|") : [];
+            const specTags = spec.dataset.tags
+                ? spec.dataset.tags.split("|").map(function (tag) {
+                    return tag.trim();
+                })
+                : [];
+
             const matches = selectedTags.length === 0
                 || selectedTags.every(function (tag) {
                     return specTags.includes(tag);
