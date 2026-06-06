@@ -54,43 +54,29 @@
             <#if step.type.container>
                 <ul>
                     <#list step.stepsReversed as childStep>
-                        <#if childStep.type.container>
-                            <#if childStep.resultState.hidden>
-                                <#return/>
-                            </#if>
-                            <#if "${childStep.cumulatedState()}" == "IGNORED">
-                                <li>
-                                    <div class="ignored">
-                                        <a href="#${childStep.uniqueHash}">${childStep.displayName}</a>
-                                    </div>
-                                </li>
-                            <#elseif "${childStep.cumulatedState()}" == "SUCCESSFUL">
-                                <li>
-                                    <div class="successful">
-                                        <a href="#${childStep.uniqueHash}">${childStep.displayName}</a>
-                                    </div>
-                                </li>
-                            <#elseif "${childStep.cumulatedState()}" == "ABORTED">
-                                <li>
-                                    <div class="aborted">
-                                        <a href="#${childStep.uniqueHash}">${childStep.displayName}</a>
-                                    </div>
-                                </li>
-                            <#elseif "${childStep.cumulatedState()}" == "FAILED">
-                                <li>
-                                    <div class="failed">
-                                        <a href="#${childStep.uniqueHash}">${childStep.displayName}</a>
-                                    </div>
-                                </li>
-                            <#else>
-                                <li>
-                                    <div class="neutral">
-                                        <a href="#${childStep.uniqueHash}">${childStep.displayName}</a>
-                                    </div>
-                                </li>
-                            </#if>
+                        <#if childStep.resultState.hidden>
+                            <#continue/>
                         </#if>
-                        <@pageMenu childStep/>
+
+                        <#if childStep.type.container>
+                            <#assign stateClass = "neutral">
+                            <#if "${childStep.cumulatedState()}" == "IGNORED">
+                                <#assign stateClass = "ignored">
+                            <#elseif "${childStep.cumulatedState()}" == "SUCCESSFUL">
+                                <#assign stateClass = "successful">
+                            <#elseif "${childStep.cumulatedState()}" == "ABORTED">
+                                <#assign stateClass = "aborted">
+                            <#elseif "${childStep.cumulatedState()}" == "FAILED">
+                                <#assign stateClass = "failed">
+                            </#if>
+
+                            <li style="width: 100%">
+                                <div class="${stateClass}">
+                                    <a href="#${childStep.uniqueHash}">${childStep.displayName}</a>
+                                </div>
+                                <@pageMenu childStep/>
+                            </li>
+                        </#if>
                     </#list>
                 </ul>
             </#if>
@@ -119,7 +105,7 @@
             <#if level == 0>
                 <#assign indent = 0>
             <#else>
-                <#assign indent = 20 + level>
+                <#assign indent = 20 * (level - 1)>
             </#if>
             <div style="margin-left: ${indent}px; margin-bottom: ${vMargin}; margin-top: ${vMargin}">
 
@@ -329,7 +315,9 @@ ${step.stderr}</code></pre>
                     <summary>
                         <i class="page-outline-icon-bars"></i>
                     </summary>
-                    <@pageMenu step/>
+                    <div>
+                        <@pageMenu step/>
+                    </div>
                 </details>
             </nav>
 

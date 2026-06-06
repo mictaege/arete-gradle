@@ -27,9 +27,9 @@
         --page-icon-clipboard-bg: url("./../icons/icon-clipboard-bg.svg");
         --page-icon-clipboard-fg: url("./../icons/icon-clipboard-fg.svg");
         --page-icon-clipboard-neutral: url("./../icons/icon-clipboard-neutral.svg");
-        --page-icon-external-link-bg: url(/.."./icons/icon-external-link-bg.svg");
-        --page-icon-external-link-fg: url(/.."./icons/icon-external-link-fg.svg");
-        --page-icon-external-link-neutral: url(/.."./icons/icon-external-link-neutral.svg");
+        --page-icon-external-link-bg: url("./../icons/icon-external-link-bg.svg");
+        --page-icon-external-link-fg: url("./../icons/icon-external-link-fg.svg");
+        --page-icon-external-link-neutral: url("./../icons/icon-external-link-neutral.svg");
         --page-icon-file-bg: url("./../icons/icon-file-bg.svg");
         --page-icon-file-fg: url("./../icons/icon-file-fg.svg");
         --page-icon-file-neutral: url("./../icons/icon-file-neutral.svg");
@@ -152,7 +152,10 @@
         border-radius: var(--step-border-radius);
         flex: 0 0 auto;
         max-width: 25%;
-        margin: 15px 8px 15px 15px;
+        margin-top: 23px;
+        margin-right: 8px;
+        margin-left: 15px;
+        margin-bottom: 15px;
         padding: 0;
         overflow: visible;
     }
@@ -171,7 +174,6 @@
 
     .page-outline details {
         width: 100%;
-        margin: 8px;
         padding: 0;
     }
 
@@ -247,8 +249,10 @@
 
     .page-outline div {
         color: var(--arete-color-background);
-        margin: 2px;
-        padding: 2px;
+        align-items: flex-start;
+        margin-left: 0;
+        margin-right: 10px;
+        padding: 0;
     }
 
     .page-content {
