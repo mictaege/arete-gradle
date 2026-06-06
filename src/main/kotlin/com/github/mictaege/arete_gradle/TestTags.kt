@@ -4,7 +4,6 @@ import com.github.mictaege.arete.StereoType
 import com.github.mictaege.arete.StereoTypes
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Tags
-import org.junit.platform.launcher.TestIdentifier
 
 class TestTags(step: SpecificationStep) : Comparable<TestTags> {
     val tags: List<TestTag> = if (step.isTestTemplate) {
@@ -29,20 +28,7 @@ class TestTags(step: SpecificationStep) : Comparable<TestTags> {
     }
 
     override fun compareTo(other: TestTags): Int {
-        return tags.compareLexicographically(other.tags)
-    }
-
-    private fun List<TestTag>.compareLexicographically(other: List<TestTag>): Int {
-        val commonSize = minOf(size, other.size)
-
-        for (index in 0 until commonSize) {
-            val comparison = this[index].compareTo(other[index])
-            if (comparison != 0) {
-                return comparison
-            }
-        }
-
-        return size.compareTo(other.size)
+        return tags.compareListOfTags(other.tags)
     }
 }
 

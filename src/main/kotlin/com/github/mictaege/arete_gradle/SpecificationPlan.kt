@@ -136,7 +136,7 @@ class SpecificationPlan: SpecificationNode() {
     }
 
     fun specsOrderedByTags(): List<SpecificationStep> {
-        return steps.sortedWith { s1, s2 -> s1.testTags.compareTo(s2.testTags) }
+        return steps.sortedWith { s1, s2 -> s1.allTestTags.toList().compareListOfTags(s2.allTestTags.toList()) }
     }
 
     fun specSummaries(): PlanSummaries {
