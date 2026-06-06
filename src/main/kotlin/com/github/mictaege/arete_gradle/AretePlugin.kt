@@ -11,6 +11,9 @@ class AretePlugin: Plugin<Project> {
     companion object {
         const val BUILD_DIR_PROPERTY = "io.github.mictaege.arete_gradle.buildDir"
         const val TASK_NAME_PROPERTY = "io.github.mictaege.arete_gradle.taskName"
+        const val CAPTURE_STDOUT_PROPERTY = "junit.platform.output.capture.stdout"
+        const val CAPTURE_STDERR_PROPERTY = "junit.platform.output.capture.stderr"
+        const val CAPTURE_MAX_BUFFER_PROPERTY = "junit.platform.output.capture.maxBuffer"
     }
 
     override fun apply(project: Project) {
@@ -24,6 +27,9 @@ class AretePlugin: Plugin<Project> {
                 testTask.systemProperties[BUILD_DIR_PROPERTY] = project.buildDir.absolutePath
                 testTask.systemProperties[TASK_NAME_PROPERTY] = testTask.name
                 testTask.systemProperties[TASK_NAME_PROPERTY] = testTask.name
+                testTask.systemProperties[CAPTURE_STDOUT_PROPERTY] = "${extension.captureStdout}"
+                testTask.systemProperties[CAPTURE_STDERR_PROPERTY] = "${extension.captureStderr}"
+                testTask.systemProperties[CAPTURE_MAX_BUFFER_PROPERTY] = "${extension.captureMaxBuffer}"
 
                 val scheme = extension.colorScheme
                 testTask.systemProperties[AreteColorSchemeProvider.ARETE_COLOR_BACKGROUND] = scheme.arete_color_background
@@ -48,4 +54,10 @@ class AretePlugin: Plugin<Project> {
 
 open class AreteExtension {
     var colorScheme: AreteColorScheme = AreteClassicColors()
+    var captureStdout = false
+    var captureStderr = false
+    var captureMaxBuffer = 1048576
+    init {
+        require(captureMaxBuffer > 0) { "captureMaxBuffer must be positive" }
+    }
 }

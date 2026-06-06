@@ -89,6 +89,20 @@ public class MySeleniumScreenshotTaker implements ScreenshotTaker {
 }
 ```
 
+## Reporting Stdout and Stderr
+
+If tests fail for unclear reasons or from time to time, especially on a CI server, it might be useful to see the stdout and stderr of the failing test.
+
+Reporting stdout and stderr can be enabled in your `build.gradle.kts` file.
+
+```Kotlin
+arete {
+    captureStdout = true
+    captureStderr = true
+    captureMaxBuffer = 1048576
+}
+```
+
 ## Colorschemes
 
 The colorscheme of the reports can be changed by setting the `arete.colorscheme` property in your `build.gradle.kts` file.

@@ -13,7 +13,7 @@
         <a href="./../test_specs.html"><i class="spec-menu-icon-flask"></i> Spec Classes</a>
         <a href="./../tags.html"><i class="spec-menu-icon-tags"></i> Tags</a>
     </div>
-    <div class="card main">
+    <div class="card main-step">
         <#assign level = 0>
 
         <#macro stepDisplay step>
@@ -54,43 +54,29 @@
             <#if step.type.container>
                 <ul>
                     <#list step.stepsReversed as childStep>
-                        <#if childStep.type.container>
-                            <#if childStep.resultState.hidden>
-                                <#return/>
-                            </#if>
-                            <#if "${childStep.cumulatedState()}" == "IGNORED">
-                                <li>
-                                    <div class="ignored">
-                                        <a href="#${childStep.uniqueHash}">${childStep.displayName}</a>
-                                    </div>
-                                </li>
-                            <#elseif "${childStep.cumulatedState()}" == "SUCCESSFUL">
-                                <li>
-                                    <div class="successful">
-                                        <a href="#${childStep.uniqueHash}">${childStep.displayName}</a>
-                                    </div>
-                                </li>
-                            <#elseif "${childStep.cumulatedState()}" == "ABORTED">
-                                <li>
-                                    <div class="aborted">
-                                        <a href="#${childStep.uniqueHash}">${childStep.displayName}</a>
-                                    </div>
-                                </li>
-                            <#elseif "${childStep.cumulatedState()}" == "FAILED">
-                                <li>
-                                    <div class="failed">
-                                        <a href="#${childStep.uniqueHash}">${childStep.displayName}</a>
-                                    </div>
-                                </li>
-                            <#else>
-                                <li>
-                                    <div class="neutral">
-                                        <a href="#${childStep.uniqueHash}">${childStep.displayName}</a>
-                                    </div>
-                                </li>
-                            </#if>
+                        <#if childStep.resultState.hidden>
+                            <#continue/>
                         </#if>
-                        <@pageMenu childStep/>
+
+                        <#if childStep.type.container>
+                            <#assign stateClass = "neutral">
+                            <#if "${childStep.cumulatedState()}" == "IGNORED">
+                                <#assign stateClass = "ignored">
+                            <#elseif "${childStep.cumulatedState()}" == "SUCCESSFUL">
+                                <#assign stateClass = "successful">
+                            <#elseif "${childStep.cumulatedState()}" == "ABORTED">
+                                <#assign stateClass = "aborted">
+                            <#elseif "${childStep.cumulatedState()}" == "FAILED">
+                                <#assign stateClass = "failed">
+                            </#if>
+
+                            <li style="width: 100%">
+                                <div class="${stateClass}">
+                                    <a href="#${childStep.uniqueHash}">${childStep.displayName}</a>
+                                </div>
+                                <@pageMenu childStep/>
+                            </li>
+                        </#if>
                     </#list>
                 </ul>
             </#if>
@@ -100,8 +86,7 @@
             <#if step.resultState.hidden>
                 <#return/>
             </#if>
-            <#assign vMargin = 2>
-            <#assign vMargin = 2>
+            <#assign vMargin = "2px">
             <#assign fWeight = "normal">
             <#assign noHoverSuffix = "-no-hover">
             <#assign collapsible = "">
@@ -114,10 +99,14 @@
                 <#assign noHoverSuffix = "">
             </#if>
             <#if step.type.container>
-                <#assign vMargin = 15>
-                <#assign fWeight = "bolder">
+                <#assign vMargin = "25px">
+                <#assign fWeight = "bold">
             </#if>
-            <#assign indent = 25>
+            <#if level == 0>
+                <#assign indent = 0>
+            <#else>
+                <#assign indent = 20 * (level - 1)>
+            </#if>
             <div style="margin-left: ${indent}px; margin-bottom: ${vMargin}; margin-top: ${vMargin}">
 
                 <#if parent.isFirst(step) && parent.type == "EXAMPLE_GRID_CONTAINER">
@@ -205,6 +194,17 @@
                         </#if>
                         <textarea  type="text" id="${step.uniqueHash}StackTrace" style="display: none;">${step.stackTrace}</textarea>
 <pre><button onclick="traceToClipboard('${step.uniqueHash}StackTrace');" class="stacktrace-copy-btn"></button><code class="language-javastacktrace">${step.stackTrace}</code></pre>
+                        <#if step.hasStdout>
+                            <textarea  type="text" id="${step.uniqueHash}Stdout" style="display: none;">${step.stdout}</textarea>
+<pre><button onclick="traceToClipboard('${step.uniqueHash}Stdout');" class="stacktrace-copy-btn"></button><code class="language-text">Stdout:
+${step.stdout}</code></pre>
+                        </#if>
+                        <#if step.hasStderr>
+                            <span>Stderr:</span>
+                            <textarea  type="text" id="${step.uniqueHash}Stderr" style="display: none;">${step.stderr}</textarea>
+<pre><button onclick="traceToClipboard('${step.uniqueHash}Stderr');" class="stacktrace-copy-btn"></button><code class="language-text">Stderr:
+${step.stderr}</code></pre>
+                        </#if>
                     </div>
                 <#else>
                     <div class="step ${collapsible}" style="font-weight: ${fWeight}">
@@ -221,6 +221,15 @@
                         </div>
                     </#if>
                 </#if>
+
+                <#list step.testTags.tags as tag>
+                    <a href="./../tags.html?t=${tag.tagName}" class="tagged">
+                        <i class="tagged-icon ${tag.stereoType.iconClass}"></i>
+                        <#noautoesc>
+                            ${tag.tagName}
+                        </#noautoesc>
+                    </a>
+                </#list>
 
                 <#if step.hasSeeAlsoRefs>
                     <#assign startComment="<!--%%%%%">
@@ -245,18 +254,28 @@
                         <#if step.narrative.hasImages>
                             <#assign imgIdx = 0>
                             <#assign modalId = "${step.uniqueHash}Modal">
+                            <#assign imageCount = step.narrative.images?size>
                             <div class="image-grid-row">
                                 <#list step.narrative.images as img>
                                     <#assign imgIdx++>
                                     <div class="image-grid-column">
                                         <#assign imgId = "${step.uniqueHash}Img${imgIdx}">
-                                        <img id="${imgId}" onclick="openModal('${modalId}', '${imgId}')"
+                                        <img id="${imgId}"
+                                             data-modal-index="${imgIdx - 1}"
+                                             onclick="openModal('${modalId}', '${imgId}')"
                                              src="./${img.fileName}"/>
                                     </div>
                                 </#list>
                             </div>
                             <div id="${modalId}" class="image-grid-modal">
                                 <span class="image-grid-modal-close" onclick="closeModal('${modalId}')">&times;</span>
+                                <#if imageCount gt 1>
+                                    <button class="image-grid-modal-control image-grid-modal-prev"
+                                            onclick="changeModalImage('${modalId}', -1)">&#10094;</button>
+                                    <button class="image-grid-modal-control image-grid-modal-next"
+                                            onclick="changeModalImage('${modalId}', 1)">&#10095;</button>
+                                    <div class="image-grid-modal-counter"></div>
+                                </#if>
                                 <img class="image-grid-modal-content" id="modal-image">
                             </div>
                         </#if>
@@ -290,16 +309,22 @@
             </div>
         </#macro>
 
-        <nav>
-            <details>
-                <summary>
-                    <i class="nav-icon-bars"></i>
-                </summary>
-                <@pageMenu step/>
-            </details>
-        </nav>
+        <div class="page-layout">
+            <nav class="page-outline">
+                <details open>
+                    <summary>
+                        <i class="page-outline-icon-bars"></i>
+                    </summary>
+                    <div>
+                        <@pageMenu step/>
+                    </div>
+                </details>
+            </nav>
 
-        <@dumpSteps step=step/>
+            <main class="page-content">
+                <@dumpSteps step=step/>
+            </main>
+        </div>
     </div>
 
 

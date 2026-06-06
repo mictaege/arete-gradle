@@ -1,22 +1,82 @@
 <script>
+    let openImageGridModalId = null;
+
     function openModal(modalId, imgId) {
-        let modal = document.getElementById(modalId)
-        let image = document.getElementById(imgId)
+        let modal = document.getElementById(modalId);
+        let image = document.getElementById(imgId);
+        let images = getModalImages(modalId);
+
         modal.style.display = "block";
+        modal.dataset.currentImageIndex = image.dataset.modalIndex;
+        openImageGridModalId = modalId;
+
         let modalContent = modal.querySelector('.image-grid-modal-content');
         modalContent.src = image.src;
+
+        updateModalImageCounter(modal, images.length);
     }
+
     function closeModal(modalId) {
-        document.getElementById(modalId).style.display = "none";
+        let modal = document.getElementById(modalId);
+
+        modal.style.display = "none";
+
+        if (openImageGridModalId === modalId) {
+            openImageGridModalId = null;
+        }
     }
-    window.addEventListener('keydown', function (event) {
-        if (event.key === 'Escape') {
-            const modals = document.getElementsByClassName('image-grid-modal');
-            for (let i = 0; i < modals.length; i++) {
-                if (modals[i].style.display === 'block') {
-                    closeModal(modals[i].id);
-                }
-            }
+
+    function changeModalImage(modalId, direction) {
+        let modal = document.getElementById(modalId);
+        let images = getModalImages(modalId);
+
+        if (images.length <= 1) {
+            return;
+        }
+
+        let currentIndex = parseInt(modal.dataset.currentImageIndex || "0", 10);
+        let nextIndex = currentIndex + direction;
+
+        if (nextIndex < 0) {
+            nextIndex = images.length - 1;
+        } else if (nextIndex >= images.length) {
+            nextIndex = 0;
+        }
+
+        modal.dataset.currentImageIndex = nextIndex;
+
+        let modalContent = modal.querySelector('.image-grid-modal-content');
+        modalContent.src = images[nextIndex].src;
+
+        updateModalImageCounter(modal, images.length);
+    }
+
+    function getModalImages(modalId) {
+        return document.querySelectorAll("img[onclick*=\"openModal('" + modalId + "'\"]");
+    }
+
+    function updateModalImageCounter(modal, imageCount) {
+        let counter = modal.querySelector('.image-grid-modal-counter');
+
+        if (!counter) {
+            return;
+        }
+
+        let currentIndex = parseInt(modal.dataset.currentImageIndex || "0", 10);
+        counter.textContent = (currentIndex + 1) + "/" + imageCount;
+    }
+
+    document.addEventListener("keydown", function(event) {
+        if (!openImageGridModalId) {
+            return;
+        }
+
+        if (event.key === "ArrowLeft") {
+            changeModalImage(openImageGridModalId, -1);
+        } else if (event.key === "ArrowRight") {
+            changeModalImage(openImageGridModalId, 1);
+        } else if (event.key === "Escape") {
+            closeModal(openImageGridModalId);
         }
     });
 </script>

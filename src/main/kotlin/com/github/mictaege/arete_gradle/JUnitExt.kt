@@ -36,3 +36,15 @@ fun <A: Annotation>TestIdentifier.getAnnotation(annotation: Class<A>): A? {
         else -> null
     }
 }
+
+val TestIdentifier.sourceAnnotations: Array<Annotation>
+    get() = when (val source = this.source.orElse(null)) {
+        is ClassSource -> source.javaClass.annotations
+        is MethodSource -> source.javaMethod.annotations
+        else -> emptyArray()
+    }
+
+val TestIdentifier.isTestTemplate: Boolean
+    get() = this.uniqueId.contains("template-invocation")
+
+
