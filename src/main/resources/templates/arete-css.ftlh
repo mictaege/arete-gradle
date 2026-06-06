@@ -147,6 +147,7 @@
     }
 
     .page-outline {
+        position: relative;
         background-color: var(--arete-color-background);
         border-radius: var(--step-border-radius);
         flex: 0 0 auto;
@@ -154,6 +155,12 @@
         margin: 15px 8px 15px 15px;
         padding: 0;
         overflow: visible;
+    }
+
+    .page-outline details {
+        position: sticky;
+        top: 60px;
+        overflow-y: auto;
     }
 
     .page-outline:has(details:not([open])) {
