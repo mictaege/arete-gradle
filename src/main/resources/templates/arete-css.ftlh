@@ -4,7 +4,7 @@
         --step-border-radius: 6px;
         --border-left-width: 12px;
         --page-icon-bars-bg: url("./../icons/icon-bars-bg.svg");
-        --page-icon-bars-fg: url("./../icons/icon-bignoredars-fg.svg");
+        --page-icon-bars-fg: url("./../icons/icon-bars-fg.svg");
         --page-icon-bars-neutral: url("./../icons/icon-bars-neutral.svg");
         --page-icon-bell-bg: url("./../icons/icon-bell-bg.svg");
         --page-icon-bell-fg: url("./../icons/icon-bell-fg.svg");
@@ -138,6 +138,115 @@
     body {
         font-family: sans-serif;
         background-color: var(--arete-color-background);
+    }
+
+    .page-layout {
+        display: flex;
+        align-items: stretch;
+        width: 100%;
+    }
+
+    .page-outline {
+        background-color: var(--arete-color-background);
+        border-radius: var(--step-border-radius);
+        flex: 0 0 auto;
+        max-width: 25%;
+        margin: 15px 8px 15px 15px;
+        padding: 0;
+        overflow: visible;
+    }
+
+    .page-outline:has(details:not([open])) {
+        flex: 0 0 auto;
+        width: auto;
+        max-width: none;
+    }
+
+    .page-outline details {
+        width: 100%;
+        margin: 8px;
+        padding: 0;
+    }
+
+    .page-outline details:not([open]) {
+        width: auto;
+    }
+
+    .page-outline details[open] > ul {
+        display: block;
+        width: auto;
+        max-width: 100%;
+        margin: 8px;
+        padding: 0;
+        overflow: visible;
+    }
+
+    .page-outline summary {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        list-style: none;
+        margin: 8px;
+        padding: 0;
+        color: var(--arete-color-foreground);
+        background-color: var(--arete-color-background);
+    }
+
+    .page-outline summary::-webkit-details-marker {
+        display: none;
+    }
+
+    .page-outline summary::marker {
+        content: "";
+    }
+
+    i.page-outline-icon-bars {
+        display: inline-block;
+        vertical-align: middle;
+        background-size: contain;
+        background-position: center center;
+        background-repeat: no-repeat;
+        width:1.25rem;
+        height:1.25rem;
+        border-radius: var(--step-border-radius);
+        background-color: var(--arete-color-background);
+        color: var(--arete-color-foreground);
+        background-image: var(--page-icon-bars-fg);
+    }
+
+    i:hover.page-outline-icon-bars {
+        background-color: var(--arete-color-foreground);
+        color: var(--arete-color-background);
+        background-image: var(--page-icon-bars-bg);
+    }
+
+    /* top-level list: aligned left */
+    .page-outline details > ul {
+        margin: 0;
+        padding: 0;
+    }
+
+    /* nested lists: visual outline indentation */
+    .page-outline ul ul {
+        margin: 0;
+        padding-left: 14px;
+    }
+
+    .page-outline li {
+        list-style: none;
+        margin: 4px 8px 4px 4px;
+        padding: 0;
+    }
+
+    .page-outline div {
+        color: var(--arete-color-background);
+        margin: 2px;
+        padding: 2px;
+    }
+
+    .page-content {
+        flex: 1 1 auto;
+        min-width: 0;
     }
 
     a {
@@ -441,6 +550,11 @@
         margin-top: 65px; /* Add a top margin to avoid content overlay */
     }
 
+    .main-step {
+        margin-top: 65px; /* Add a top margin to avoid content overlay */
+        display: flex;
+    }
+
     /* Style the links inside the navigation bar */
     .topnav a {
         float: left;
@@ -526,42 +640,6 @@
 
     .topnav a.active .spec-menu-icon-tags {
         background-image: var(--page-icon-tags-bg)
-    }
-
-    nav {
-        background-color: var(--arete-color-background);
-        border-radius: var(--step-border-radius);
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        position: fixed;
-        top: 15px;
-        right: 20px;
-        padding: 5px;
-        max-width: 50%;
-        z-index: 2000;
-    }
-
-    nav summary {
-        list-style-type: none;
-    }
-
-    nav summary:hover .nav-icon-bars {
-        border-radius: var(--step-border-radius);
-        background-color: var(--arete-color-foreground);
-        color: var(--arete-color-background);
-        background-image: var(--page-icon-bars-bg)
-    }
-
-    nav li {
-        list-style: none;
-    }
-
-    nav div {
-        color: var(--arete-color-background);
-        margin-bottom: 8px;
-        padding: 4px;
     }
 
     img {
@@ -677,17 +755,6 @@
         width:1rem;
         height:1rem;
         background-image: var(--page-icon-file-bg)
-    }
-
-    .nav-icon-bars {
-        display: inline-block;
-        vertical-align: middle;
-        background-size: contain;
-        background-position: center center;
-        background-repeat: no-repeat;
-        width:1.25rem;
-        height:1.25rem;
-        background-image: var(--page-icon-bars-fg)
     }
 
     a.see-also {
