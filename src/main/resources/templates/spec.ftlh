@@ -100,8 +100,7 @@
             <#if step.resultState.hidden>
                 <#return/>
             </#if>
-            <#assign vMargin = 2>
-            <#assign vMargin = 2>
+            <#assign vMargin = "2px">
             <#assign fWeight = "normal">
             <#assign noHoverSuffix = "-no-hover">
             <#assign collapsible = "">
@@ -114,7 +113,7 @@
                 <#assign noHoverSuffix = "">
             </#if>
             <#if step.type.container>
-                <#assign vMargin = 25>
+                <#assign vMargin = "25px">
                 <#assign fWeight = "bold">
             </#if>
             <#if level == 0>
