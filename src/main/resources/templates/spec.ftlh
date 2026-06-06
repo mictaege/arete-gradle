@@ -114,7 +114,7 @@
                 <#assign noHoverSuffix = "">
             </#if>
             <#if step.type.container>
-                <#assign vMargin = 15>
+                <#assign vMargin = 25>
                 <#assign fWeight = "bold">
             </#if>
             <#if level == 0>

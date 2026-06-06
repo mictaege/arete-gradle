@@ -241,7 +241,7 @@
 
     .page-outline li {
         list-style: none;
-        margin: 4px 8px 4px 4px;
+        margin: 8px 8px 8px 0;
         padding: 0;
     }
 
