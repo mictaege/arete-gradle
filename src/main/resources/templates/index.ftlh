@@ -46,6 +46,36 @@
                     </div>
                 </div>
             </div>
+            <div style="padding-left: 16px">
+                <div style="padding: 0; margin: 16px">
+                    <h3>Journeys</h3>
+                </div>
+                <div class="neutral-no-hover step" style="margin-bottom: 12px">
+                    <div style="text-align: left">Overall
+                        <span style="float:right;">${plan.journeySummaries().overallCount}</span>
+                    </div>
+                </div>
+                <div class="failed-no-hover step" style="margin-bottom: 12px">
+                    <div style="text-align: left">Failed
+                        <span style="float:right;">${plan.journeySummaries().failedCount}</span>
+                    </div>
+                </div>
+                <div class="aborted-no-hover step" style="margin-bottom: 12px">
+                    <div style="text-align: left">Aborted
+                        <span style="float:right;">${plan.journeySummaries().abortedCount}</span>
+                    </div>
+                </div>
+                <div class="ignored-no-hover step" style="margin-bottom: 12px">
+                    <div style="text-align: left">Ignored
+                        <span style="float:right;">${plan.journeySummaries().ignoredCount}</span>
+                    </div>
+                </div>
+                <div class="successful-no-hover step" style="margin-bottom: 12px">
+                    <div style="text-align: left">Successful
+                        <span style="float:right;">${plan.journeySummaries().successCount}</span>
+                    </div>
+                </div>
+            </div>
             <div style="margin-right: 16px; padding-left: 16px">
                 <div style="padding: 0; margin: 16px">
                     <h3>Scenarios</h3>
@@ -116,18 +146,21 @@
             <input type="text" id="searchInput" onkeyup="searchFunction()" placeholder="Search for Specifications.."/>
         </div>
         <ul id="specList">
+            <#macro specCardContent spec>
+                <a href="./specs/${spec.uniqueHash}.html" style="font-weight:500;">${spec.displayName}</a>
+            </#macro>
             <#list plan.specsOrderedByPrio() as spec>
                 <#if !spec.resultState.hidden>
                     <#if "${spec.cumulatedState()}" == "IGNORED">
-                        <li class="ignored step"><a href="./specs/${spec.uniqueHash}.html">${spec.displayName}</a></li>
+                        <li class="ignored step"><@specCardContent spec=spec /></li>
                     <#elseif "${spec.cumulatedState()}" == "SUCCESSFUL">
-                        <li class="successful step"><a href="./specs/${spec.uniqueHash}.html">${spec.displayName}</a></li>
+                        <li class="successful step"><@specCardContent spec=spec /></li>
                     <#elseif "${spec.cumulatedState()}" == "ABORTED">
-                        <li class="aborted step"><a href="./specs/${spec.uniqueHash}.html">${spec.displayName}</a></li>
+                        <li class="aborted step"><@specCardContent spec=spec /></li>
                     <#elseif "${spec.cumulatedState()}" == "FAILED">
-                        <li class="failed step"><a href="./specs/${spec.uniqueHash}.html">${spec.displayName}</a></li>
+                        <li class="failed step"><@specCardContent spec=spec /></li>
                     <#else>
-                        <li class="step"><a href="./specs/${spec.uniqueHash}.html">${spec.displayName}</a></li>
+                        <li class="step"><@specCardContent spec=spec /></li>
                     </#if>
                 </#if>
             </#list>

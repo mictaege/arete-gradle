@@ -1,14 +1,9 @@
 package com.github.mictaege.arete_gradle
 
-import com.github.mictaege.arete.ExampleCsv
-import com.github.mictaege.arete.ExampleGrid
-import com.github.mictaege.arete.Narrative
-import com.github.mictaege.arete.SeeAlso
-import com.github.mictaege.arete.SeeAlsoDeclaration
-import com.github.mictaege.arete.Spec
-import com.github.mictaege.arete.HiddenIfDisabled
+import com.github.mictaege.arete.*
 import org.junit.platform.engine.TestExecutionResult
 import org.junit.platform.engine.TestExecutionResult.Status
+import org.junit.platform.engine.reporting.ReportEntry
 import org.junit.platform.launcher.TestIdentifier
 import java.io.File
 import java.io.PrintWriter
@@ -16,10 +11,14 @@ import java.io.StringWriter
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
+import java.util.SortedMap
+import java.util.SortedSet
 
 enum class StepType(val container: Boolean) {
     SPEC(true),
     FEATURE(true),
+    JOURNEY(true),
+    STEP(false),
     SCENARIO(true),
     GIVEN(false),
     WHEN(false),
@@ -104,6 +103,12 @@ class SpecificationPlan: SpecificationNode() {
         return hit
     }
 
+    fun addReportEntry(testId: TestIdentifier, entry: ReportEntry): Boolean {
+        var hit = false
+        steps.forEach { hit = hit || it.addReportEntry(testId, entry) }
+        return hit
+    }
+
     fun findStepByType(testClass: Class<*>) = findFirst { s -> s.testClass == testClass }
     fun findSpecByChild(child: SpecificationStep) = findFirst { s ->
         s.type == StepType.SPEC && s.findFirst { c -> c == child } != null
@@ -131,11 +136,18 @@ class SpecificationPlan: SpecificationNode() {
     }
 
     fun specsOrderedByTags(): List<SpecificationStep> {
-        return steps.filter { it.tags.isNotEmpty() }.sortedWith { s1, s2 -> s1.tags.compareTo(s2.tags) }
+        return steps.sortedWith { s1, s2 -> s1.allTestTags.toList().compareListOfTags(s2.allTestTags.toList()) }
     }
 
     fun specSummaries(): PlanSummaries {
         return PlanSummaries(steps)
+    }
+
+    fun journeySummaries(): PlanSummaries {
+        return PlanSummaries(flatFilter {
+            it.type == StepType.JOURNEY &&
+            it.steps.none { child -> child.type == StepType.JOURNEY }
+        })
     }
 
     fun scenarioSummaries(): PlanSummaries {
@@ -146,24 +158,13 @@ class SpecificationPlan: SpecificationNode() {
         return PlanSummaries(flatFilter { it.type == StepType.DESCRIBE })
     }
 
-    fun allTags(): Set<String> {
-        val all = mutableSetOf<String>()
-        steps.forEach {s ->
-            s.tags.split(" ")
-                .map { it.trim()}
-                .filter { it.isNotEmpty() }
-                .map {t ->
-                    if(t.startsWith("#")) {
-                        t.substring(1)
-                    } else {
-                        t
-                    }
-                }
-                .forEach { t ->
-                    all.add(t)
-                }
-        }
-        return all.toSortedSet()
+    fun allTestTags(): SortedMap<StereoTypes, SortedSet<TestTag>> {
+        return flatFilter { true }
+            .filter { it.resultState != ResultState.HIDDEN }
+            .flatMap { it.testTags.tags }
+            .groupBy { it.stereoType }
+            .mapValues { it.value.toSortedSet() }
+            .toSortedMap()
     }
 
     private fun writeIfSpec(testId: TestIdentifier) {
@@ -215,10 +216,10 @@ class SpecificationStep(
     val timeStamp: ZonedDateTime = ZonedDateTime.now()
     val timeStampLong: String = timeStamp.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM, FormatStyle.MEDIUM))
     val timeOnly: String = timeStamp.format(DateTimeFormatter.ofPattern("HH:mm:ss.SSS"))
-    val tags: String = testId.tags.map({ t -> t.name }).sorted().joinToString(" ") { n -> "#$n" }
-    val hasNarrative: Boolean = testId.isAnnotated(Narrative::class.java)
+    val isTestTemplate: Boolean = testId.isTestTemplate
+    val hasNarrative: Boolean = !isTestTemplate && testId.isAnnotated(Narrative::class.java)
     val narrative: NarrativeSection? = testId.getAnnotation(Narrative::class.java)?.let { NarrativeSection(it) }
-    val hasSeeAlsoRefs: Boolean = testId.isAnnotated(SeeAlsoDeclaration::class.java) || testId.isAnnotated(SeeAlso::class.java)
+    val hasSeeAlsoRefs: Boolean = !isTestTemplate && (testId.isAnnotated(SeeAlsoDeclaration::class.java) || testId.isAnnotated(SeeAlso::class.java))
     val seeAlsoRefs: ReferenceTargets?
         get() {
             return if (testId.isAnnotated(SeeAlsoDeclaration::class.java)) {
@@ -229,8 +230,16 @@ class SpecificationStep(
                 null
             }
         }
+    val testTags: TestTags = TestTags(this)
+    val allTestTags: SortedSet<TestTag>
+        get() = (
+                testTags.tags +
+                        flatFilter { true }
+                            .filter { it.resultState != ResultState.HIDDEN }
+                            .flatMap { it.testTags.tags }
+                ).toSortedSet()
     val hiddenIfDisabled: Boolean
-        get() = testId.isAnnotated(HiddenIfDisabled::class.java)
+        get() = testId.isAnnotated(HiddenIfDisabled::class.java) || testId.isAnnotated(Step::class.java)
     val resultState: ResultState
         get() = when(testResult?.status) {
             Status.SUCCESSFUL -> ResultState.SUCCESSFUL
@@ -262,6 +271,16 @@ class SpecificationStep(
         }
     val hasScreenshot: Boolean
         get() = screenshot != null
+    val stdoutEntries = mutableListOf<String>()
+    val stdout: String
+        get() = stdoutEntries.joinToString("\n").trim()
+    val hasStdout: Boolean
+        get() = stdout.isNotEmpty()
+    val stderrEntries = mutableListOf<String>()
+    val stderr: String
+        get() = stderrEntries.joinToString("\n").trim()
+    val hasStderr: Boolean
+        get() = stderr.isNotEmpty()
 
     override fun add(step: SpecificationStep): Boolean {
         return if (step.parentId == uniqueId) {
@@ -280,6 +299,24 @@ class SpecificationStep(
         } else {
             var hit = false
             steps.forEach { hit = hit || it.addResult(testId, testResult) }
+            hit
+        }
+    }
+
+    fun addReportEntry(testId: TestIdentifier, entry: ReportEntry): Boolean {
+        return if (this.testId.uniqueId == testId.uniqueId) {
+            entry.keyValuePairs["stdout"]
+                ?.takeIf { it.isNotBlank() }
+                ?.let { stdoutEntries.add(it) }
+
+            entry.keyValuePairs["stderr"]
+                ?.takeIf { it.isNotBlank() }
+                ?.let { stderrEntries.add(it) }
+
+            true
+        } else {
+            var hit = false
+            steps.forEach { hit = hit || it.addReportEntry(testId, entry) }
             hit
         }
     }
