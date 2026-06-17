@@ -40,8 +40,6 @@ enum class ResultState(val sign: String) {
 
 abstract class SpecificationNode {
     val steps = mutableListOf<SpecificationStep>()
-    val stepsReversed: List<SpecificationStep>
-        get() = steps.reversed()
 
     abstract fun add(step: SpecificationStep): Boolean
 

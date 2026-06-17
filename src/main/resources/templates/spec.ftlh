@@ -53,7 +53,7 @@
         <#macro pageMenu step>
             <#if step.type.container>
                 <ul>
-                    <#list step.stepsReversed as childStep>
+                    <#list step.steps as childStep>
                         <#if childStep.resultState.hidden>
                             <#continue/>
                         </#if>
@@ -293,7 +293,7 @@ ${step.stderr}</code></pre>
                 </#if>
 
                 <#if "${step.type}" == "SPEC" || "${step.type}" == "FEATURE">
-                    <#list step.stepsReversed as childStep>
+                    <#list step.steps as childStep>
                         <#assign level++>
                         <@dumpSteps childStep step/>
                         <#assign level-->
