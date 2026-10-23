@@ -11,7 +11,7 @@ plugins {
 }
 
 group = "io.github.mictaege"
-version = "2026.6"
+version = "2026.7"
 
 gradlePlugin {
     website.set("https://github.com/mictaege/arete-gradle")
@@ -40,12 +40,13 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib")
     implementation("org.junit.jupiter:junit-jupiter-api:6.0.2")
     implementation("org.junit.platform:junit-platform-launcher:6.0.2")
-    implementation("io.github.mictaege:arete:2026.6")
+    implementation("io.github.mictaege:arete:2026.7")
     implementation("org.fusesource.jansi:jansi:2.4.2")
     implementation("com.google.guava:guava:33.5.0-jre")
     implementation("org.freemarker:freemarker:2.3.34")
     implementation("net.sourceforge.plantuml:plantuml-mit:1.2025.10")
     implementation("org.commonmark:commonmark:0.27.0")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:6.0.2")
 }
 
 tasks.register("generateResources") {

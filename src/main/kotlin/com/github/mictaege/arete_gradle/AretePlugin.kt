@@ -1,9 +1,12 @@
 package com.github.mictaege.arete_gradle
 
+import com.github.mictaege.arete.ScreenshotTaker
 import org.gradle.api.Action
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.testing.Test
+import java.io.File
+import java.time.Instant
 import java.util.*
 
 class AretePlugin: Plugin<Project> {
@@ -22,14 +25,28 @@ class AretePlugin: Plugin<Project> {
         props.load(javaClass.classLoader.getResourceAsStream("arete-gradle.properties"))
         val version = props.getProperty("version")
         project.dependencies.add("testRuntimeOnly", "io.github.mictaege:arete-gradle:${version}")
+        project.afterEvaluate {
+            require(extension.captureMaxBuffer > 0) { "captureMaxBuffer must be positive" }
+            require(extension.historyMaxAge > 0) { "historyMaxAge must be positive" }
+        }
         project.tasks.withType(Test::class.java, Action { testTask ->
             testTask.doFirst(Action {
                 testTask.systemProperties[BUILD_DIR_PROPERTY] = project.buildDir.absolutePath
                 testTask.systemProperties[TASK_NAME_PROPERTY] = testTask.name
-                testTask.systemProperties[TASK_NAME_PROPERTY] = testTask.name
                 testTask.systemProperties[CAPTURE_STDOUT_PROPERTY] = "${extension.captureStdout}"
                 testTask.systemProperties[CAPTURE_STDERR_PROPERTY] = "${extension.captureStderr}"
                 testTask.systemProperties[CAPTURE_MAX_BUFFER_PROPERTY] = "${extension.captureMaxBuffer}"
+
+                val runTimestamp = Instant.now()
+                val runId = HistoryConfig.newRunId(runTimestamp)
+                testTask.systemProperties[ScreenshotTaker.SCREENSHOTS_DIR_PROPERTY] =
+                    File(project.buildDir, "tmp/arete_screenshots/${testTask.name}/$runId").absolutePath
+                if (extension.historyEnabled) {
+                    testTask.systemProperties[HistoryConfig.DIRECTORY_PROPERTY] = historyTaskDirectory(project, extension, testTask.name).absolutePath
+                    testTask.systemProperties[HistoryConfig.RUN_ID_PROPERTY] = runId
+                    testTask.systemProperties[HistoryConfig.TIMESTAMP_PROPERTY] = runTimestamp.toString()
+                    testTask.systemProperties[HistoryConfig.MAX_AGE_PROPERTY] = extension.historyMaxAge.toString()
+                }
 
                 val scheme = extension.colorScheme
                 testTask.systemProperties[AreteColorSchemeProvider.ARETE_COLOR_BACKGROUND] = scheme.arete_color_background
@@ -48,6 +65,13 @@ class AretePlugin: Plugin<Project> {
                 testTask.systemProperties[AreteColorSchemeProvider.ARETE_PLANTUML_THEME] = scheme.arete_plantuml_theme
             })
         })
+        project.tasks.register("cleanAreteHistory") { task ->
+            task.group = "arete"
+            task.description = "Deletes the stored Arete test history for this project."
+            task.doLast {
+                project.delete(historyProjectDirectory(project, extension))
+            }
+        }
     }
 
 }
@@ -57,7 +81,29 @@ open class AreteExtension {
     var captureStdout = false
     var captureStderr = false
     var captureMaxBuffer = 1048576
-    init {
-        require(captureMaxBuffer > 0) { "captureMaxBuffer must be positive" }
-    }
+    var historyEnabled = true
+    var historyMaxAge = HistoryConfig.DEFAULT_MAX_AGE
+    var historyDir: File? = null
 }
+
+private fun historyBaseDirectory(project: Project, extension: AreteExtension): File {
+    val configuredDirectory = extension.historyDir
+        ?: project.findProperty("arete.historyDir")?.toString()?.takeIf { it.isNotBlank() }?.let(project::file)
+        ?: System.getenv("ARETE_HISTORY_DIR")?.takeIf { it.isNotBlank() }?.let(project::file)
+        ?: File(project.rootDir, ".gradle/arete-history")
+    return configuredDirectory.absoluteFile
+}
+
+private fun historyProjectDirectory(project: Project, extension: AreteExtension): File {
+    val projectSegments = project.path.split(":").filter { it.isNotBlank() }
+    val identity = (listOf(project.rootProject.name) + projectSegments)
+        .joinToString("/") { sanitize(it) }
+    return File(historyBaseDirectory(project, extension), identity)
+}
+
+private fun historyTaskDirectory(project: Project, extension: AreteExtension, taskName: String): File =
+    File(historyProjectDirectory(project, extension), sanitize(taskName))
+
+private val unsafePathCharacters = Regex("[^A-Za-z0-9._-]")
+
+private fun sanitize(value: String): String = value.replace(unsafePathCharacters, "_")

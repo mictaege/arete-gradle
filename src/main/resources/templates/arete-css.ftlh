@@ -1037,6 +1037,80 @@
         background-image: var(--root-icon-gear-bg);
     }
 
+    .history {
+        margin-top: 6px;
+        margin-left: 2em;
+        font-weight: normal;
+        padding: 6px 10px;
+        border-radius: var(--step-border-radius);
+        background-color: var(--arete-color-card);
+    }
+
+    .history-runs {
+        margin-top: 8px;
+    }
+
+    .history-run {
+        margin: 2px 0;
+    }
+
+    .history-run-box {
+        color: var(--arete-color-background);
+        padding: 6px 8px;
+    }
+
+    .history > summary,
+    .history-run > summary {
+        cursor: pointer;
+        list-style: none;
+    }
+
+    .history > summary::-webkit-details-marker,
+    .history-run > summary::-webkit-details-marker {
+        display: none;
+    }
+
+    .history > summary::marker,
+    .history-run > summary::marker {
+        content: "";
+    }
+
+    .history-run[open] > summary {
+        margin-bottom: 6px;
+    }
+
+    .history-dot {
+        display: inline-block;
+        width: 0.75em;
+        height: 0.75em;
+        margin-left: 4px;
+        border-radius: 50%;
+        cursor: pointer;
+    }
+
+    .history-dot:first-child {
+        margin-left: 0;
+    }
+
+    .history-dot:hover {
+        box-shadow: 0 0 0 2px var(--arete-color-card), 0 0 0 3px var(--arete-color-neutral-emph);
+    }
+
+    .history-dot-FAILED { background-color: var(--arete-color-failed); }
+    .history-dot-ABORTED { background-color: var(--arete-color-aborted); }
+    .history-dot-IGNORED { background-color: var(--arete-color-ignored); }
+    .history-dot-HIDDEN { background-color: var(--arete-color-neutral); }
+    .history-dot-SUCCESSFUL { background-color: var(--arete-color-successful); }
+
+    .history-run-content {
+        position: relative;
+    }
+
+    .history-screenshot {
+        max-width: min(100%, 800px);
+        height: auto;
+    }
+
     table {
         width: clamp(30%, 75%, 95%);
         flex-shrink: 0;

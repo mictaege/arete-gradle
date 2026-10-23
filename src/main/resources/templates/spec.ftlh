@@ -42,6 +42,74 @@
             </#if>
         </#macro>
 
+        <#macro historyRun id state timeStamp stackTrace stdout stderr screenshotFileName="">
+            <#local runClass = "neutral">
+            <#if state == "IGNORED">
+                <#local runClass = "ignored">
+            <#elseif state == "SUCCESSFUL">
+                <#local runClass = "successful">
+            <#elseif state == "ABORTED">
+                <#local runClass = "aborted">
+            <#elseif state == "FAILED">
+                <#local runClass = "failed">
+            </#if>
+            <#if !(stackTrace?has_content || stdout?has_content || stderr?has_content || screenshotFileName?has_content)>
+                <div class="history-run">
+                    <div class="${runClass}-no-hover history-run-box">${state} ${timeStamp}</div>
+                </div>
+                <#return/>
+            </#if>
+            <details class="history-run">
+                <summary class="${runClass} history-run-box">${state} ${timeStamp}</summary>
+                <div class="history-run-content">
+                    <#if screenshotFileName?has_content>
+                        <img class="history-screenshot" src="./${screenshotFileName}"/>
+                    </#if>
+                    <#if stackTrace?has_content>
+                        <textarea  type="text" id="${id}StackTrace" style="display: none;">${stackTrace}</textarea>
+<pre><button onclick="traceToClipboard('${id}StackTrace');" class="stacktrace-copy-btn"></button><code class="language-javastacktrace">${stackTrace}</code></pre>
+                    </#if>
+                    <#if stdout?has_content>
+                        <textarea  type="text" id="${id}Stdout" style="display: none;">${stdout}</textarea>
+<pre><button onclick="traceToClipboard('${id}Stdout');" class="stacktrace-copy-btn"></button><code class="language-text">Stdout:
+${stdout}</code></pre>
+                    </#if>
+                    <#if stderr?has_content>
+                        <textarea  type="text" id="${id}Stderr" style="display: none;">${stderr}</textarea>
+<pre><button onclick="traceToClipboard('${id}Stderr');" class="stacktrace-copy-btn"></button><code class="language-text">Stderr:
+${stderr}</code></pre>
+                    </#if>
+                </div>
+            </details>
+        </#macro>
+
+        <#macro historyDisplay step>
+            <#if step.showHistory>
+                <details class="history">
+                    <summary title="History">
+                        <span class="history-dot history-dot-${step.cumulatedState()}" title="Current run - ${step.timeStampLong}: ${step.cumulatedState()}"></span>
+                        <#list step.history as historyEntry>
+                            <span class="history-dot history-dot-${historyEntry.state}" title="${historyEntry.timeStampLong}: ${historyEntry.state}"></span>
+                        </#list>
+                    </summary>
+                    <div class="history-runs">
+                        <#assign currentState = "${step.cumulatedState()}">
+                        <#local currentRunHasDetails = currentState == "FAILED" || currentState == "ABORTED">
+                        <@historyRun id="${step.uniqueHash}HistoryCurrent" state=currentState timeStamp=step.timeStampLong
+                            stackTrace=currentRunHasDetails?then(step.stackTrace, "")
+                            stdout=currentRunHasDetails?then(step.stdout, "")
+                            stderr=currentRunHasDetails?then(step.stderr, "")
+                            screenshotFileName=(currentRunHasDetails && step.hasScreenshot)?then("${step.uniqueHash}.png", "")/>
+                        <#list step.history as historyEntry>
+                            <@historyRun id="${step.uniqueHash}History${historyEntry.runId}" state="${historyEntry.state}" timeStamp=historyEntry.timeStampLong
+                                stackTrace=historyEntry.stackTrace stdout=historyEntry.stdout stderr=historyEntry.stderr
+                                screenshotFileName=historyEntry.screenshotFileName!""/>
+                        </#list>
+                    </div>
+                </details>
+            </#if>
+        </#macro>
+
         <#macro anchor step>
             <#if step.type.container>
                 <a id="${step.uniqueHash}">
@@ -221,6 +289,8 @@ ${step.stderr}</code></pre>
                         </div>
                     </#if>
                 </#if>
+
+                <@historyDisplay step/>
 
                 <#list step.testTags.tags as tag>
                     <a href="./../tags.html?t=${tag.tagName}" class="tagged">

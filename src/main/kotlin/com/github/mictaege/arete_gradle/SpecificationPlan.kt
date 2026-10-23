@@ -259,17 +259,20 @@ class SpecificationStep(
         }
     val screenshot: File?
         get() {
-            val tmpDir = File(File(System.getProperty("java.io.tmpdir")), "arete_screenshots")
-            val screenshot = File(tmpDir, uniqueHash + ".png")
-            return if (screenshot.exists()) {
-                screenshot
-            } else {
-                null
-            }
+            val dir = System.getProperty(ScreenshotTaker.SCREENSHOTS_DIR_PROPERTY)
+                ?: File(System.getProperty("java.io.tmpdir"), "arete_screenshots").path
+            return File(dir, "$uniqueHash.png").takeIf { it.isFile }
         }
     val hasScreenshot: Boolean
         get() = screenshot != null
     val stdoutEntries = mutableListOf<String>()
+    var history: List<HistoryEntry> = emptyList()
+    val hasHistory: Boolean
+        get() = history.isNotEmpty()
+    val showHistory: Boolean
+        get() = !type.container && hasHistory && (
+            cumulatedState() != ResultState.SUCCESSFUL || history.any { it.state != ResultState.SUCCESSFUL }
+        )
     val stdout: String
         get() = stdoutEntries.joinToString("\n").trim()
     val hasStdout: Boolean

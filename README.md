@@ -103,6 +103,30 @@ arete {
 }
 ```
 
+### Specification history
+
+Arete keeps the latest 10 test-task runs per specification by default. Each leaf step (e.g. a
+`@Given`/`@When`/`@Then` step, an `@ItShould` or a single example) in a specification report shows its
+previous states and timestamps; containers such as specifications or scenarios have no history of their
+own. Failed or aborted runs also retain the stack trace,
+captured stdout/stderr, and screenshot when available. History is stored outside `build/` in
+`<rootProject>/.gradle/arete-history`, so the Gradle `clean` task does not remove it. The `cleanAreteHistory`
+task removes the history for the current project.
+
+```Kotlin
+arete {
+    historyEnabled = true
+    historyMaxAge = 10
+    // Optional: historyDir = file("/var/lib/arete-history/my-job")
+}
+```
+
+The store directory can also be set with `-Parete.historyDir=/path/to/history` or the
+`ARETE_HISTORY_DIR` environment variable. For ephemeral CI workers or jobs that wipe the workspace,
+point it at persistent storage and restore/save that directory between builds. Each test task and
+project uses a separate subdirectory. Stdout and stderr history is only available when their
+respective capture options are enabled.
+
 ## Colorschemes
 
 The colorscheme of the reports can be changed by setting the `arete.colorscheme` property in your `build.gradle.kts` file.

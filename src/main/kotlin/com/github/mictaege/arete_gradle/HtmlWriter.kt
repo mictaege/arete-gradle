@@ -35,9 +35,33 @@ object Freemaker {
 class HtmlWriter: SpecificationWriter {
 
     override fun writeSpec(step: SpecificationStep) {
+        val historyStore = HistoryConfig.fromSystemProperties()?.let(::HistoryStore)
+        historyStore?.let { loadHistory(step, step.uniqueHash, it) }
         copyResources(step)
         writeHtmlFile("/spec.ftlh", mapOf("step" to step, "colorScheme" to AreteColorSchemeProvider.colorScheme), File(BuildDir.specsDir, "${step.uniqueHash}.html"))
+        historyStore?.save(step.uniqueHash, historyRecords(step))
         deleteOriginalScreenshots(step)
+    }
+
+    private fun loadHistory(step: SpecificationStep, specHash: String, historyStore: HistoryStore) {
+        if (!step.type.container) {
+            step.history = historyStore.load(specHash, step.uniqueHash, File(BuildDir.specsDir, "history"))
+        }
+        step.steps.forEach { loadHistory(it, specHash, historyStore) }
+    }
+
+    private fun historyRecords(spec: SpecificationStep): List<HistoryRecord> {
+        return spec.flatFilter { !it.type.container }.map { step ->
+            HistoryRecord(
+                stepHash = step.uniqueHash,
+                displayName = step.displayName,
+                state = step.cumulatedState(),
+                stackTrace = step.stackTrace,
+                stdout = step.stdout,
+                stderr = step.stderr,
+                screenshot = step.screenshot
+            )
+        }
     }
 
     private fun copyResources(step: SpecificationStep) {
