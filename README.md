@@ -118,6 +118,11 @@ captured stdout/stderr, and screenshot when available. History is stored outside
 `<rootProject>/.gradle/arete-history`, so the Gradle `clean` task does not remove it. The `cleanAreteHistory`
 task removes the history for the current project.
 
+The report also includes a **History** page with failed and aborted leaf steps from all retained runs,
+grouped under their specification and nested containers such as journeys, features, descriptions, and
+scenarios. A step remains listed when its latest run succeeded, so intermittent failures can be
+reviewed alongside their run details.
+
 ```Kotlin
 arete {
     historyEnabled = true

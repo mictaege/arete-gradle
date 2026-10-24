@@ -1,4 +1,5 @@
 <#-- @ftlvariable name="step" type="com.github.mictaege.arete_gradle.SpecificationStep" -->
+<#import "history-macros.ftlh" as history>
 <html>
 <head>
     <title>${step.displayName}</title>
@@ -12,6 +13,7 @@
         <a href="./../display_names.html"><i class="spec-menu-icon-handshake"></i> Specifications</a>
         <a href="./../test_specs.html"><i class="spec-menu-icon-flask"></i> Spec Classes</a>
         <a href="./../tags.html"><i class="spec-menu-icon-tags"></i> Tags</a>
+        <a href="./../history.html"><i class="spec-menu-icon-weather"></i> History</a>
     </div>
     <div class="card main-step">
         <#assign level = 0>
@@ -40,65 +42,11 @@
             </#if>
         </#macro>
 
-        <#macro historyRun id state timeStamp errorMsg stackTrace stdout stderr screenshotFileName="">
-            <#local runClass = "neutral">
-            <#if state == "IGNORED">
-                <#local runClass = "ignored">
-            <#elseif state == "SUCCESSFUL">
-                <#local runClass = "successful">
-            <#elseif state == "ABORTED">
-                <#local runClass = "aborted">
-            <#elseif state == "FAILED">
-                <#local runClass = "failed">
-            </#if>
-            <#if !(stackTrace?has_content || stdout?has_content || stderr?has_content || screenshotFileName?has_content)>
-                <div class="history-run">
-                    <div class="${runClass}-no-hover history-run-box">
-                        <div>${timeStamp}</div>
-                        <@historyErrorMsg errorMsg/>
-                    </div>
-                </div>
-                <#return/>
-            </#if>
-            <details class="history-run">
-                <summary class="${runClass} history-run-box">
-                    <div>${timeStamp}</div>
-                    <@historyErrorMsg errorMsg/>
-                </summary>
-                <div class="history-run-content">
-                    <#if screenshotFileName?has_content>
-                        <img class="history-screenshot" src="./${screenshotFileName}"/>
-                    </#if>
-                    <#if stackTrace?has_content>
-                        <textarea  type="text" id="${id}StackTrace" style="display: none;">${stackTrace}</textarea>
-<pre><button onclick="traceToClipboard('${id}StackTrace');" class="stacktrace-copy-btn"></button><code class="language-javastacktrace">${stackTrace}</code></pre>
-                    </#if>
-                    <#if stdout?has_content>
-                        <textarea  type="text" id="${id}Stdout" style="display: none;">${stdout}</textarea>
-<pre><button onclick="traceToClipboard('${id}Stdout');" class="stacktrace-copy-btn"></button><code class="language-text">Stdout:
-${stdout}</code></pre>
-                    </#if>
-                    <#if stderr?has_content>
-                        <textarea  type="text" id="${id}Stderr" style="display: none;">${stderr}</textarea>
-<pre><button onclick="traceToClipboard('${id}Stderr');" class="stacktrace-copy-btn"></button><code class="language-text">Stderr:
-${stderr}</code></pre>
-                    </#if>
-                </div>
-            </details>
-        </#macro>
-
-        <#macro historyErrorMsg errorMsg>
-            <#if errorMsg?has_content>
-                <div class="step-content">
-<pre style="width: 100%;"><code class="language-javastacktrace">${errorMsg}</code></pre>
-                </div>
-            </#if>
-        </#macro>
-
         <#macro historyDisplay step>
             <#if step.showHistory>
                 <details class="history" ontoggle="if (this.open) { this.scrollIntoView({behavior: 'smooth', block: 'nearest'}); }">
                     <summary title="History">
+                        <i class="tagged-icon tagged-clock history-icon"></i>
                         <span class="history-dot history-dot-${step.cumulatedState()}" title="Current run - ${step.historyTimeStamp}: ${step.cumulatedState()}"></span>
                         <#list step.history as historyEntry>
                             <span class="history-dot history-dot-${historyEntry.state}" title="${historyEntry.timeStampLong}: ${historyEntry.state}"></span>
@@ -107,14 +55,14 @@ ${stderr}</code></pre>
                     <div class="history-runs">
                         <#assign currentState = "${step.cumulatedState()}">
                         <#local currentRunHasDetails = currentState == "FAILED" || currentState == "ABORTED">
-                        <@historyRun id="${step.uniqueHash}HistoryCurrent" state=currentState timeStamp=step.historyTimeStamp
+                        <@history.historyRun id="${step.uniqueHash}HistoryCurrent" state=currentState timeStamp=step.historyTimeStamp
                             errorMsg=currentRunHasDetails?then(step.errorMsg, "")
                             stackTrace=currentRunHasDetails?then(step.stackTrace, "")
                             stdout=currentRunHasDetails?then(step.stdout, "")
                             stderr=currentRunHasDetails?then(step.stderr, "")
                             screenshotFileName=(currentRunHasDetails && step.hasScreenshot)?then("${step.uniqueHash}.png", "")/>
                         <#list step.history as historyEntry>
-                            <@historyRun id="${step.uniqueHash}History${historyEntry.runId}" state="${historyEntry.state}" timeStamp=historyEntry.timeStampLong
+                            <@history.historyRun id="${step.uniqueHash}History${historyEntry.runId}" state="${historyEntry.state}" timeStamp=historyEntry.timeStampLong
                                 errorMsg=historyEntry.errorMsg
                                 stackTrace=historyEntry.stackTrace stdout=historyEntry.stdout stderr=historyEntry.stderr
                                 screenshotFileName=historyEntry.screenshotFileName!""/>

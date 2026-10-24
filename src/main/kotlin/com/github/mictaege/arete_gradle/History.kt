@@ -54,11 +54,21 @@ data class HistoryRecord(
     val displayName: String,
     val state: ResultState,
     val startTime: Instant,
+    val type: StepType = StepType.STEP,
+    val index: Int = 0,
+    val parents: List<HistoryContainer> = emptyList(),
     val errorMsg: String = "",
     val stackTrace: String = "",
     val stdout: String = "",
     val stderr: String = "",
     val screenshot: File? = null
+)
+
+data class HistoryContainer(
+    val hash: String,
+    val displayName: String,
+    val type: StepType,
+    val index: Int
 )
 
 data class HistoryEntry(
@@ -80,8 +90,61 @@ fun historyTimeStamp(timeStamp: ZonedDateTime): String =
     "${timeStamp.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM))} " +
         timeStamp.format(DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM))
 
+data class HistoryOverview(val specs: List<HistoryOverviewSpec>)
+
+data class HistoryOverviewSpec(
+    val hash: String,
+    val displayName: String,
+    val reportAvailable: Boolean,
+    val nodes: List<HistoryOverviewNode>
+) {
+    val state: ResultState
+        get() = cumulatedHistoryState(nodes.map { it.state })
+}
+
+data class HistoryOverviewNode(
+    val hash: String,
+    val displayName: String,
+    val type: StepType,
+    val index: Int,
+    val container: Boolean,
+    val children: List<HistoryOverviewNode> = emptyList(),
+    val entries: List<HistoryEntry> = emptyList()
+) {
+    val state: ResultState
+        get() = if (container) {
+            cumulatedHistoryState(children.map { it.state })
+        } else {
+            entries.firstOrNull()?.state ?: ResultState.SUCCESSFUL
+        }
+
+    val typeLabel: String
+        get() = when (type) {
+            StepType.FEATURE -> "Feature"
+            StepType.DESCRIBE -> "Description"
+            StepType.SCENARIO -> "Scenario"
+            else -> type.name.lowercase().replace('_', ' ').replaceFirstChar(Char::uppercase)
+        }
+    val containerDisplayName: String
+        get() = if (
+            displayName.startsWith("$typeLabel:", ignoreCase = true) ||
+            (type == StepType.DESCRIBE && displayName.startsWith("Describe:", ignoreCase = true))
+        ) {
+            displayName
+        } else {
+            "$typeLabel: $displayName"
+        }
+}
+
+private fun cumulatedHistoryState(states: Iterable<ResultState>): ResultState = when {
+    states.any { it == ResultState.FAILED } -> ResultState.FAILED
+    states.any { it == ResultState.ABORTED } -> ResultState.ABORTED
+    states.any { it == ResultState.IGNORED } -> ResultState.IGNORED
+    else -> ResultState.SUCCESSFUL
+}
+
 class HistoryStore(private val config: HistoryConfig) {
-    fun save(specHash: String, records: List<HistoryRecord>) {
+    fun save(specHash: String, records: List<HistoryRecord>, specDisplayName: String = specHash) {
         val specDirectory = config.directory.toPath().resolve(specHash)
         withLock(specDirectory) {
             val targetDirectory = specDirectory.resolve(config.runId)
@@ -89,7 +152,7 @@ class HistoryStore(private val config: HistoryConfig) {
 
             val temporaryDirectory = Files.createTempDirectory(specDirectory, ".tmp-${config.runId}-")
             try {
-                writeRun(temporaryDirectory, records)
+                writeRun(temporaryDirectory, records, specDisplayName)
                 try {
                     Files.move(temporaryDirectory, targetDirectory, ATOMIC_MOVE)
                 } catch (_: AtomicMoveNotSupportedException) {
@@ -115,10 +178,121 @@ class HistoryStore(private val config: HistoryConfig) {
         }
     }
 
-    private fun writeRun(directory: Path, records: List<HistoryRecord>) {
+    fun overview(screenshotDirectory: File? = null): HistoryOverview {
+        val historyDirectory = config.directory.toPath()
+        if (!Files.isDirectory(historyDirectory)) return HistoryOverview(emptyList())
+
+        val specs = try {
+            Files.list(historyDirectory).use { paths ->
+                paths.filter { Files.isDirectory(it) && !it.fileName.toString().startsWith(".") }
+                    .toList()
+            }
+        } catch (_: Exception) {
+            emptyList()
+        }
+        return HistoryOverview(
+            specs.mapNotNull { specDirectory -> readOverviewSpec(specDirectory, screenshotDirectory) }
+                .sortedBy { it.displayName }
+        )
+    }
+
+    private fun readOverviewSpec(specDirectory: Path, screenshotDirectory: File?): HistoryOverviewSpec? {
+        return withLock(specDirectory) {
+            val runs = runDirectories(specDirectory)
+                .sortedWith(compareByDescending<Path> { runTimestamp(it) }.thenByDescending { it.fileName.toString() })
+                .take(config.maxAge)
+            if (runs.isEmpty()) return@withLock null
+
+            var specDisplayName: String? = null
+            val metadataByLeaf = linkedMapOf<String, StoredStepMetadata>()
+            val containerMetadata = linkedMapOf<String, HistoryContainer>()
+            val entriesByLeaf = linkedMapOf<String, MutableList<HistoryEntry>>()
+
+            runs.forEach { runDirectory ->
+                val runProperties = readProperties(runDirectory.resolve("run.properties")) ?: return@forEach
+                if (specDisplayName == null) specDisplayName = runProperties.getProperty("specDisplayName")
+                val stepsProperties = readProperties(runDirectory.resolve("steps.properties")) ?: return@forEach
+                val stepHashes = stepsProperties.stringPropertyNames()
+                    .filter { it.endsWith(".state") }
+                    .map { it.removeSuffix(".state") }
+
+                stepHashes.forEach { stepHash ->
+                    val metadata = readStepMetadata(stepHash, stepsProperties)
+                    metadataByLeaf.putIfAbsent(stepHash, metadata)
+                    metadata.parents.forEach { container -> containerMetadata.putIfAbsent(container.hash, container) }
+
+                    readEntry(runDirectory, stepHash, screenshotDirectory)
+                        ?.let { entriesByLeaf.getOrPut(stepHash) { mutableListOf() }.add(it) }
+                }
+            }
+
+            val failuresByLeaf = entriesByLeaf.filterValues { entries ->
+                entries.any { it.state == ResultState.FAILED || it.state == ResultState.ABORTED }
+            }
+            if (failuresByLeaf.isEmpty()) return@withLock null
+
+            val rootNodes = mutableListOf<MutableOverviewNode>()
+            failuresByLeaf.forEach { (stepHash, entries) ->
+                val metadata = metadataByLeaf[stepHash] ?: StoredStepMetadata(
+                    displayName = stepHash,
+                    type = StepType.STEP,
+                    index = 0,
+                    parents = emptyList()
+                )
+                var children = rootNodes
+                metadata.parents.forEach { parent ->
+                    val current = containerMetadata[parent.hash] ?: parent
+                    val node = children.firstOrNull { it.hash == current.hash }
+                        ?: MutableOverviewNode(current.hash, current.displayName, current.type, current.index, true)
+                            .also(children::add)
+                    children = node.children
+                }
+                val leaf = children.firstOrNull { it.hash == stepHash }
+                    ?: MutableOverviewNode(stepHash, metadata.displayName, metadata.type, metadata.index, false)
+                        .also(children::add)
+                leaf.entries.addAll(entries)
+            }
+
+            HistoryOverviewSpec(
+                hash = specDirectory.fileName.toString(),
+                displayName = specDisplayName?.takeIf { it.isNotBlank() } ?: specDirectory.fileName.toString(),
+                reportAvailable = screenshotDirectory?.parentFile
+                    ?.let { File(it, "${specDirectory.fileName}.html").isFile }
+                    ?: false,
+                nodes = rootNodes.map(MutableOverviewNode::toOverviewNode).sortedWith(overviewNodeComparator)
+            )
+        }
+    }
+
+    private fun readStepMetadata(stepHash: String, properties: Properties): StoredStepMetadata {
+        val displayName = properties.getProperty("$stepHash.displayName") ?: stepHash
+        val type = properties.getProperty("$stepHash.type")
+            ?.let { runCatching { StepType.valueOf(it) }.getOrNull() }
+            ?: StepType.STEP
+        val index = properties.getProperty("$stepHash.index")?.toIntOrNull() ?: 0
+        val parents = properties.getProperty("$stepHash.parents")
+            ?.split(',')
+            ?.filter { it.isNotBlank() }
+            .orEmpty()
+            .map { hash ->
+                val parentType = properties.getProperty("container.$hash.type")
+                    ?.let { runCatching { StepType.valueOf(it) }.getOrNull() }
+                    ?: StepType.SCENARIO
+                HistoryContainer(
+                    hash = hash,
+                    displayName = properties.getProperty("container.$hash.displayName") ?: hash,
+                    type = parentType,
+                    index = properties.getProperty("container.$hash.index")?.toIntOrNull() ?: 0
+                )
+            }
+        return StoredStepMetadata(displayName, type, index, parents)
+    }
+
+    private fun writeRun(directory: Path, records: List<HistoryRecord>, specDisplayName: String) {
         val runProperties = Properties().apply {
             setProperty("runId", config.runId)
             setProperty("timestamp", config.timestamp.toString())
+            setProperty("specDisplayName", specDisplayName)
         }
         writeProperties(directory.resolve("run.properties"), runProperties)
 
@@ -127,6 +301,14 @@ class HistoryStore(private val config: HistoryConfig) {
             stepsProperties.setProperty("${record.stepHash}.state", record.state.name)
             stepsProperties.setProperty("${record.stepHash}.displayName", record.displayName)
             stepsProperties.setProperty("${record.stepHash}.startTime", record.startTime.toString())
+            stepsProperties.setProperty("${record.stepHash}.type", record.type.name)
+            stepsProperties.setProperty("${record.stepHash}.index", record.index.toString())
+            stepsProperties.setProperty("${record.stepHash}.parents", record.parents.joinToString(",") { it.hash })
+            record.parents.forEach { parent ->
+                stepsProperties.setProperty("container.${parent.hash}.displayName", parent.displayName)
+                stepsProperties.setProperty("container.${parent.hash}.type", parent.type.name)
+                stepsProperties.setProperty("container.${parent.hash}.index", parent.index.toString())
+            }
 
             if (record.state == ResultState.FAILED || record.state == ResultState.ABORTED) {
                 writeTextIfNotEmpty(directory.resolve("${record.stepHash}.errormsg.txt"), record.errorMsg)
@@ -232,5 +414,34 @@ class HistoryStore(private val config: HistoryConfig) {
 
     companion object {
         private val monitors = ConcurrentHashMap<Path, Any>()
+        private val overviewNodeComparator = compareBy<HistoryOverviewNode> { it.index }.thenBy { it.displayName }
+    }
+
+    private data class StoredStepMetadata(
+        val displayName: String,
+        val type: StepType,
+        val index: Int,
+        val parents: List<HistoryContainer>
+    )
+
+    private data class MutableOverviewNode(
+        val hash: String,
+        val displayName: String,
+        val type: StepType,
+        val index: Int,
+        val container: Boolean,
+        val children: MutableList<MutableOverviewNode> = mutableListOf(),
+        val entries: MutableList<HistoryEntry> = mutableListOf()
+    ) {
+        fun toOverviewNode(): HistoryOverviewNode = HistoryOverviewNode(
+            hash = hash,
+            displayName = displayName,
+            type = type,
+            index = index,
+            container = container,
+            children = children.map(MutableOverviewNode::toOverviewNode)
+                .sortedWith(overviewNodeComparator),
+            entries = entries.sortedWith(compareByDescending<HistoryEntry> { it.timestamp }.thenByDescending { it.runId })
+        )
     }
 }

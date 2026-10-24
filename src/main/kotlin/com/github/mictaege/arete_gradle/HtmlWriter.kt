@@ -40,7 +40,7 @@ class HtmlWriter: SpecificationWriter {
         historyStore?.let { loadHistory(step, step.uniqueHash, it) }
         copyResources(step)
         writeHtmlFile("/spec.ftlh", mapOf("step" to step, "colorScheme" to AreteColorSchemeProvider.colorScheme), File(BuildDir.specsDir, "${step.uniqueHash}.html"))
-        historyStore?.save(step.uniqueHash, historyRecords(step))
+        historyStore?.save(step.uniqueHash, historyRecords(step), step.displayName)
         deleteOriginalScreenshots(step)
     }
 
@@ -52,19 +52,35 @@ class HtmlWriter: SpecificationWriter {
     }
 
     private fun historyRecords(spec: SpecificationStep): List<HistoryRecord> {
-        return spec.flatFilter { !it.type.container }.map { step ->
-            HistoryRecord(
-                stepHash = step.uniqueHash,
-                displayName = step.displayName,
-                state = step.cumulatedState(),
-                startTime = step.timeStamp.toInstant(),
-                errorMsg = step.errorMsg,
-                stackTrace = step.stackTrace,
-                stdout = step.stdout,
-                stderr = step.stderr,
-                screenshot = step.screenshot
-            )
+        val records = mutableListOf<HistoryRecord>()
+        fun collect(step: SpecificationStep, parents: List<HistoryContainer>) {
+            step.steps.forEachIndexed { index, child ->
+                if (child.type.container) {
+                    collect(
+                        child,
+                        parents + HistoryContainer(child.uniqueHash, child.displayName, child.type, index)
+                    )
+                } else {
+                    records += HistoryRecord(
+                        stepHash = child.uniqueHash,
+                        displayName = child.displayName,
+                        state = child.cumulatedState(),
+                        startTime = child.timeStamp.toInstant(),
+                        type = child.type,
+                        index = index,
+                        parents = parents,
+                        errorMsg = child.errorMsg,
+                        stackTrace = child.stackTrace,
+                        stdout = child.stdout,
+                        stderr = child.stderr,
+                        screenshot = child.screenshot
+                    )
+                    collect(child, parents)
+                }
+            }
         }
+        collect(spec, emptyList())
+        return records
     }
 
     private fun copyResources(step: SpecificationStep) {
@@ -117,6 +133,17 @@ class HtmlWriter: SpecificationWriter {
         writeHtmlFile("/display_names.ftlh", mapOf("plan" to plan, "colorScheme" to AreteColorSchemeProvider.colorScheme), File(BuildDir.taskDir, "display_names.html"))
         writeHtmlFile("/test_specs.ftlh", mapOf("plan" to plan, "colorScheme" to AreteColorSchemeProvider.colorScheme), File(BuildDir.taskDir, "test_specs.html"))
         writeHtmlFile("/tags.ftlh", mapOf("plan" to plan, "colorScheme" to AreteColorSchemeProvider.colorScheme), File(BuildDir.taskDir, "tags.html"))
+        val historyStore = HistoryConfig.fromSystemProperties()?.let(::HistoryStore)
+        val overview = historyStore?.overview(File(BuildDir.specsDir, "history")) ?: HistoryOverview(emptyList())
+        writeHtmlFile(
+            "/history.ftlh",
+            mapOf(
+                "overview" to overview,
+                "historyEnabled" to (historyStore != null),
+                "colorScheme" to AreteColorSchemeProvider.colorScheme
+            ),
+            File(BuildDir.taskDir, "history.html")
+        )
         extractIcons()
     }
 
@@ -172,11 +199,13 @@ class HtmlWriter: SpecificationWriter {
             "icon-handshake",
             "icon-home",
             "icon-sitemap",
-            "icon-tags"
+            "icon-tags",
+            "icon-clock",
+            "icon-weather"
         ).forEach {
             writeSvgFile("/$it.ftlh", AreteColorSchemeProvider.colorScheme.arete_color_background, File(BuildDir.iconsDir, "$it-bg.svg"))
             writeSvgFile("/$it.ftlh", AreteColorSchemeProvider.colorScheme.arete_color_foreground, File(BuildDir.iconsDir, "$it-fg.svg"))
-            writeSvgFile("/$it.ftlh", AreteColorSchemeProvider.colorScheme.arete_color_neutral, File(BuildDir.iconsDir, "$it-color.svg"))
+            writeSvgFile("/$it.ftlh", AreteColorSchemeProvider.colorScheme.arete_color_neutral, File(BuildDir.iconsDir, "$it-neutral.svg"))
         }
     }
 
