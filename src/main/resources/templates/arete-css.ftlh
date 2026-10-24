@@ -1150,6 +1150,14 @@
         background-color: var(--arete-color-card);
     }
 
+    .history-node {
+        margin-left: 20px;
+    }
+
+    .history-container {
+        font-weight: bold;
+    }
+
     .history-runs {
         margin-top: 8px;
     }

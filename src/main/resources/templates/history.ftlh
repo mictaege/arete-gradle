@@ -20,19 +20,6 @@
         <#elseif !overview.specs?has_content>
             <p>No failed or aborted steps are available in the history store.</p>
         <#else>
-            <#function stateClass state>
-                <#if state == "IGNORED">
-                    <#return "ignored">
-                <#elseif state == "SUCCESSFUL">
-                    <#return "successful">
-                <#elseif state == "ABORTED">
-                    <#return "aborted">
-                <#elseif state == "FAILED">
-                    <#return "failed">
-                </#if>
-                <#return "neutral">
-            </#function>
-
             <#macro anchor hash displayName spec>
                 <#if spec.reportAvailable>
                     <#assign target="specs/${spec.hash}.html#${hash}">
@@ -40,19 +27,17 @@
                     <#assign target="history.html#${hash}">
                 </#if>
                 <a id="${hash}">
-                    <button onclick="anchorToClipboard('${displayName?js_string}', '${target?js_string}');" class="link-copy-btn"></button>
+                    <@history.copyLinkButton text=displayName target=target/>
                 </a>
             </#macro>
 
             <#macro historyDisplay node specHash>
-                <details class="history" ontoggle="if (this.open) { this.scrollIntoView({behavior: 'smooth', block: 'nearest'}); }">
-                    <summary title="History">
-                        <i class="tagged-icon card-tagged-clock history-icon"></i>
+                <@history.historyStrip iconClass="card-tagged-clock"; area>
+                    <#if area == "summary">
                         <#list node.entries as entry>
                             <span class="history-dot history-dot-${entry.state}" title="${entry.timeStampLong}: ${entry.state}"></span>
                         </#list>
-                    </summary>
-                    <div class="history-runs">
+                    <#else>
                         <#list node.entries as entry>
                             <@history.historyRun
                                 id="${specHash}_${node.hash}_${entry.runId}"
@@ -65,24 +50,24 @@
                                 screenshotFileName=entry.screenshotFileName!""
                                 screenshotPrefix="specs/"/>
                         </#list>
-                    </div>
-                </details>
+                    </#if>
+                </@history.historyStrip>
             </#macro>
 
-            <#macro historyNode node spec specHash level>
-                <div style="margin-left: ${level * 20}px">
+            <#macro historyNode node spec specHash>
+                <div class="history-node">
                     <#if node.container>
-                        <div class="${stateClass("${node.state}")}-no-hover step" style="font-weight: bold">
+                        <div class="${history.stateClass(node.state)}-no-hover step history-container">
                             <div class="step-display">
                                 ${node.containerDisplayName}
                                 <@anchor hash=node.hash displayName=node.displayName spec=spec/>
                             </div>
                         </div>
                         <#list node.children as child>
-                            <@historyNode node=child spec=spec specHash=specHash level=level + 1/>
+                            <@historyNode node=child spec=spec specHash=specHash/>
                         </#list>
                     <#else>
-                        <div class="${stateClass("${node.state}")}-no-hover step">
+                        <div class="${history.stateClass(node.state)}-no-hover step">
                             <div class="step-display">${node.displayName}</div>
                         </div>
                         <@historyDisplay node=node specHash=specHash/>
@@ -92,7 +77,7 @@
 
             <#list overview.specs as spec>
                 <section>
-                    <div class="${stateClass("${spec.state}")}-no-hover step" style="font-weight: bold">
+                    <div class="${history.stateClass(spec.state)}-no-hover step history-container">
                         <div class="step-display">
                             <#if spec.reportAvailable>
                                 <a href="./specs/${spec.hash}.html">${spec.displayName}</a>
@@ -103,26 +88,14 @@
                         </div>
                     </div>
                     <#list spec.nodes as node>
-                        <@historyNode node=node spec=spec specHash=spec.hash level=1/>
+                        <@historyNode node=node spec=spec specHash=spec.hash/>
                     </#list>
                 </section>
             </#list>
         </#if>
     </div>
 
-    <script>
-        function traceToClipboard(elementId) {
-            let copyText = document.getElementById(elementId);
-            copyText.select();
-            copyText.setSelectionRange(0, 99999);
-            navigator.clipboard.writeText(copyText.value);
-        }
-        function anchorToClipboard(text, target) {
-            let link = new URL(target, window.location.href).href;
-            let markdownLink = '[' + text + '](' + link + ')';
-            navigator.clipboard.writeText(markdownLink);
-        }
-    </script>
+    <@history.clipboardScript/>
     <#include "prism-js.ftlh">
 </body>
 </html>

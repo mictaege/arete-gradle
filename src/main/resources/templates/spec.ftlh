@@ -44,17 +44,15 @@
 
         <#macro historyDisplay step>
             <#if step.showHistory>
-                <details class="history" ontoggle="if (this.open) { this.scrollIntoView({behavior: 'smooth', block: 'nearest'}); }">
-                    <summary title="History">
-                        <i class="tagged-icon tagged-clock history-icon"></i>
+                <@history.historyStrip iconClass="tagged-clock"; area>
+                    <#if area == "summary">
                         <span class="history-dot history-dot-${step.cumulatedState()}" title="Current run - ${step.historyTimeStamp}: ${step.cumulatedState()}"></span>
                         <#list step.history as historyEntry>
                             <span class="history-dot history-dot-${historyEntry.state}" title="${historyEntry.timeStampLong}: ${historyEntry.state}"></span>
                         </#list>
-                    </summary>
-                    <div class="history-runs">
+                    <#else>
                         <#assign currentState = "${step.cumulatedState()}">
-                        <#local currentRunHasDetails = currentState == "FAILED" || currentState == "ABORTED">
+                        <#local currentRunHasDetails = step.cumulatedState().failure>
                         <@history.historyRun id="${step.uniqueHash}HistoryCurrent" state=currentState timeStamp=step.historyTimeStamp
                             errorMsg=currentRunHasDetails?then(step.errorMsg, "")
                             stackTrace=currentRunHasDetails?then(step.stackTrace, "")
@@ -67,15 +65,15 @@
                                 stackTrace=historyEntry.stackTrace stdout=historyEntry.stdout stderr=historyEntry.stderr
                                 screenshotFileName=historyEntry.screenshotFileName!""/>
                         </#list>
-                    </div>
-                </details>
+                    </#if>
+                </@history.historyStrip>
             </#if>
         </#macro>
 
         <#macro anchor step>
             <#if step.type.container>
                 <a id="${step.uniqueHash}">
-                    <button onclick="anchorToClipboard('${step.displayName}', '#${step.uniqueHash}');" class="link-copy-btn"></button>
+                    <@history.copyLinkButton text=step.displayName target="#${step.uniqueHash}"/>
                 </a>
             </#if>
         </#macro>
@@ -89,19 +87,8 @@
                         </#if>
 
                         <#if childStep.type.container>
-                            <#assign stateClass = "neutral">
-                            <#if "${childStep.cumulatedState()}" == "IGNORED">
-                                <#assign stateClass = "ignored">
-                            <#elseif "${childStep.cumulatedState()}" == "SUCCESSFUL">
-                                <#assign stateClass = "successful">
-                            <#elseif "${childStep.cumulatedState()}" == "ABORTED">
-                                <#assign stateClass = "aborted">
-                            <#elseif "${childStep.cumulatedState()}" == "FAILED">
-                                <#assign stateClass = "failed">
-                            </#if>
-
                             <li style="width: 100%">
-                                <div class="${stateClass}">
+                                <div class="${history.stateClass(childStep.cumulatedState())}">
                                     <a href="#${childStep.uniqueHash}">${childStep.displayName}</a>
                                 </div>
                                 <@pageMenu childStep/>
@@ -376,21 +363,8 @@ ${step.stderr}</code></pre>
           });
         }
 
-        function traceToClipboard(elementId) {
-            let copyText = document.getElementById(elementId);
-
-            copyText.select();
-            copyText.setSelectionRange(0, 99999);
-
-            navigator.clipboard.writeText(copyText.value);
-        }
-        function anchorToClipboard(text, anchor) {
-            let link = window.location.protocol + '//' + window.location.host + window.location.pathname + anchor;
-            let markdownLink = '[' + text + '](' + link + ')';
-
-            navigator.clipboard.writeText(markdownLink);
-        }
     </script>
+    <@history.clipboardScript/>
     <#include "prism-js.ftlh">
     <#include "image-grid-js.ftlh">
 

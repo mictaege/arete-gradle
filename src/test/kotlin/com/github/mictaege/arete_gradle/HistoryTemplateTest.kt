@@ -1,0 +1,104 @@
+package com.github.mictaege.arete_gradle
+
+import freemarker.template.Template
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Test
+import java.io.StringReader
+import java.io.StringWriter
+import java.time.Instant
+
+class HistoryTemplateTest {
+    @Test
+    fun exposesResultStateFailureAsBooleanTemplateProperty() {
+        val template = Template(
+            "result-state-failure",
+            StringReader("<#if state.failure>failure<#else>not failure</#if>"),
+            Freemaker.cfg
+        )
+
+        assertEquals("failure", render(template, ResultState.FAILED))
+        assertEquals("not failure", render(template, ResultState.SUCCESSFUL))
+    }
+
+    @Test
+    fun rendersPopulatedHistoryOverview() {
+        val startTime = Instant.parse("2026-10-24T10:00:00Z")
+        val entry = HistoryEntry(
+            runId = "run-1",
+            timestamp = startTime,
+            startTime = startTime,
+            state = ResultState.FAILED,
+            errorMsg = "assertion failed",
+            stackTrace = "java.lang.AssertionError",
+            stdout = "",
+            stderr = "",
+            screenshotFileName = null
+        )
+        val leaf = HistoryOverviewNode(
+            hash = "step-hash",
+            displayName = "Then it fails",
+            type = StepType.THEN,
+            index = 0,
+            container = false,
+            entries = listOf(entry)
+        )
+        val scenario = HistoryOverviewNode(
+            hash = "scenario-hash",
+            displayName = "Example scenario",
+            type = StepType.SCENARIO,
+            index = 0,
+            container = true,
+            children = listOf(leaf)
+        )
+        val overview = HistoryOverview(
+            listOf(
+                HistoryOverviewSpec(
+                    hash = "spec-hash",
+                    displayName = "Spec's title",
+                    reportAvailable = false,
+                    nodes = listOf(scenario)
+                )
+            )
+        )
+
+        val html = render(overview, historyEnabled = true)
+
+        assertTrue(html.contains("history-dot-FAILED"))
+        assertTrue(html.contains("class=\"failed-no-hover step history-container\""))
+        assertTrue(html.contains("java.lang.AssertionError"))
+        assertTrue(html.contains("function traceToClipboard"))
+        val copyLink = html.substringAfter("onclick='anchorToClipboard(").substringBefore(");")
+        assertTrue(copyLink.contains("Spec\\&#39;s title"), copyLink)
+        assertFalse(copyLink.startsWith("'Spec"))
+    }
+
+    @Test
+    fun rendersEmptyAndDisabledHistoryStates() {
+        val emptyOverview = HistoryOverview(emptyList())
+
+        assertTrue(render(emptyOverview, historyEnabled = true).contains("No failed or aborted steps"))
+        assertTrue(render(emptyOverview, historyEnabled = false).contains("History is unavailable"))
+    }
+
+    private fun render(overview: HistoryOverview, historyEnabled: Boolean): String {
+        val template: Template = Freemaker.cfg.getTemplate("/history.ftlh")
+        val writer = StringWriter()
+        template.process(
+            mapOf(
+                "overview" to overview,
+                "historyEnabled" to historyEnabled,
+                "colorScheme" to AreteClassicColors()
+            ),
+            writer
+        )
+        return writer.toString()
+    }
+
+    private fun render(template: Template, state: ResultState): String {
+        val writer = StringWriter()
+        template.process(mapOf("state" to state), writer)
+        return writer.toString()
+    }
+}

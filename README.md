@@ -7,7 +7,7 @@
 
 Gradle reporting plugin for the [Arete](https://github.com/mictaege/arete) JUnit6 testing framework.
 
-![Report](Report.png)
+![Specification report showing the per-step history strip](Report.png)
 
 ## Usage
 
@@ -110,7 +110,8 @@ arete {
 
 ### Specification history
 
-Arete keeps the latest 10 test-task runs per specification by default. Each leaf step (e.g. a
+Arete keeps the latest 10 test-task runs per specification by default; configure `historyMaxAge` to
+change the number of runs retained. Each leaf step (e.g. a
 `@Given`/`@When`/`@Then` step, an `@ItShould` or a single example) in a specification report shows its
 previous states and timestamps; containers such as specifications or scenarios have no history of their
 own. Failed or aborted runs also retain the stack trace,
@@ -121,7 +122,9 @@ task removes the history for the current project.
 The report also includes a **History** page with failed and aborted leaf steps from all retained runs,
 grouped under their specification and nested containers such as journeys, features, descriptions, and
 scenarios. A step remains listed when its latest run succeeded, so intermittent failures can be
-reviewed alongside their run details.
+reviewed alongside their run details. Specs, containers and leaves are ordered by history importance:
+items that are failing in their latest run come first, followed by the most recent failure patterns;
+source order and names break ties. Dots and entries within each history strip remain newest first.
 
 ```Kotlin
 arete {
