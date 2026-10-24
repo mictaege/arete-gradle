@@ -12,6 +12,7 @@ import java.nio.file.StandardOpenOption.WRITE
 import java.time.Instant
 import java.time.ZoneId
 import java.time.ZoneOffset
+import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.util.Properties
@@ -52,6 +53,8 @@ data class HistoryRecord(
     val stepHash: String,
     val displayName: String,
     val state: ResultState,
+    val startTime: Instant,
+    val errorMsg: String = "",
     val stackTrace: String = "",
     val stdout: String = "",
     val stderr: String = "",
@@ -61,16 +64,21 @@ data class HistoryRecord(
 data class HistoryEntry(
     val runId: String,
     val timestamp: Instant,
+    val startTime: Instant,
     val state: ResultState,
+    val errorMsg: String,
     val stackTrace: String,
     val stdout: String,
     val stderr: String,
     val screenshotFileName: String?
 ) {
     val timeStampLong: String
-        get() = timestamp.atZone(ZoneId.systemDefault())
-            .format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM, FormatStyle.MEDIUM))
+        get() = historyTimeStamp(startTime.atZone(ZoneId.systemDefault()))
 }
+
+fun historyTimeStamp(timeStamp: ZonedDateTime): String =
+    "${timeStamp.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM))} " +
+        timeStamp.format(DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM))
 
 class HistoryStore(private val config: HistoryConfig) {
     fun save(specHash: String, records: List<HistoryRecord>) {
@@ -118,8 +126,10 @@ class HistoryStore(private val config: HistoryConfig) {
         records.forEach { record ->
             stepsProperties.setProperty("${record.stepHash}.state", record.state.name)
             stepsProperties.setProperty("${record.stepHash}.displayName", record.displayName)
+            stepsProperties.setProperty("${record.stepHash}.startTime", record.startTime.toString())
 
             if (record.state == ResultState.FAILED || record.state == ResultState.ABORTED) {
+                writeTextIfNotEmpty(directory.resolve("${record.stepHash}.errormsg.txt"), record.errorMsg)
                 writeTextIfNotEmpty(directory.resolve("${record.stepHash}.stacktrace.txt"), record.stackTrace)
                 writeTextIfNotEmpty(directory.resolve("${record.stepHash}.stdout.txt"), record.stdout)
                 writeTextIfNotEmpty(directory.resolve("${record.stepHash}.stderr.txt"), record.stderr)
@@ -137,6 +147,7 @@ class HistoryStore(private val config: HistoryConfig) {
             val stepsProperties = readProperties(runDirectory.resolve("steps.properties")) ?: return null
             val runId = runProperties.getProperty("runId") ?: runDirectory.fileName.toString()
             val timestamp = Instant.parse(runProperties.getProperty("timestamp"))
+            val startTime = Instant.parse(stepsProperties.getProperty("$stepHash.startTime"))
             val state = ResultState.valueOf(stepsProperties.getProperty("$stepHash.state"))
             val storedScreenshot = runDirectory.resolve("$stepHash.png").takeIf { Files.isRegularFile(it) }
             val screenshot = storedScreenshot?.let { source ->
@@ -154,7 +165,9 @@ class HistoryStore(private val config: HistoryConfig) {
             HistoryEntry(
                 runId = runId,
                 timestamp = timestamp,
+                startTime = startTime,
                 state = state,
+                errorMsg = readText(runDirectory.resolve("$stepHash.errormsg.txt")),
                 stackTrace = readText(runDirectory.resolve("$stepHash.stacktrace.txt")),
                 stdout = readText(runDirectory.resolve("$stepHash.stdout.txt")),
                 stderr = readText(runDirectory.resolve("$stepHash.stderr.txt")),

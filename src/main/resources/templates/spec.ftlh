@@ -37,12 +37,10 @@
                         <span>${step.timeStampLong}</span>
                         <div>${step.testClassName}</div>
                 </div>
-            <#elseif "${step.resultState}" == "ABORTED" || "${step.resultState}" == "FAILED">
-                <span class="stamp">${step.timeStampLong}</span>
             </#if>
         </#macro>
 
-        <#macro historyRun id state timeStamp stackTrace stdout stderr screenshotFileName="">
+        <#macro historyRun id state timeStamp errorMsg stackTrace stdout stderr screenshotFileName="">
             <#local runClass = "neutral">
             <#if state == "IGNORED">
                 <#local runClass = "ignored">
@@ -55,12 +53,18 @@
             </#if>
             <#if !(stackTrace?has_content || stdout?has_content || stderr?has_content || screenshotFileName?has_content)>
                 <div class="history-run">
-                    <div class="${runClass}-no-hover history-run-box">${state} ${timeStamp}</div>
+                    <div class="${runClass}-no-hover history-run-box">
+                        <div>${timeStamp}</div>
+                        <@historyErrorMsg errorMsg/>
+                    </div>
                 </div>
                 <#return/>
             </#if>
             <details class="history-run">
-                <summary class="${runClass} history-run-box">${state} ${timeStamp}</summary>
+                <summary class="${runClass} history-run-box">
+                    <div>${timeStamp}</div>
+                    <@historyErrorMsg errorMsg/>
+                </summary>
                 <div class="history-run-content">
                     <#if screenshotFileName?has_content>
                         <img class="history-screenshot" src="./${screenshotFileName}"/>
@@ -83,11 +87,19 @@ ${stderr}</code></pre>
             </details>
         </#macro>
 
+        <#macro historyErrorMsg errorMsg>
+            <#if errorMsg?has_content>
+                <div class="step-content">
+<pre style="width: 100%;"><code class="language-javastacktrace">${errorMsg}</code></pre>
+                </div>
+            </#if>
+        </#macro>
+
         <#macro historyDisplay step>
             <#if step.showHistory>
-                <details class="history">
+                <details class="history" ontoggle="if (this.open) { this.scrollIntoView({behavior: 'smooth', block: 'nearest'}); }">
                     <summary title="History">
-                        <span class="history-dot history-dot-${step.cumulatedState()}" title="Current run - ${step.timeStampLong}: ${step.cumulatedState()}"></span>
+                        <span class="history-dot history-dot-${step.cumulatedState()}" title="Current run - ${step.historyTimeStamp}: ${step.cumulatedState()}"></span>
                         <#list step.history as historyEntry>
                             <span class="history-dot history-dot-${historyEntry.state}" title="${historyEntry.timeStampLong}: ${historyEntry.state}"></span>
                         </#list>
@@ -95,13 +107,15 @@ ${stderr}</code></pre>
                     <div class="history-runs">
                         <#assign currentState = "${step.cumulatedState()}">
                         <#local currentRunHasDetails = currentState == "FAILED" || currentState == "ABORTED">
-                        <@historyRun id="${step.uniqueHash}HistoryCurrent" state=currentState timeStamp=step.timeStampLong
+                        <@historyRun id="${step.uniqueHash}HistoryCurrent" state=currentState timeStamp=step.historyTimeStamp
+                            errorMsg=currentRunHasDetails?then(step.errorMsg, "")
                             stackTrace=currentRunHasDetails?then(step.stackTrace, "")
                             stdout=currentRunHasDetails?then(step.stdout, "")
                             stderr=currentRunHasDetails?then(step.stderr, "")
                             screenshotFileName=(currentRunHasDetails && step.hasScreenshot)?then("${step.uniqueHash}.png", "")/>
                         <#list step.history as historyEntry>
                             <@historyRun id="${step.uniqueHash}History${historyEntry.runId}" state="${historyEntry.state}" timeStamp=historyEntry.timeStampLong
+                                errorMsg=historyEntry.errorMsg
                                 stackTrace=historyEntry.stackTrace stdout=historyEntry.stdout stderr=historyEntry.stderr
                                 screenshotFileName=historyEntry.screenshotFileName!""/>
                         </#list>

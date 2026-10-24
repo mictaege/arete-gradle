@@ -8,6 +8,7 @@ import org.junit.platform.launcher.TestIdentifier
 import java.io.File
 import java.io.PrintWriter
 import java.io.StringWriter
+import java.nio.file.Path
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
@@ -84,6 +85,20 @@ abstract class SpecificationNode {
 
 class SpecificationPlan: SpecificationNode() {
     private val allWriter = SpecificationWriter.allWriter
+    private val screenshotFiles = mutableMapOf<String, Path>()
+    var screenshotOutputRoot: Path? = null
+        private set
+
+    fun addScreenshot(uniqueId: String, path: Path, outputRoot: Path) {
+        screenshotFiles[uniqueId] = path
+        screenshotOutputRoot = outputRoot
+    }
+
+    fun screenshot(uniqueId: String): File? = screenshotFiles[uniqueId]?.toFile()
+
+    fun removeScreenshot(uniqueId: String) {
+        screenshotFiles.remove(uniqueId)
+    }
 
     override fun add(step: SpecificationStep): Boolean {
         var hit = false
@@ -258,15 +273,12 @@ class SpecificationStep(
             }?.map { m -> m.trim() }?.orElse("") ?: ""
         }
     val screenshot: File?
-        get() {
-            val dir = System.getProperty(ScreenshotTaker.SCREENSHOTS_DIR_PROPERTY)
-                ?: File(System.getProperty("java.io.tmpdir"), "arete_screenshots").path
-            return File(dir, "$uniqueHash.png").takeIf { it.isFile }
-        }
+        get() = plan.screenshot(uniqueId)
     val hasScreenshot: Boolean
         get() = screenshot != null
     val stdoutEntries = mutableListOf<String>()
     var history: List<HistoryEntry> = emptyList()
+    val historyTimeStamp: String = historyTimeStamp(timeStamp)
     val hasHistory: Boolean
         get() = history.isNotEmpty()
     val showHistory: Boolean

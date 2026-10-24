@@ -7,6 +7,7 @@ import freemarker.template.TemplateExceptionHandler
 import java.io.File
 import java.io.StringWriter
 import java.nio.file.Files
+import java.nio.file.Path
 import java.nio.file.StandardCopyOption.REPLACE_EXISTING
 import java.nio.file.StandardOpenOption.CREATE
 import java.nio.file.StandardOpenOption.TRUNCATE_EXISTING
@@ -56,6 +57,8 @@ class HtmlWriter: SpecificationWriter {
                 stepHash = step.uniqueHash,
                 displayName = step.displayName,
                 state = step.cumulatedState(),
+                startTime = step.timeStamp.toInstant(),
+                errorMsg = step.errorMsg,
                 stackTrace = step.stackTrace,
                 stdout = step.stdout,
                 stderr = step.stderr,
@@ -90,10 +93,8 @@ class HtmlWriter: SpecificationWriter {
 
     private fun deleteOriginalScreenshots(step: SpecificationStep) {
         step.screenshot?.also {
-            try {
-                it.delete()
-            } catch (_: Exception) {
-            }
+            ScreenshotCleanup.delete(it.toPath(), step.plan.screenshotOutputRoot)
+            step.plan.removeScreenshot(step.uniqueId)
         }
         step.steps.forEach { deleteOriginalScreenshots(it) }
     }
@@ -190,4 +191,24 @@ class HtmlWriter: SpecificationWriter {
         target.createAndWrite(stringWriter.toString())
     }
 
+}
+
+internal object ScreenshotCleanup {
+    fun delete(screenshot: Path, outputRoot: Path?) {
+        runCatching { Files.deleteIfExists(screenshot) }
+
+        val root = outputRoot?.toAbsolutePath()?.normalize() ?: return
+        val path = screenshot.toAbsolutePath().normalize()
+        if (!path.startsWith(root)) return
+
+        var directory = path.parent
+        while (directory != null && directory.startsWith(root) && directory != root && directory.parent != root) {
+            try {
+                Files.delete(directory)
+                directory = directory.parent
+            } catch (_: Exception) {
+                break
+            }
+        }
+    }
 }

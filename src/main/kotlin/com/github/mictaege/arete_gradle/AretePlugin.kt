@@ -1,6 +1,5 @@
 package com.github.mictaege.arete_gradle
 
-import com.github.mictaege.arete.ScreenshotTaker
 import org.gradle.api.Action
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -39,8 +38,6 @@ class AretePlugin: Plugin<Project> {
 
                 val runTimestamp = Instant.now()
                 val runId = HistoryConfig.newRunId(runTimestamp)
-                testTask.systemProperties[ScreenshotTaker.SCREENSHOTS_DIR_PROPERTY] =
-                    File(project.buildDir, "tmp/arete_screenshots/${testTask.name}/$runId").absolutePath
                 if (extension.historyEnabled) {
                     testTask.systemProperties[HistoryConfig.DIRECTORY_PROPERTY] = historyTaskDirectory(project, extension, testTask.name).absolutePath
                     testTask.systemProperties[HistoryConfig.RUN_ID_PROPERTY] = runId

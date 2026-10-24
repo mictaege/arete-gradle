@@ -89,6 +89,11 @@ public class MySeleniumScreenshotTaker implements ScreenshotTaker {
 }
 ```
 
+Screenshots are published as JUnit file attachments. When the Arete Gradle plugin is applied, it
+copies them into the Arete report and history, then removes the attachment files and empty per-test
+directories; screenshots are therefore retained only in the report and history. Without the plugin,
+JUnit keeps the attachments under its configured output directory until the build is cleaned.
+
 ## Reporting Stdout and Stderr
 
 If tests fail for unclear reasons or from time to time, especially on a CI server, it might be useful to see the stdout and stderr of the failing test.

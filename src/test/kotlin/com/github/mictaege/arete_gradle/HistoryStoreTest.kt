@@ -20,6 +20,7 @@ class HistoryStoreTest {
         Files.write(screenshot, byteArrayOf(1, 2, 3))
         val historyDirectory = tempDir.resolve("history").toFile()
         val firstTimestamp = Instant.parse("2026-10-23T10:00:00Z")
+        val stepStartTime = firstTimestamp.plusSeconds(15)
 
         HistoryStore(config(historyDirectory, "run-1", firstTimestamp)).save(
             "spec",
@@ -28,6 +29,8 @@ class HistoryStoreTest {
                     stepHash = "step",
                     displayName = "sample step",
                     state = ResultState.FAILED,
+                    startTime = stepStartTime,
+                    errorMsg = "assertion failed",
                     stackTrace = "failure stack",
                     stdout = "captured stdout",
                     stderr = "captured stderr",
@@ -42,7 +45,10 @@ class HistoryStoreTest {
             .single()
 
         assertEquals("run-1", loaded.runId)
+        assertEquals(firstTimestamp, loaded.timestamp)
+        assertEquals(stepStartTime, loaded.startTime)
         assertEquals(ResultState.FAILED, loaded.state)
+        assertEquals("assertion failed", loaded.errorMsg)
         assertEquals("failure stack", loaded.stackTrace)
         assertEquals("captured stdout", loaded.stdout)
         assertEquals("captured stderr", loaded.stderr)
@@ -56,9 +62,10 @@ class HistoryStoreTest {
     fun excludesCurrentRunAndPrunesToConfiguredLimit() {
         val historyDirectory = tempDir.resolve("history").toFile()
         repeat(4) { index ->
+            val timestamp = Instant.parse("2026-10-23T10:00:00Z").plusSeconds(index.toLong())
             HistoryStore(
-                config(historyDirectory, "run-$index", Instant.parse("2026-10-23T10:00:00Z").plusSeconds(index.toLong()), maxAge = 3)
-            ).save("spec", listOf(HistoryRecord("step", "step", ResultState.SUCCESSFUL)))
+                config(historyDirectory, "run-$index", timestamp, maxAge = 3)
+            ).save("spec", listOf(HistoryRecord("step", "step", ResultState.SUCCESSFUL, timestamp)))
         }
 
         val currentRunStore = HistoryStore(
@@ -85,13 +92,10 @@ class HistoryStoreTest {
         try {
             val tasks = (0 until 4).map { index ->
                 executor.submit {
+                    val timestamp = Instant.parse("2026-10-23T10:00:00Z").plusSeconds(index.toLong())
                     HistoryStore(
-                        config(
-                            historyDirectory,
-                            "parallel-$index",
-                            Instant.parse("2026-10-23T10:00:00Z").plusSeconds(index.toLong())
-                        )
-                    ).save("spec", listOf(HistoryRecord("step", "step", ResultState.SUCCESSFUL)))
+                        config(historyDirectory, "parallel-$index", timestamp)
+                    ).save("spec", listOf(HistoryRecord("step", "step", ResultState.SUCCESSFUL, timestamp)))
                 }
             }
             tasks.forEach { it.get() }
