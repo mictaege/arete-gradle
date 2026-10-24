@@ -100,6 +100,9 @@ data class HistoryOverviewSpec(
 ) {
     val state: ResultState
         get() = cumulatedHistoryState(nodes.map { it.state })
+
+    val importance: HistoryImportance
+        get() = nodes.maxOfOrNull { it.importance } ?: HistoryImportance.NONE
 }
 
 data class HistoryOverviewNode(
@@ -118,6 +121,13 @@ data class HistoryOverviewNode(
             entries.firstOrNull()?.state ?: ResultState.SUCCESSFUL
         }
 
+    val importance: HistoryImportance
+        get() = if (container) {
+            children.maxOfOrNull { it.importance } ?: HistoryImportance.NONE
+        } else {
+            HistoryImportance(entries.map { it.state.historyWeight() })
+        }
+
     val typeLabel: String
         get() = when (type) {
             StepType.FEATURE -> "Feature"
@@ -134,6 +144,31 @@ data class HistoryOverviewNode(
         } else {
             "$typeLabel: $displayName"
         }
+}
+
+/**
+ * Weights of the runs of a leaf, newest first. Compared lexicographically, so the newest run
+ * dominates; missing runs count as successful. Higher is more important.
+ */
+data class HistoryImportance(val weights: List<Int>) : Comparable<HistoryImportance> {
+    override fun compareTo(other: HistoryImportance): Int {
+        for (i in 0 until maxOf(weights.size, other.weights.size)) {
+            val comparison = weights.getOrElse(i) { 0 }.compareTo(other.weights.getOrElse(i) { 0 })
+            if (comparison != 0) return comparison
+        }
+        return 0
+    }
+
+    companion object {
+        val NONE = HistoryImportance(emptyList())
+    }
+}
+
+private fun ResultState.historyWeight(): Int = when (this) {
+    ResultState.FAILED -> 3
+    ResultState.ABORTED -> 2
+    ResultState.IGNORED -> 1
+    else -> 0
 }
 
 private fun cumulatedHistoryState(states: Iterable<ResultState>): ResultState = when {
@@ -192,7 +227,7 @@ class HistoryStore(private val config: HistoryConfig) {
         }
         return HistoryOverview(
             specs.mapNotNull { specDirectory -> readOverviewSpec(specDirectory, screenshotDirectory) }
-                .sortedBy { it.displayName }
+                .sortedWith(compareByDescending<HistoryOverviewSpec> { it.importance }.thenBy { it.displayName })
         )
     }
 
@@ -414,7 +449,9 @@ class HistoryStore(private val config: HistoryConfig) {
 
     companion object {
         private val monitors = ConcurrentHashMap<Path, Any>()
-        private val overviewNodeComparator = compareBy<HistoryOverviewNode> { it.index }.thenBy { it.displayName }
+        private val overviewNodeComparator = compareByDescending<HistoryOverviewNode> { it.importance }
+            .thenBy { it.index }
+            .thenBy { it.displayName }
     }
 
     private data class StoredStepMetadata(

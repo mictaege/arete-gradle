@@ -195,6 +195,122 @@ class HistoryStoreTest {
         assertEquals("Describe: Room details", describeNode.containerDisplayName)
     }
 
+    @Test
+    fun overviewOrdersLeavesByRecencyWeightedFailures() {
+        val historyDirectory = tempDir.resolve("history").toFile()
+        val scenario = HistoryContainer("scenario", "Scenario", StepType.SCENARIO, 0)
+        saveHistories(
+            historyDirectory, "spec", "Spec",
+            listOf(
+                leaf("A", 4, scenario) to "FFFS",
+                leaf("B", 3, scenario) to "FSSF",
+                leaf("C", 2, scenario) to "AFSS",
+                leaf("D", 1, scenario) to "SFFF",
+                leaf("E", 0, scenario) to "SSFS"
+            )
+        )
+
+        val leaves = overview(historyDirectory).specs.single().nodes.single().children
+        assertEquals(listOf("A", "B", "C", "D", "E"), leaves.map { it.hash })
+    }
+
+    @Test
+    fun overviewRanksContainerByItsMostImportantLeaf() {
+        val historyDirectory = tempDir.resolve("history").toFile()
+        val scenarioX = HistoryContainer("X", "Scenario X", StepType.SCENARIO, 0)
+        val scenarioY = HistoryContainer("Y", "Scenario Y", StepType.SCENARIO, 1)
+        saveHistories(
+            historyDirectory, "spec", "Spec",
+            listOf(
+                leaf("x1", 0, scenarioX) to "SFFF",
+                leaf("x2", 1, scenarioX) to "SSFF",
+                leaf("y1", 0, scenarioY) to "FSSS"
+            )
+        )
+
+        val containers = overview(historyDirectory).specs.single().nodes
+        assertEquals(listOf("Y", "X"), containers.map { it.hash })
+    }
+
+    @Test
+    fun overviewOrdersSpecsByImportance() {
+        val historyDirectory = tempDir.resolve("history").toFile()
+        val scenario = HistoryContainer("scenario", "Scenario", StepType.SCENARIO, 0)
+        saveHistories(historyDirectory, "alpha", "Alpha Spec", listOf(leaf("a", 0, scenario) to "SF"))
+        saveHistories(historyDirectory, "zulu", "Zulu Spec", listOf(leaf("z", 0, scenario) to "FS"))
+
+        assertEquals(listOf("Zulu Spec", "Alpha Spec"), overview(historyDirectory).specs.map { it.displayName })
+    }
+
+    @Test
+    fun overviewKeepsIndexOrderForEqualHistories() {
+        val historyDirectory = tempDir.resolve("history").toFile()
+        val scenario = HistoryContainer("scenario", "Scenario", StepType.SCENARIO, 0)
+        saveHistories(
+            historyDirectory, "spec", "Spec",
+            listOf(leaf("second", 1, scenario) to "FS", leaf("first", 0, scenario) to "FS")
+        )
+
+        val leaves = overview(historyDirectory).specs.single().nodes.single().children
+        assertEquals(listOf("first", "second"), leaves.map { it.hash })
+    }
+
+    @Test
+    fun overviewTreatsMissingRunsAsSuccessful() {
+        val historyDirectory = tempDir.resolve("history").toFile()
+        val scenario = HistoryContainer("scenario", "Scenario", StepType.SCENARIO, 0)
+        saveHistories(
+            historyDirectory, "spec", "Spec",
+            listOf(
+                leaf("short", 0, scenario) to "FS",
+                leaf("long", 1, scenario) to "FSF",
+                leaf("equal", 2, scenario) to "FSS"
+            )
+        )
+
+        val leaves = overview(historyDirectory).specs.single().nodes.single().children
+        assertEquals(listOf("long", "short", "equal"), leaves.map { it.hash })
+        assertTrue(HistoryImportance(listOf(3, 0)).compareTo(HistoryImportance(listOf(3, 0, 0))) == 0)
+    }
+
+    private fun leaf(hash: String, index: Int, vararg parents: HistoryContainer) = HistoryRecord(
+        stepHash = hash,
+        displayName = hash,
+        state = ResultState.SUCCESSFUL,
+        startTime = Instant.parse("2026-10-23T10:00:00Z"),
+        type = StepType.THEN,
+        index = index,
+        parents = parents.toList()
+    )
+
+    /** Histories are given newest run first, one letter per run: F, A, I or S. */
+    private fun saveHistories(
+        directory: java.io.File,
+        specHash: String,
+        specDisplayName: String,
+        leaves: List<Pair<HistoryRecord, String>>
+    ) {
+        val runCount = leaves.maxOf { it.second.length }
+        val start = Instant.parse("2026-10-23T10:00:00Z")
+        (0 until runCount).forEach { run ->
+            val positionFromNewest = runCount - 1 - run
+            val records = leaves.filter { positionFromNewest < it.second.length }.map { (record, history) ->
+                val state = when (history[positionFromNewest]) {
+                    'F' -> ResultState.FAILED
+                    'A' -> ResultState.ABORTED
+                    'I' -> ResultState.IGNORED
+                    else -> ResultState.SUCCESSFUL
+                }
+                record.copy(state = state)
+            }
+            HistoryStore(config(directory, "$specHash-run-$run", start.plusSeconds(run * 60L)))
+                .save(specHash, records, specDisplayName)
+        }
+    }
+
+    private fun overview(directory: java.io.File) =
+        HistoryStore(config(directory, "reader", Instant.parse("2026-10-24T10:00:00Z"))).overview()
+
     private fun config(
         directory: java.io.File,
         runId: String,
