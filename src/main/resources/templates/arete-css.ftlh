@@ -856,6 +856,25 @@
         background-image: var(--page-icon-file-bg)
     }
 
+    .card-icon-camera,
+    .card-icon-file {
+        display: inline-block;
+        vertical-align: middle;
+        background-size: contain;
+        background-position: center center;
+        background-repeat: no-repeat;
+        width:1rem;
+        height:1rem;
+    }
+
+    .card-icon-camera {
+        background-image: var(--root-icon-camera-bg)
+    }
+
+    .card-icon-file {
+        background-image: var(--root-icon-file-bg)
+    }
+
     a.see-also {
         text-decoration:none;
         font-size: smaller;
@@ -1169,6 +1188,12 @@
     .history-run-box {
         color: var(--arete-color-background);
         padding: 6px 8px;
+    }
+
+    .history-run-stamp {
+        display: flex;
+        align-items: center;
+        gap: 4px;
     }
 
     .history > summary,

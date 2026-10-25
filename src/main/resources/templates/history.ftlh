@@ -48,7 +48,8 @@
                                 stdout=entry.stdout
                                 stderr=entry.stderr
                                 screenshotFileName=entry.screenshotFileName!""
-                                screenshotPrefix="specs/"/>
+                                screenshotPrefix="specs/"
+                                iconPrefix="card"/>
                         </#list>
                     </#if>
                 </@history.historyStrip>

@@ -23,6 +23,23 @@ class HistoryTemplateTest {
     }
 
     @Test
+    fun rendersSharedHistoryRunIconsForSpecPage() {
+        val template = Template(
+            "history-run-icons",
+            StringReader("""
+                <#import "/history-macros.ftlh" as history>
+                <@history.historyRun id="step" state="FAILED" timeStamp="now" errorMsg="" stackTrace="trace" stdout="" stderr="" screenshotFileName="step.png"/>
+            """.trimIndent()),
+            Freemaker.cfg
+        )
+        val writer = StringWriter()
+        template.process(emptyMap<String, Any>(), writer)
+
+        assertTrue(writer.toString().contains("spec-icon-camera"))
+        assertTrue(writer.toString().contains("spec-icon-file"))
+    }
+
+    @Test
     fun rendersPopulatedHistoryOverview() {
         val startTime = Instant.parse("2026-10-24T10:00:00Z")
         val entry = HistoryEntry(
@@ -34,7 +51,7 @@ class HistoryTemplateTest {
             stackTrace = "java.lang.AssertionError",
             stdout = "",
             stderr = "",
-            screenshotFileName = null
+            screenshotFileName = "step-hash.png"
         )
         val leaf = HistoryOverviewNode(
             hash = "step-hash",
@@ -66,6 +83,8 @@ class HistoryTemplateTest {
         val html = render(overview, historyEnabled = true)
 
         assertTrue(html.contains("history-dot-FAILED"))
+        assertTrue(html.contains("class=\"card-icon-camera\""))
+        assertTrue(html.contains("class=\"card-icon-file\""))
         assertTrue(html.contains("class=\"failed-no-hover step history-container\""))
         assertTrue(html.contains("java.lang.AssertionError"))
         assertTrue(html.contains("function traceToClipboard"))

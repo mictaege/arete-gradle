@@ -24,12 +24,16 @@
     </details>
 </#macro>
 
-<#macro historyRun id state timeStamp errorMsg stackTrace stdout stderr screenshotFileName="" screenshotPrefix="">
+<#macro historyRun id state timeStamp errorMsg stackTrace stdout stderr screenshotFileName="" screenshotPrefix="" iconPrefix="spec">
     <#local runClass = stateClass(state)>
     <#if !(stackTrace?has_content || stdout?has_content || stderr?has_content || screenshotFileName?has_content)>
         <div class="history-run">
             <div class="${runClass}-no-hover history-run-box">
-                <div>${timeStamp}</div>
+                <div class="history-run-stamp">
+                    <span>${timeStamp}</span>
+                    <#if screenshotFileName?has_content><i class="${iconPrefix}-icon-camera"></i></#if>
+                    <#if stackTrace?has_content><i class="${iconPrefix}-icon-file"></i></#if>
+                </div>
                 <@historyErrorMsg errorMsg/>
             </div>
         </div>
@@ -37,7 +41,11 @@
     </#if>
     <details class="history-run">
         <summary class="${runClass} history-run-box">
-            <div>${timeStamp}</div>
+            <div class="history-run-stamp">
+                <span>${timeStamp}</span>
+                <#if screenshotFileName?has_content><i class="${iconPrefix}-icon-camera"></i></#if>
+                <#if stackTrace?has_content><i class="${iconPrefix}-icon-file"></i></#if>
+            </div>
             <@historyErrorMsg errorMsg/>
         </summary>
         <div class="history-run-content">

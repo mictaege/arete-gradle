@@ -124,7 +124,7 @@ grouped under their specification and nested containers such as journeys, featur
 scenarios. A step remains listed when its latest run succeeded, so intermittent failures can be
 reviewed alongside their run details. Specs, containers and leaves are ordered by history importance:
 items that are failing in their latest run come first, followed by the most recent failure patterns;
-source order and names break ties. Dots and entries within each history strip remain newest first.
+source order and names break ties.
 
 ```Kotlin
 arete {
