@@ -7,7 +7,7 @@
 
 Gradle reporting plugin for the [Arete](https://github.com/mictaege/arete) JUnit6 testing framework.
 
-![Report](Report.png)
+![Specification report showing the per-step history strip](Report.png)
 
 ## Usage
 
@@ -89,6 +89,11 @@ public class MySeleniumScreenshotTaker implements ScreenshotTaker {
 }
 ```
 
+Screenshots are published as JUnit file attachments. When the Arete Gradle plugin is applied, it
+copies them into the Arete report and history, then removes the attachment files and empty per-test
+directories; screenshots are therefore retained only in the report and history. Without the plugin,
+JUnit keeps the attachments under its configured output directory until the build is cleaned.
+
 ## Reporting Stdout and Stderr
 
 If tests fail for unclear reasons or from time to time, especially on a CI server, it might be useful to see the stdout and stderr of the failing test.
@@ -102,6 +107,38 @@ arete {
     captureMaxBuffer = 1048576
 }
 ```
+
+### Specification history
+
+Arete keeps the latest 10 test-task runs per specification by default; configure `historyMaxAge` to
+change the number of runs retained. Each leaf step (e.g. a
+`@Given`/`@When`/`@Then` step, an `@ItShould` or a single example) in a specification report shows its
+previous states and timestamps; containers such as specifications or scenarios have no history of their
+own. Failed or aborted runs also retain the stack trace,
+captured stdout/stderr, and screenshot when available. History is stored outside `build/` in
+`<rootProject>/.gradle/arete-history`, so the Gradle `clean` task does not remove it. The `cleanAreteHistory`
+task removes the history for the current project.
+
+The report also includes a **History** page with failed and aborted leaf steps from all retained runs,
+grouped under their specification and nested containers such as journeys, features, descriptions, and
+scenarios. A step remains listed when its latest run succeeded, so intermittent failures can be
+reviewed alongside their run details. Specs, containers and leaves are ordered by history importance:
+items that are failing in their latest run come first, followed by the most recent failure patterns;
+source order and names break ties.
+
+```Kotlin
+arete {
+    historyEnabled = true
+    historyMaxAge = 10
+    // Optional: historyDir = file("/var/lib/arete-history/my-job")
+}
+```
+
+The store directory can also be set with `-Parete.historyDir=/path/to/history` or the
+`ARETE_HISTORY_DIR` environment variable. For ephemeral CI workers or jobs that wipe the workspace,
+point it at persistent storage and restore/save that directory between builds. Each test task and
+project uses a separate subdirectory. Stdout and stderr history is only available when their
+respective capture options are enabled.
 
 ## Colorschemes
 

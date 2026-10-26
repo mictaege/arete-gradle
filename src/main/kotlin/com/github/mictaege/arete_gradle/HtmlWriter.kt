@@ -7,6 +7,7 @@ import freemarker.template.TemplateExceptionHandler
 import java.io.File
 import java.io.StringWriter
 import java.nio.file.Files
+import java.nio.file.Path
 import java.nio.file.StandardCopyOption.REPLACE_EXISTING
 import java.nio.file.StandardOpenOption.CREATE
 import java.nio.file.StandardOpenOption.TRUNCATE_EXISTING
@@ -35,9 +36,51 @@ object Freemaker {
 class HtmlWriter: SpecificationWriter {
 
     override fun writeSpec(step: SpecificationStep) {
+        val historyStore = HistoryConfig.fromSystemProperties()?.let(::HistoryStore)
+        historyStore?.let { loadHistory(step, step.uniqueHash, it) }
         copyResources(step)
         writeHtmlFile("/spec.ftlh", mapOf("step" to step, "colorScheme" to AreteColorSchemeProvider.colorScheme), File(BuildDir.specsDir, "${step.uniqueHash}.html"))
+        historyStore?.save(step.uniqueHash, historyRecords(step), step.displayName)
         deleteOriginalScreenshots(step)
+    }
+
+    private fun loadHistory(step: SpecificationStep, specHash: String, historyStore: HistoryStore) {
+        if (!step.type.container) {
+            step.history = historyStore.load(specHash, step.uniqueHash, File(BuildDir.specsDir, "history"))
+        }
+        step.steps.forEach { loadHistory(it, specHash, historyStore) }
+    }
+
+    private fun historyRecords(spec: SpecificationStep): List<HistoryRecord> {
+        val records = mutableListOf<HistoryRecord>()
+        fun collect(step: SpecificationStep, parents: List<HistoryContainer>) {
+            step.steps.forEachIndexed { index, child ->
+                if (child.type.container) {
+                    collect(
+                        child,
+                        parents + HistoryContainer(child.uniqueHash, child.displayName, child.type, index)
+                    )
+                } else {
+                    records += HistoryRecord(
+                        stepHash = child.uniqueHash,
+                        displayName = child.displayName,
+                        state = child.cumulatedState(),
+                        startTime = child.timeStamp.toInstant(),
+                        type = child.type,
+                        index = index,
+                        parents = parents,
+                        errorMsg = child.errorMsg,
+                        stackTrace = child.stackTrace,
+                        stdout = child.stdout,
+                        stderr = child.stderr,
+                        screenshot = child.screenshot
+                    )
+                    collect(child, parents)
+                }
+            }
+        }
+        collect(spec, emptyList())
+        return records
     }
 
     private fun copyResources(step: SpecificationStep) {
@@ -66,10 +109,8 @@ class HtmlWriter: SpecificationWriter {
 
     private fun deleteOriginalScreenshots(step: SpecificationStep) {
         step.screenshot?.also {
-            try {
-                it.delete()
-            } catch (_: Exception) {
-            }
+            ScreenshotCleanup.delete(it.toPath(), step.plan.screenshotOutputRoot)
+            step.plan.removeScreenshot(step.uniqueId)
         }
         step.steps.forEach { deleteOriginalScreenshots(it) }
     }
@@ -92,6 +133,17 @@ class HtmlWriter: SpecificationWriter {
         writeHtmlFile("/display_names.ftlh", mapOf("plan" to plan, "colorScheme" to AreteColorSchemeProvider.colorScheme), File(BuildDir.taskDir, "display_names.html"))
         writeHtmlFile("/test_specs.ftlh", mapOf("plan" to plan, "colorScheme" to AreteColorSchemeProvider.colorScheme), File(BuildDir.taskDir, "test_specs.html"))
         writeHtmlFile("/tags.ftlh", mapOf("plan" to plan, "colorScheme" to AreteColorSchemeProvider.colorScheme), File(BuildDir.taskDir, "tags.html"))
+        val historyStore = HistoryConfig.fromSystemProperties()?.let(::HistoryStore)
+        val overview = historyStore?.overview(File(BuildDir.specsDir, "history")) ?: HistoryOverview(emptyList())
+        writeHtmlFile(
+            "/history.ftlh",
+            mapOf(
+                "overview" to overview,
+                "historyEnabled" to (historyStore != null),
+                "colorScheme" to AreteColorSchemeProvider.colorScheme
+            ),
+            File(BuildDir.taskDir, "history.html")
+        )
         extractIcons()
     }
 
@@ -147,11 +199,13 @@ class HtmlWriter: SpecificationWriter {
             "icon-handshake",
             "icon-home",
             "icon-sitemap",
-            "icon-tags"
+            "icon-tags",
+            "icon-clock",
+            "icon-weather"
         ).forEach {
             writeSvgFile("/$it.ftlh", AreteColorSchemeProvider.colorScheme.arete_color_background, File(BuildDir.iconsDir, "$it-bg.svg"))
             writeSvgFile("/$it.ftlh", AreteColorSchemeProvider.colorScheme.arete_color_foreground, File(BuildDir.iconsDir, "$it-fg.svg"))
-            writeSvgFile("/$it.ftlh", AreteColorSchemeProvider.colorScheme.arete_color_neutral, File(BuildDir.iconsDir, "$it-color.svg"))
+            writeSvgFile("/$it.ftlh", AreteColorSchemeProvider.colorScheme.arete_color_neutral, File(BuildDir.iconsDir, "$it-neutral.svg"))
         }
     }
 
@@ -166,4 +220,24 @@ class HtmlWriter: SpecificationWriter {
         target.createAndWrite(stringWriter.toString())
     }
 
+}
+
+internal object ScreenshotCleanup {
+    fun delete(screenshot: Path, outputRoot: Path?) {
+        runCatching { Files.deleteIfExists(screenshot) }
+
+        val root = outputRoot?.toAbsolutePath()?.normalize() ?: return
+        val path = screenshot.toAbsolutePath().normalize()
+        if (!path.startsWith(root)) return
+
+        var directory = path.parent
+        while (directory != null && directory.startsWith(root) && directory != root && directory.parent != root) {
+            try {
+                Files.delete(directory)
+                directory = directory.parent
+            } catch (_: Exception) {
+                break
+            }
+        }
+    }
 }

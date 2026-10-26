@@ -2,14 +2,21 @@ package com.github.mictaege.arete_gradle
 
 import com.github.mictaege.arete.*
 import org.junit.platform.engine.TestExecutionResult
+import org.junit.platform.engine.reporting.FileEntry
 import org.junit.platform.engine.reporting.ReportEntry
 import org.junit.platform.launcher.TestExecutionListener
 import org.junit.platform.launcher.TestIdentifier
 import org.junit.platform.launcher.TestPlan
+import java.nio.file.Path
 
 class AreteTestListener: TestExecutionListener {
 
     private val specPlan = SpecificationPlan()
+    private var outputRoot: Path? = null
+
+    override fun testPlanExecutionStarted(testPlan: TestPlan) {
+        outputRoot = testPlan.outputDirectoryCreator.rootDirectory
+    }
 
     override fun executionStarted(testId: TestIdentifier) {
         when {
@@ -64,6 +71,13 @@ class AreteTestListener: TestExecutionListener {
 
     override fun reportingEntryPublished(testIdentifier: TestIdentifier, entry: ReportEntry) {
         specPlan.addReportEntry(testIdentifier, entry)
+    }
+
+    override fun fileEntryPublished(testIdentifier: TestIdentifier, fileEntry: FileEntry) {
+        val path = fileEntry.path
+        if (path.fileName.toString().startsWith("${ScreenshotTaker.SCREENSHOT_NAME_PREFIX}.")) {
+            outputRoot?.let { specPlan.addScreenshot(testIdentifier.uniqueId, path, it) }
+        }
     }
 
 }

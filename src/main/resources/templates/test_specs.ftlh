@@ -10,6 +10,7 @@
         <a href="./display_names.html"><i class="menu-icon-handshake"></i> Specifications</a>
         <a class="active" href="./test_specs.html"><i class="menu-icon-flask"></i> Spec Classes</a>
         <a href="./tags.html"><i class="menu-icon-tags"></i> Tags</a>
+        <a href="./history.html"><i class="menu-icon-weather"></i> History</a>
     </div>
     <div class="card main">
         <div style="padding: 0; margin: 16px">

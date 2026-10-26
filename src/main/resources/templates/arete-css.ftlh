@@ -63,6 +63,12 @@
         --page-icon-tags-bg: url("./../icons/icon-tags-bg.svg");
         --page-icon-tags-fg: url("./../icons/icon-tags-fg.svg");
         --page-icon-tags-neutral: url("./../icons/icon-tags-neutral.svg");
+        --page-icon-clock-bg: url("./../icons/icon-clock-bg.svg");
+        --page-icon-clock-fg: url("./../icons/icon-clock-fg.svg");
+        --page-icon-clock-neutral: url("./../icons/icon-clock-neutral.svg");
+        --page-icon-weather-bg: url("./../icons/icon-weather-bg.svg");
+        --page-icon-weather-fg: url("./../icons/icon-weather-fg.svg");
+        --page-icon-weather-neutral: url("./../icons/icon-weather-neutral.svg");
         --page-icon-users-bg: url("./../icons/icon-users-bg.svg");
         --page-icon-users-fg: url("./../icons/icon-users-fg.svg");
         --page-icon-users-neutral: url("./../icons/icon-users-neutral.svg");
@@ -126,6 +132,12 @@
         --root-icon-tags-bg: url("./icons/icon-tags-bg.svg");
         --root-icon-tags-fg: url("./icons/icon-tags-fg.svg");
         --root-icon-tags-neutral: url("./icons/icon-tags-neutral.svg");
+        --root-icon-clock-bg: url("./icons/icon-clock-bg.svg");
+        --root-icon-clock-fg: url("./icons/icon-clock-fg.svg");
+        --root-icon-clock-neutral: url("./icons/icon-clock-neutral.svg");
+        --root-icon-weather-bg: url("./icons/icon-weather-bg.svg");
+        --root-icon-weather-fg: url("./icons/icon-weather-fg.svg");
+        --root-icon-weather-neutral: url("./icons/icon-weather-neutral.svg");
         --root-icon-users-bg: url("./icons/icon-users-bg.svg");
         --root-icon-users-fg: url("./icons/icon-users-fg.svg");
         --root-icon-users-neutral: url("./icons/icon-users-neutral.svg");
@@ -598,6 +610,14 @@
         background-image: var(--root-icon-tags-bg)
     }
 
+    .topnav a:hover .menu-icon-clock {
+        background-image: var(--root-icon-clock-bg)
+    }
+
+    .topnav a:hover .menu-icon-weather {
+        background-image: var(--root-icon-weather-bg)
+    }
+
     .topnav a:hover .spec-menu-icon-home {
         background-image: var(--page-icon-home-bg)
     }
@@ -612,6 +632,14 @@
 
     .topnav a:hover .spec-menu-icon-tags {
         background-image: var(--page-icon-tags-bg)
+    }
+
+    .topnav a:hover .spec-menu-icon-clock {
+        background-image: var(--page-icon-clock-bg)
+    }
+
+    .topnav a:hover .spec-menu-icon-weather {
+        background-image: var(--page-icon-weather-bg)
     }
 
     /* Add a color to the active/current link */
@@ -637,6 +665,14 @@
         background-image: var(--root-icon-tags-bg)
     }
 
+    .topnav a.active .menu-icon-clock {
+        background-image: var(--root-icon-clock-bg)
+    }
+
+    .topnav a.active .menu-icon-weather {
+        background-image: var(--root-icon-weather-bg)
+    }
+
     .topnav a.active .spec-menu-icon-home {
         background-image: var(--page-icon-home-bg)
     }
@@ -651,6 +687,14 @@
 
     .topnav a.active .spec-menu-icon-tags {
         background-image: var(--page-icon-tags-bg)
+    }
+
+    .topnav a.active .spec-menu-icon-clock {
+        background-image: var(--page-icon-clock-bg)
+    }
+
+    .topnav a.active .spec-menu-icon-weather {
+        background-image: var(--page-icon-weather-bg)
     }
 
     img {
@@ -702,6 +746,28 @@
         background-image: var(--root-icon-tags-fg)
     }
 
+    .menu-icon-clock {
+        display: inline-block;
+        vertical-align: middle;
+        background-size: contain;
+        background-position: center center;
+        background-repeat: no-repeat;
+        width:1.25rem;
+        height:1.25rem;
+        background-image: var(--root-icon-clock-fg)
+    }
+
+    .menu-icon-weather {
+        display: inline-block;
+        vertical-align: middle;
+        background-size: contain;
+        background-position: center center;
+        background-repeat: no-repeat;
+        width:1.25rem;
+        height:1.25rem;
+        background-image: var(--root-icon-weather-fg)
+    }
+
     .spec-menu-icon-home {
         display: inline-block;
         vertical-align: middle;
@@ -746,6 +812,28 @@
         background-image: var(--page-icon-tags-fg)
     }
 
+    .spec-menu-icon-clock {
+        display: inline-block;
+        vertical-align: middle;
+        background-size: contain;
+        background-position: center center;
+        background-repeat: no-repeat;
+        width:1.25rem;
+        height:1.25rem;
+        background-image: var(--page-icon-clock-fg)
+    }
+
+    .spec-menu-icon-weather {
+        display: inline-block;
+        vertical-align: middle;
+        background-size: contain;
+        background-position: center center;
+        background-repeat: no-repeat;
+        width:1.25rem;
+        height:1.25rem;
+        background-image: var(--page-icon-weather-fg)
+    }
+
     .spec-icon-camera {
         display: inline-block;
         vertical-align: middle;
@@ -766,6 +854,25 @@
         width:1rem;
         height:1rem;
         background-image: var(--page-icon-file-bg)
+    }
+
+    .card-icon-camera,
+    .card-icon-file {
+        display: inline-block;
+        vertical-align: middle;
+        background-size: contain;
+        background-position: center center;
+        background-repeat: no-repeat;
+        width:1rem;
+        height:1rem;
+    }
+
+    .card-icon-camera {
+        background-image: var(--root-icon-camera-bg)
+    }
+
+    .card-icon-file {
+        background-image: var(--root-icon-file-bg)
     }
 
     a.see-also {
@@ -910,6 +1017,14 @@
         background-image: var(--page-icon-gear-bg);
     }
 
+    .tagged-clock {
+        background-image: var(--page-icon-clock-fg);
+    }
+
+    .tagged-weather {
+        background-image: var(--page-icon-weather-fg);
+    }
+
     .card-tagged,
     .search-tagged {
         text-decoration:none;
@@ -1035,6 +1150,111 @@
 
     .search-tagged:hover > i.search-tagged-workflow {
         background-image: var(--root-icon-gear-bg);
+    }
+
+    .card-tagged-clock {
+        background-image: var(--root-icon-clock-fg);
+    }
+
+    .card-tagged-weather {
+        background-image: var(--root-icon-weather-fg);
+    }
+
+    .history {
+        margin-top: 6px;
+        margin-left: 2em;
+        font-weight: normal;
+        padding: 6px 10px;
+        border-radius: var(--step-border-radius);
+        background-color: var(--arete-color-card);
+    }
+
+    .history-node {
+        margin-left: 20px;
+    }
+
+    .history-container {
+        font-weight: bold;
+    }
+
+    .history-runs {
+        margin-top: 8px;
+    }
+
+    .history-run {
+        margin: 2px 0;
+    }
+
+    .history-run-box {
+        color: var(--arete-color-background);
+        padding: 6px 8px;
+    }
+
+    .history-run-stamp {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .history > summary,
+    .history-run > summary {
+        cursor: pointer;
+        list-style: none;
+    }
+
+    .history > summary::-webkit-details-marker,
+    .history-run > summary::-webkit-details-marker {
+        display: none;
+    }
+
+    .history > summary::marker,
+    .history-run > summary::marker {
+        content: "";
+    }
+
+    .history > summary {
+        display: flex;
+        align-items: center;
+    }
+
+    .history-run[open] > summary {
+        margin-bottom: 6px;
+    }
+
+    .history-dot {
+        display: inline-block;
+        width: 0.75em;
+        height: 0.75em;
+        margin-left: 4px;
+        border-radius: 50%;
+        cursor: pointer;
+    }
+
+    .history-dot:first-of-type {
+        margin-left: 0;
+    }
+
+    .history-icon {
+        margin-right: 6px;
+    }
+
+    .history-dot:hover {
+        box-shadow: 0 0 0 2px var(--arete-color-card), 0 0 0 3px var(--arete-color-neutral-emph);
+    }
+
+    .history-dot-FAILED { background-color: var(--arete-color-failed); }
+    .history-dot-ABORTED { background-color: var(--arete-color-aborted); }
+    .history-dot-IGNORED { background-color: var(--arete-color-ignored); }
+    .history-dot-HIDDEN { background-color: var(--arete-color-neutral); }
+    .history-dot-SUCCESSFUL { background-color: var(--arete-color-successful); }
+
+    .history-run-content {
+        position: relative;
+    }
+
+    .history-screenshot {
+        max-width: min(100%, 800px);
+        height: auto;
     }
 
     table {

@@ -8,27 +8,28 @@ import org.junit.platform.launcher.TestIdentifier
 import java.io.File
 import java.io.PrintWriter
 import java.io.StringWriter
+import java.nio.file.Path
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.util.SortedMap
 import java.util.SortedSet
 
-enum class StepType(val container: Boolean) {
-    SPEC(true),
-    FEATURE(true),
-    JOURNEY(true),
-    STEP(false),
-    SCENARIO(true),
-    GIVEN(false),
-    WHEN(false),
-    THEN(false),
-    DESCRIBE(true),
-    IT_SHOULD(false),
-    EXAMPLE_CONTAINER(true),
-    EXAMPLE_INSTANCE(false),
-    EXAMPLE_GRID_CONTAINER(true),
-    EXAMPLE_GRID_INSTANCE(false)
+enum class StepType(val container: Boolean, val label: String) {
+    SPEC(true, "Spec"),
+    FEATURE(true, "Feature"),
+    JOURNEY(true, "Journey"),
+    STEP(false, "Step"),
+    SCENARIO(true, "Scenario"),
+    GIVEN(false, "Given"),
+    WHEN(false, "When"),
+    THEN(false, "Then"),
+    DESCRIBE(true, "Description"),
+    IT_SHOULD(false, "It should"),
+    EXAMPLE_CONTAINER(true, "Example container"),
+    EXAMPLE_INSTANCE(false, "Example instance"),
+    EXAMPLE_GRID_CONTAINER(true, "Example grid container"),
+    EXAMPLE_GRID_INSTANCE(false, "Example grid instance")
 }
 
 enum class ResultState(val sign: String) {
@@ -36,6 +37,16 @@ enum class ResultState(val sign: String) {
 
     val hidden: Boolean
         get() = this == ResultState.HIDDEN
+
+    val isFailure: Boolean
+        get() = this == FAILED || this == ABORTED
+}
+
+internal fun cumulate(states: Iterable<ResultState>, fallback: ResultState = ResultState.SUCCESSFUL): ResultState = when {
+    states.any { it == ResultState.FAILED } -> ResultState.FAILED
+    states.any { it == ResultState.ABORTED } -> ResultState.ABORTED
+    states.any { it == ResultState.IGNORED } -> ResultState.IGNORED
+    else -> fallback
 }
 
 abstract class SpecificationNode {
@@ -84,6 +95,20 @@ abstract class SpecificationNode {
 
 class SpecificationPlan: SpecificationNode() {
     private val allWriter = SpecificationWriter.allWriter
+    private val screenshotFiles = mutableMapOf<String, Path>()
+    var screenshotOutputRoot: Path? = null
+        private set
+
+    fun addScreenshot(uniqueId: String, path: Path, outputRoot: Path) {
+        screenshotFiles[uniqueId] = path
+        screenshotOutputRoot = outputRoot
+    }
+
+    fun screenshot(uniqueId: String): File? = screenshotFiles[uniqueId]?.toFile()
+
+    fun removeScreenshot(uniqueId: String) {
+        screenshotFiles.remove(uniqueId)
+    }
 
     override fun add(step: SpecificationStep): Boolean {
         var hit = false
@@ -173,12 +198,7 @@ class SpecificationPlan: SpecificationNode() {
     }
 
     override fun cumulatedState(): ResultState {
-        return when {
-            anyMatch { s -> s.resultState == ResultState.FAILED } -> ResultState.FAILED
-            anyMatch { s -> s.resultState == ResultState.ABORTED } -> ResultState.ABORTED
-            anyMatch { s -> s.resultState == ResultState.IGNORED } -> ResultState.IGNORED
-            else -> ResultState.SUCCESSFUL
-        }
+        return cumulate(flatFilter { true }.map { it.resultState })
     }
 
 }
@@ -258,18 +278,18 @@ class SpecificationStep(
             }?.map { m -> m.trim() }?.orElse("") ?: ""
         }
     val screenshot: File?
-        get() {
-            val tmpDir = File(File(System.getProperty("java.io.tmpdir")), "arete_screenshots")
-            val screenshot = File(tmpDir, uniqueHash + ".png")
-            return if (screenshot.exists()) {
-                screenshot
-            } else {
-                null
-            }
-        }
+        get() = plan.screenshot(uniqueId)
     val hasScreenshot: Boolean
         get() = screenshot != null
     val stdoutEntries = mutableListOf<String>()
+    var history: List<HistoryEntry> = emptyList()
+    val historyTimeStamp: String = historyTimeStamp(timeStamp)
+    val hasHistory: Boolean
+        get() = history.isNotEmpty()
+    val showHistory: Boolean
+        get() = !type.container && hasHistory && (
+            cumulatedState() != ResultState.SUCCESSFUL || history.any { it.state != ResultState.SUCCESSFUL }
+        )
     val stdout: String
         get() = stdoutEntries.joinToString("\n").trim()
     val hasStdout: Boolean
@@ -320,12 +340,7 @@ class SpecificationStep(
     }
 
     override fun cumulatedState(): ResultState {
-        return when {
-            anyMatch { s -> s.resultState == ResultState.FAILED } -> ResultState.FAILED
-            anyMatch { s -> s.resultState == ResultState.ABORTED } -> ResultState.ABORTED
-            anyMatch { s -> s.resultState == ResultState.IGNORED } -> ResultState.IGNORED
-            else -> resultState
-        }
+        return cumulate(flatFilter { true }.map { it.resultState }, resultState)
     }
 
     val gridColumns: Array<String>
