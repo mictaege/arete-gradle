@@ -46,6 +46,7 @@ dependencies {
     implementation("org.freemarker:freemarker:2.3.34")
     implementation("net.sourceforge.plantuml:plantuml-mit:1.2025.10")
     implementation("org.commonmark:commonmark:0.27.0")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:6.0.2")
 }
 
 tasks.register("generateResources") {
