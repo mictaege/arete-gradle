@@ -32,6 +32,9 @@ itself consumed/exercised by the `arete-gradle-test` sample project.
   users of the arete BDD framework.
 - `gradle.properties` in this project stores Gradle-level configuration (e.g. Kotlin/JVM toggles) —
   check it before assuming defaults.
+- Run history (history store, history strip on spec pages, History page, screenshot hand-over via
+  JUnit file attachments): read [docs/arete_history.md](docs/arete_history.md) before changing
+  `History.kt`, `HtmlWriter.kt`, the history templates or screenshot handling.
 
 ## Working conventions
 - Run `./gradlew test` before submitting changes; also consider building and exercising the plugin
