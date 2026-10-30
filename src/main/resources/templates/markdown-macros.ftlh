@@ -5,6 +5,23 @@
     `[x]` failed, `[*]` aborted, `[/]` ignored, `[#]` hidden, `[+]` successful.
 -->
 
+<#function stateColor state>
+    <#-- the emph variant is the theme's accent for the state and reads well as text color -->
+    <#if "${state}" == "FAILED">
+        <#return colorScheme.arete_color_failed_emph>
+    <#elseif "${state}" == "ABORTED">
+        <#return colorScheme.arete_color_aborted_emph>
+    <#elseif "${state}" == "IGNORED">
+        <#return colorScheme.arete_color_ignored_emph>
+    <#elseif "${state}" == "HIDDEN">
+        <#return colorScheme.arete_color_neutral_emph>
+    <#else>
+        <#return colorScheme.arete_color_successful_emph>
+    </#if>
+</#function>
+
+<#macro stateSign state><span style="color: ${stateColor(state)}">${state.sign}</span></#macro>
+
 <#macro fencedBlock label indent text trim=false>
 ${indent}- ${label}:
 ${indent}  ```
@@ -17,6 +34,44 @@ ${indent}  ```
 ${indent}  ${renderedLine}
     </#list>
 ${indent}  ```
+</#macro>
+
+<#macro markdownHistoryList entries labelIndent>
+${labelIndent}- History:
+    <#list entries as entry>
+${labelIndent}    - <@stateSign entry.state/> ${entry.timeStampLong}
+        <#if entry.errorMsg?has_content>
+            <@fencedBlock label="Message" indent="${labelIndent}        " text=entry.errorMsg/>
+        </#if>
+        <#if entry.stackTrace?has_content>
+            <@fencedBlock label="Stack trace" indent="${labelIndent}        " text=entry.stackTrace trim=true/>
+        </#if>
+        <#if entry.stdout?has_content>
+            <@fencedBlock label="Stdout" indent="${labelIndent}        " text=entry.stdout/>
+        </#if>
+        <#if entry.stderr?has_content>
+            <@fencedBlock label="Stderr" indent="${labelIndent}        " text=entry.stderr/>
+        </#if>
+    </#list>
+</#macro>
+
+<#macro markdownLeaf step>
+- <@stateSign step.resultState/> ${step.displayName}
+    <#if step.hasErrorMsg>
+        <@fencedBlock label="Message" indent="    " text=step.errorMsg/>
+    </#if>
+    <#if step.stackTrace?has_content>
+        <@fencedBlock label="Stack trace" indent="    " text=step.stackTrace trim=true/>
+    </#if>
+    <#if step.hasStdout>
+        <@fencedBlock label="Stdout" indent="    " text=step.stdout/>
+    </#if>
+    <#if step.hasStderr>
+        <@fencedBlock label="Stderr" indent="    " text=step.stderr/>
+    </#if>
+    <#if step.showHistory>
+        <@markdownHistoryList entries=step.history labelIndent="    "/>
+    </#if>
 </#macro>
 
 <#macro markdownStep step depth=1>
@@ -40,52 +95,11 @@ ${indent}  ```
                 </#list>
             </#list>
         </#if>
-        <#if "${step.type}" == "EXAMPLE_GRID_CONTAINER">
-
-| ${step.gridColumns?join(" | ")} |
-| ${step.gridColumns?map(col -> "---")?join(" | ")} |
-            <#list step.steps as child>
-                <#if !child.resultState.hidden>
-| ${child.gridRowData?join(" | ")} |
-                </#if>
-            </#list>
-        <#else>
-            <#list step.steps as child>
-                <@markdownStep step=child depth=depth + 1/>
-            </#list>
-        </#if>
+        <#list step.steps as child>
+            <@markdownStep step=child depth=depth + 1/>
+        </#list>
     <#else>
-- `${step.resultState.sign}` ${step.displayName}
-        <#if step.hasErrorMsg>
-            <@fencedBlock label="Message" indent="    " text=step.errorMsg/>
-        </#if>
-        <#if step.stackTrace?has_content>
-            <@fencedBlock label="Stack trace" indent="    " text=step.stackTrace trim=true/>
-        </#if>
-        <#if step.hasStdout>
-            <@fencedBlock label="Stdout" indent="    " text=step.stdout/>
-        </#if>
-        <#if step.hasStderr>
-            <@fencedBlock label="Stderr" indent="    " text=step.stderr/>
-        </#if>
-        <#if step.showHistory>
-    - History:
-            <#list step.history as historyEntry>
-        - `${historyEntry.state.sign}` ${historyEntry.timeStampLong}
-                <#if historyEntry.errorMsg?has_content>
-                    <@fencedBlock label="Message" indent="            " text=historyEntry.errorMsg/>
-                </#if>
-                <#if historyEntry.stackTrace?has_content>
-                    <@fencedBlock label="Stack trace" indent="            " text=historyEntry.stackTrace trim=true/>
-                </#if>
-                <#if historyEntry.stdout?has_content>
-                    <@fencedBlock label="Stdout" indent="            " text=historyEntry.stdout/>
-                </#if>
-                <#if historyEntry.stderr?has_content>
-                    <@fencedBlock label="Stderr" indent="            " text=historyEntry.stderr/>
-                </#if>
-            </#list>
-        </#if>
+        <@markdownLeaf step=step/>
     </#if>
 </#macro>
 
@@ -98,7 +112,7 @@ ${indent}  ```
             <@markdownNode node=child depth=depth + 1/>
         </#list>
     <#else>
-- `${node.state.sign}` ${node.displayName}
+- <@stateSign node.state/> ${node.displayName}
         <#if node.entries?has_content>
             <#local newest = node.entries?first>
             <#if newest.errorMsg?has_content>
@@ -113,22 +127,7 @@ ${indent}  ```
             <#if newest.stderr?has_content>
                 <@fencedBlock label="Stderr" indent="    " text=newest.stderr/>
             </#if>
-    - History:
-            <#list node.entries as entry>
-        - `${entry.state.sign}` ${entry.timeStampLong}
-                <#if entry.errorMsg?has_content>
-                    <@fencedBlock label="Message" indent="            " text=entry.errorMsg/>
-                </#if>
-                <#if entry.stackTrace?has_content>
-                    <@fencedBlock label="Stack trace" indent="            " text=entry.stackTrace trim=true/>
-                </#if>
-                <#if entry.stdout?has_content>
-                    <@fencedBlock label="Stdout" indent="            " text=entry.stdout/>
-                </#if>
-                <#if entry.stderr?has_content>
-                    <@fencedBlock label="Stderr" indent="            " text=entry.stderr/>
-                </#if>
-            </#list>
+            <@markdownHistoryList entries=node.entries labelIndent="    "/>
         </#if>
     </#if>
 </#macro>

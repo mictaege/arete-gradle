@@ -252,9 +252,12 @@ Rendered by `historyDisplay` in `spec.ftlh` using `history.historyStrip` and `hi
   documented in [arete_outline.md](arete_outline.md).
 - State colours: leaf = state of its newest run (as on spec pages); container/spec = `cumulate` of its
   children (FAILED > ABORTED > IGNORED > SUCCESSFUL).
-- Copy-link buttons on spec and container boxes copy a Markdown link to the **spec page**
-  (`specs/<specHash>.html#<hash>`); if the spec has no report page in this build, to the entry on
-  `history.html`. Names are escaped with `?js_string`.
+- On the spec pages, the copy-link button on container boxes copies a Markdown link to the spec
+  page anchor (`specs/<specHash>.html#<hash>`), names escaped with `?js_string`. The History page
+  has no copy-link buttons; its spec rows link to the spec report via the `spec-link-btn` and offer
+  the markdown copy button instead (see [arete_outline.md](arete_outline.md) and
+  [arete_mdcopy.md](arete_mdcopy.md)). The `id="<hash>"` sits directly on the spec/container header
+  boxes, so in-page links scroll to them without an extra anchor element in the flex row.
 - Screenshots of stored runs are copied to `specs/history/<runId>_<stepHash>.png`; existing files with
   the same size are not copied again.
 

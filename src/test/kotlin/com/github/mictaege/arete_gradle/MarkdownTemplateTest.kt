@@ -13,13 +13,13 @@ class MarkdownTemplateTest {
     fun rendersSpecTreeAsMarkdown() {
         val template = markdownStepTemplate()
 
-        val markdown = render(template, mapOf("step" to specModel()))
+        val markdown = render(template, mapOf("step" to specModel(), "colorScheme" to AreteClassicColors()))
 
         assertTrue(markdown.contains("# Payment Spec"), markdown)
         assertTrue(markdown.contains("## Feature: Payment"), markdown)
         assertTrue(markdown.contains("### Scenario: Pay by card"), markdown)
-        assertTrue(markdown.contains("- `[+]` Given the customer pays by card"), markdown)
-        assertTrue(markdown.contains("- `[x]` Then the payment fails"), markdown)
+        assertTrue(markdown.contains("- <span style=\"color: limegreen\">[+]</span> Given the customer pays by card"), markdown)
+        assertTrue(markdown.contains("- <span style=\"color: red\">[x]</span> Then the payment fails"), markdown)
         assertTrue(markdown.contains("    - Message:"), markdown)
         assertTrue(markdown.contains("      ```"), markdown)
         assertTrue(markdown.contains("      Expected: is &lt;true&gt;"), markdown)
@@ -29,10 +29,12 @@ class MarkdownTemplateTest {
         assertTrue(markdown.contains("      paying ..."), markdown)
         assertTrue(!markdown.contains("Screenshot"), markdown)
         assertTrue(markdown.contains("    - History:"), markdown)
-        assertTrue(markdown.contains("        - `[x]` "), markdown)
+        assertTrue(markdown.contains("        - <span style=\"color: red\">[x]</span> "), markdown)
         assertTrue(markdown.contains("              assertion failed"), markdown)
-        assertTrue(markdown.contains("        - `[+]` "), markdown)
+        assertTrue(markdown.contains("        - <span style=\"color: limegreen\">[+]</span> "), markdown)
         assertTrue(!markdown.contains("Then the payment succeeds"), markdown)
+        assertTrue(!markdown.contains("`[x]`"), markdown)
+        assertTrue(!markdown.contains("`[+]`"), markdown)
     }
 
     @Test
@@ -40,31 +42,46 @@ class MarkdownTemplateTest {
         val template = markdownStepTemplate()
         val hidden = step(StepType.THEN, "Then the payment succeeds", ResultState.HIDDEN)
 
-        val markdown = render(template, mapOf("step" to hidden))
+        val markdown = render(template, mapOf("step" to hidden, "colorScheme" to AreteClassicColors()))
 
         assertTrue(markdown.trim().isEmpty(), markdown)
     }
 
     @Test
-    fun rendersExampleGridAsTable() {
+    fun rendersExampleGridAsListLikeNormalExamples() {
         val template = markdownStepTemplate()
         val grid = step(
-            StepType.EXAMPLE_GRID_CONTAINER, "Example: payment methods", ResultState.SUCCESSFUL,
+            StepType.EXAMPLE_GRID_CONTAINER, "Example: payment methods", ResultState.FAILED,
             extra = mapOf("gridColumns" to arrayOf("method", "result")),
             steps = listOf(
                 step(
                     StepType.EXAMPLE_GRID_INSTANCE, "card | ok", ResultState.SUCCESSFUL,
                     extra = mapOf("gridRowData" to listOf("card", "ok"))
+                ),
+                step(
+                    StepType.EXAMPLE_GRID_INSTANCE, "| wire | ko |", ResultState.FAILED,
+                    extra = mapOf(
+                        "gridRowData" to listOf("wire", "ko"),
+                        "hasErrorMsg" to true,
+                        "errorMsg" to "Expected: <ko> but: was <ok>",
+                        "showHistory" to true,
+                        "history" to listOf(historyEntry(ResultState.FAILED, "Expected: <ko>"))
+                    )
                 )
             )
         )
 
-        val markdown = render(template, mapOf("step" to grid))
+        val markdown = render(template, mapOf("step" to grid, "colorScheme" to AreteClassicColors()))
 
         assertTrue(markdown.contains("# Example: payment methods"), markdown)
-        assertTrue(markdown.contains("| method | result |"), markdown)
-        assertTrue(markdown.contains("| --- | --- |"), markdown)
-        assertTrue(markdown.contains("| card | ok |"), markdown)
+        assertTrue(!markdown.contains("| State |"), markdown)
+        assertTrue(!markdown.contains("<a id="), markdown)
+        assertTrue(markdown.contains("- <span style=\"color: limegreen\">[+]</span> card | ok"), markdown)
+        assertTrue(markdown.contains("- <span style=\"color: red\">[x]</span> | wire | ko |"), markdown)
+        assertTrue(markdown.contains("    - Message:"), markdown)
+        assertTrue(markdown.contains("      Expected: &lt;ko&gt; but: was &lt;ok&gt;"), markdown)
+        assertTrue(markdown.contains("    - History:"), markdown)
+        assertTrue(markdown.contains("        - <span style=\"color: red\">[x]</span> "), markdown)
     }
 
     @Test
@@ -90,17 +107,17 @@ class MarkdownTemplateTest {
             )
         ).specs.first()
 
-        val markdown = render(template, mapOf("spec" to spec))
+        val markdown = render(template, mapOf("spec" to spec, "colorScheme" to AreteClassicColors()))
 
         assertTrue(markdown.contains("# Spec&#39;s title"), markdown)
         assertTrue(markdown.contains("## Scenario: Example scenario"), markdown)
-        assertTrue(markdown.contains("- `[x]` Then it fails"), markdown)
+        assertTrue(markdown.contains("- <span style=\"color: red\">[x]</span> Then it fails"), markdown)
         assertTrue(markdown.contains("    - Message:"), markdown)
         assertTrue(markdown.contains("      assertion failed"), markdown)
         assertTrue(markdown.contains("    - Stack trace:"), markdown)
         assertTrue(markdown.contains("    - History:"), markdown)
-        assertTrue(markdown.contains("        - `[x]` "), markdown)
-        assertTrue(markdown.contains("        - `[+]` "), markdown)
+        assertTrue(markdown.contains("        - <span style=\"color: red\">[x]</span> "), markdown)
+        assertTrue(markdown.contains("        - <span style=\"color: limegreen\">[+]</span> "), markdown)
     }
 
     @Test
@@ -139,7 +156,7 @@ class MarkdownTemplateTest {
             )
         )
 
-        val markdown = render(template, mapOf("step" to spec))
+        val markdown = render(template, mapOf("step" to spec, "colorScheme" to AreteClassicColors()))
 
         assertTrue(markdown.contains("# Booking Spec"), markdown)
         assertTrue(markdown.contains("> Narrative:"), markdown)
@@ -172,6 +189,7 @@ class MarkdownTemplateTest {
         extra: Map<String, Any> = emptyMap()
     ): Map<String, Any> =
         mapOf(
+            "uniqueHash" to "step",
             "type" to type,
             "displayName" to displayName,
             "resultState" to resultState,

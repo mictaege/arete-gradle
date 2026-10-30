@@ -96,9 +96,12 @@ class HistoryTemplateTest {
         assertTrue(html.contains("unfoldTargetOf"))
         assertTrue(html.contains("java.lang.AssertionError"))
         assertTrue(html.contains("function traceToClipboard"))
-        val copyLink = html.substringAfter("onclick='anchorToClipboard(").substringBefore(");")
-        assertTrue(copyLink.contains("Spec\\&#39;s title"), copyLink)
-        assertFalse(copyLink.startsWith("'Spec"))
+        assertTrue(html.contains("class=\"spec-link-btn\""), html)
+        assertTrue(html.contains("class=\"markdown-copy-btn\""), html)
+        assertFalse(html.contains("class=\"link-copy-btn\""), html)
+        assertTrue(html.contains("outline-header\" id=\"scenario-hash\""), html)
+        assertTrue(html.contains("outline-header\" id=\"spec-hash\""), html)
+        assertFalse(html.contains("<a id="), html)
     }
 
     @Test

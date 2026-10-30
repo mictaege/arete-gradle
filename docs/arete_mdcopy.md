@@ -39,11 +39,17 @@ adjusted to read well in markdown. The general rules that came out of it:
 - **Narratives become blockquotes** built from the raw `NarrativeSection.lines` — the author's
   original markdown, not the HTML that the report pages render from it. Narrative values may be
   multi-line, so every line is split and prefixed with `> `.
-- **Leaves become bullets with the state sign as inline code**:
-  `` - `[x]` It should display the rooms popularity ``.
-  The signs are arete's `ResultState.sign` — `` `[x]` `` failed, `` `[*]` `` aborted, `` `[/]` ``
-  ignored, `` `[+]` `` successful — wrapped in backticks so markdown renderers show them literally
-  instead of turning the bullet into a task-list checkbox.
+- **Leaves become bullets with a colored state sign**:
+  `` - <span style="color: #e78284">[x]</span> It should display the rooms popularity ``.
+  The signs are arete's `ResultState.sign` — `[x]` failed, `[*]` aborted, `[/]` ignored, `[+]`
+  successful — wrapped in an inline `<span style="color: …">` with the active color scheme's
+  accent color for the state (the `-emph` variant, e.g. `arete_color_failed_emph`), so the
+  indicator keeps its theme color when the markdown is pasted into a ticket or chat that renders
+  inline HTML. The span is also what keeps `[x]` from being rendered as a task-list checkbox: GFM
+  only treats `[x]` as a checkbox when it is the literal first content of the list item, and here
+  the item starts with the span. No backticks around the sign — code spans inside raw HTML do not
+  pick up the span color in several renderers. Renderers that strip `style` show the plain sign.
+  The same colored sign is used for history run entries.
 - **Leaf details are labeled sub-bullets with fenced code blocks, four spaces deeper than the
   leaf**, and the fence two spaces deeper than its bullet:
 
@@ -85,8 +91,10 @@ adjusted to read well in markdown. The general rules that came out of it:
           - `[+]` 30.10.2026 12:29:35
   ````
 
-- **`@ExampleGrid`/`@ExampleCsv` instances become a markdown table** (columns from the container,
-  rows from the instance display names), hidden rows omitted.
+- **`@ExampleGrid`/`@ExampleCsv`/`@Example` instances render exactly like other leaves** — a
+  signed bullet per example with its details and history below, hidden examples omitted. (An
+  earlier iteration rendered grids as a markdown table with a `State` column and anchor links; the
+  list form was preferred because it matches normal examples and needs no extra anchors.)
 - **Screenshots are not exported.** There is no link and no image reference.
 - On the **History page**, the leaf's own `Message`/`Stack trace` details come from the newest run,
   and *all* runs are listed under `History:` (the History page has no "current run" of its own).
