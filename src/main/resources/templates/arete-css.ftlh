@@ -253,10 +253,42 @@
         padding-left: 14px;
     }
 
+    .page-outline ul ul > li {
+        position: relative;
+    }
+
+    .page-outline ul ul > li::before {
+        content: "";
+        position: absolute;
+        box-sizing: border-box;
+        top: 0;
+        left: -15px;
+        width: 15px;
+        height: calc(50% + 1px);
+        height: round(calc(50% + 1px));
+        border-left: 3px solid var(--arete-color-foreground);
+        border-bottom: 3px solid var(--arete-color-foreground);
+        border-bottom-left-radius: 10px;
+    }
+
+    .page-outline ul ul > li::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: -15px;
+        width: 3px;
+        background-color: var(--arete-color-foreground);
+    }
+
+    .page-outline ul ul > li:last-child::after {
+        display: none;
+    }
+
     .page-outline li {
         list-style: none;
-        margin: 8px 8px 8px 0;
-        padding: 0;
+        margin: 0;
+        padding: 4px 8px 4px 0;
     }
 
     .page-outline div {
@@ -398,6 +430,69 @@
         width: 100%;
     }
 
+    /* outliner: tree structure with connector lines and collapsible container steps */
+    .outline-item {
+        position: relative;
+    }
+
+    .outline-children > .outline-item {
+        padding: 2px 0 2px 28px;
+    }
+
+    .outline-children > .outline-item.container-step {
+        padding-top: 13px;
+        padding-bottom: 13px;
+    }
+
+    .outline-children > .outline-item::before {
+        content: "";
+        position: absolute;
+        box-sizing: border-box;
+        top: -2px;
+        left: 11px;
+        width: 17px;
+        height: 22px;
+        border-left: 3px solid var(--arete-color-foreground);
+        border-bottom: 3px solid var(--arete-color-foreground);
+        border-bottom-left-radius: 12px;
+    }
+
+    .outline-children > .outline-item.container-step::before {
+        height: 33px;
+    }
+
+    .outline-children > .outline-item::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 11px;
+        width: 3px;
+        background-color: var(--arete-color-foreground);
+    }
+
+    .outline-children > .outline-item:last-child::after {
+        display: none;
+    }
+
+    .outline-header {
+        position: relative;
+        cursor: pointer;
+    }
+
+    .outline-header:focus-visible {
+        outline: 2px solid currentColor;
+        outline-offset: -2px;
+    }
+
+    .outline-body.collapsed {
+        display: none;
+    }
+
+    .step-details {
+        position: relative;
+    }
+
     .stamp {
         font-family: monospace;
         font-style: italic;
@@ -483,6 +578,27 @@
     }
 
     .link-copy-btn:hover {
+        opacity: 1;
+    }
+
+    .spec-link-btn {
+        display: inline-flex;
+        transition: 0.3s;
+        width:1.1rem;
+        height:1.1rem;
+        margin: 0;
+        padding: 0;
+        border: none;
+        cursor: pointer;
+        background-color: transparent;
+        background-image: var(--root-icon-external-link-bg);
+        background-repeat: no-repeat;
+        background-origin: content-box;
+        background-size: contain;
+        opacity: 0.6;
+    }
+
+    .spec-link-btn:hover {
         opacity: 1;
     }
 
@@ -1161,16 +1277,23 @@
     }
 
     .history {
-        margin-top: 6px;
-        margin-left: 2em;
+        margin-top: 2px;
         font-weight: normal;
         padding: 6px 10px;
         border-radius: var(--step-border-radius);
         background-color: var(--arete-color-card);
     }
 
-    .history-node {
-        margin-left: 20px;
+    .outline-children > .outline-item.history-item::before {
+        top: -2px;
+        width: 23px;
+        height: 21px;
+    }
+
+    .history-runs.outline-children > .outline-item::before {
+        top: -2px;
+        width: 13px;
+        height: 21px;
     }
 
     .history-container {
@@ -1178,7 +1301,7 @@
     }
 
     .history-runs {
-        margin-top: 8px;
+        margin-top: 2px;
     }
 
     .history-run {

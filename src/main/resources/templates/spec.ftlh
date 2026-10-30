@@ -16,8 +16,6 @@
         <a href="./../history.html"><i class="spec-menu-icon-weather"></i> History</a>
     </div>
     <div class="card main-step">
-        <#assign level = 0>
-
         <#macro stepDisplay step>
             <#if "${step.type}" == "EXAMPLE_GRID_INSTANCE">
                 <table>
@@ -98,35 +96,45 @@
             </#if>
         </#macro>
 
+        <#macro failureDetails step>
+            <textarea type="text" id="${step.uniqueHash}StackTrace" style="display: none;">${step.stackTrace}</textarea>
+<pre><button onclick="traceToClipboard('${step.uniqueHash}StackTrace');" class="stacktrace-copy-btn"></button><code class="language-javastacktrace">${step.stackTrace}</code></pre>
+            <#if step.hasStdout>
+                <textarea type="text" id="${step.uniqueHash}Stdout" style="display: none;">${step.stdout}</textarea>
+<pre><button onclick="traceToClipboard('${step.uniqueHash}Stdout');" class="stacktrace-copy-btn"></button><code class="language-text">Stdout:
+${step.stdout}</code></pre>
+            </#if>
+            <#if step.hasStderr>
+                <span>Stderr:</span>
+                <textarea type="text" id="${step.uniqueHash}Stderr" style="display: none;">${step.stderr}</textarea>
+<pre><button onclick="traceToClipboard('${step.uniqueHash}Stderr');" class="stacktrace-copy-btn"></button><code class="language-text">Stderr:
+${step.stderr}</code></pre>
+            </#if>
+        </#macro>
+
         <#macro dumpSteps step parent=step>
             <#if step.resultState.hidden>
                 <#return/>
             </#if>
-            <#assign vMargin = "2px">
-            <#assign fWeight = "normal">
             <#assign noHoverSuffix = "-no-hover">
             <#assign collapsible = "">
-            <#if step.hasScreenshot>
-                <#assign collapsible = "collapsible">
-                <#assign noHoverSuffix = "">
-            </#if>
-            <#if step.hasErrorMsg>
-                <#assign collapsible = "collapsible">
-                <#assign noHoverSuffix = "">
-            </#if>
             <#if step.type.container>
-                <#assign vMargin = "25px">
+                <#-- containers are collapsible outline nodes, so they signal interactivity by hover -->
+                <#assign noHoverSuffix = "">
+            <#elseif step.hasScreenshot || step.hasErrorMsg>
+                <#assign collapsible = "collapsible">
+                <#assign noHoverSuffix = "">
+            </#if>
+            <#assign fWeight = "normal">
+            <#assign headerClass = "">
+            <#if step.type.container>
                 <#assign fWeight = "bold">
+                <#assign headerClass = " outline-header">
             </#if>
-            <#if level == 0>
-                <#assign indent = 0>
-            <#else>
-                <#assign indent = 20 * (level - 1)>
-            </#if>
-            <div style="margin-left: ${indent}px; margin-bottom: ${vMargin}; margin-top: ${vMargin}">
+            <div class="outline-item<#if step.type.container> container-step</#if>">
 
                 <#if parent.isFirst(step) && parent.type == "EXAMPLE_GRID_CONTAINER">
-                    <div class="neutral-no-hover step" style="margin-bottom: ${vMargin}; margin-top: ${vMargin};  font-weight: normal">
+                    <div class="neutral-no-hover step" style="margin-bottom: 2px; margin-top: 2px; font-weight: normal">
                         <div class="step-display">
                             <table>
                                 <tr>
@@ -140,7 +148,7 @@
                 </#if>
 
                 <#if "${step.resultState}" == "IGNORED">
-                    <div class="ignored${noHoverSuffix} step ${collapsible}" style="font-weight: ${fWeight}">
+                    <div class="ignored${noHoverSuffix} step ${collapsible}${headerClass}" style="font-weight: ${fWeight}">
                         <div class="step-display">
                             <@stepDisplay step/>
                             <#if step.hasScreenshot>
@@ -150,13 +158,13 @@
                             <@stamp step/>
                         </div>
                     </div>
-                    <#if step.hasScreenshot>
+                    <#if !step.type.container && step.hasScreenshot>
                         <div class="overflow-content">
                             <img src="./${step.uniqueHash}.png"/>
                         </div>
                     </#if>
                 <#elseif "${step.resultState}" == "SUCCESSFUL">
-                    <div class="successful${noHoverSuffix} step ${collapsible}" style="font-weight: ${fWeight}">
+                    <div class="successful${noHoverSuffix} step ${collapsible}${headerClass}" style="font-weight: ${fWeight}">
                         <div class="step-display">
                             <@stepDisplay step/>
                             <#if step.hasScreenshot>
@@ -166,13 +174,13 @@
                             <@stamp step/>
                         </div>
                     </div>
-                    <#if step.hasScreenshot>
+                    <#if !step.type.container && step.hasScreenshot>
                         <div class="overflow-content">
                             <img src="./${step.uniqueHash}.png"/>
                         </div>
                     </#if>
                 <#elseif "${step.resultState}" == "ABORTED">
-                    <div class="aborted${noHoverSuffix} step ${collapsible}" style="font-weight: ${fWeight}">
+                    <div class="aborted${noHoverSuffix} step ${collapsible}${headerClass}" style="font-weight: ${fWeight}">
                         <div class="step-display">
                             <@stepDisplay step/>
                             <#if step.hasScreenshot>
@@ -182,13 +190,13 @@
                             <@stamp step/>
                         </div>
                     </div>
-                    <#if step.hasScreenshot>
+                    <#if !step.type.container && step.hasScreenshot>
                         <div class="overflow-content">
                             <img src="./${step.uniqueHash}.png"/>
                         </div>
                     </#if>
                 <#elseif "${step.resultState}" == "FAILED">
-                    <div class="failed${noHoverSuffix} step ${collapsible}" style="font-weight: ${fWeight}">
+                    <div class="failed${noHoverSuffix} step ${collapsible}${headerClass}" style="font-weight: ${fWeight}">
                         <div class="step-display" style="padding-bottom: 4px">
                             <@stepDisplay step/>
                             <#if step.hasScreenshot>
@@ -204,26 +212,16 @@
                             </div>
                         </#if>
                     </div>
-                    <div class="overflow-content">
-                        <#if step.hasScreenshot>
-                            <img src="./${step.uniqueHash}.png"/>
-                        </#if>
-                        <textarea  type="text" id="${step.uniqueHash}StackTrace" style="display: none;">${step.stackTrace}</textarea>
-<pre><button onclick="traceToClipboard('${step.uniqueHash}StackTrace');" class="stacktrace-copy-btn"></button><code class="language-javastacktrace">${step.stackTrace}</code></pre>
-                        <#if step.hasStdout>
-                            <textarea  type="text" id="${step.uniqueHash}Stdout" style="display: none;">${step.stdout}</textarea>
-<pre><button onclick="traceToClipboard('${step.uniqueHash}Stdout');" class="stacktrace-copy-btn"></button><code class="language-text">Stdout:
-${step.stdout}</code></pre>
-                        </#if>
-                        <#if step.hasStderr>
-                            <span>Stderr:</span>
-                            <textarea  type="text" id="${step.uniqueHash}Stderr" style="display: none;">${step.stderr}</textarea>
-<pre><button onclick="traceToClipboard('${step.uniqueHash}Stderr');" class="stacktrace-copy-btn"></button><code class="language-text">Stderr:
-${step.stderr}</code></pre>
-                        </#if>
-                    </div>
+                    <#if !step.type.container>
+                        <div class="overflow-content">
+                            <#if step.hasScreenshot>
+                                <img src="./${step.uniqueHash}.png"/>
+                            </#if>
+                            <@failureDetails step/>
+                        </div>
+                    </#if>
                 <#else>
-                    <div class="step ${collapsible}" style="font-weight: ${fWeight}">
+                    <div class="step ${collapsible}${headerClass}" style="font-weight: ${fWeight}">
                         <div class="step-display" style="padding-bottom: 4px">
                             <@stepDisplay step/>
                             <#if step.hasScreenshot>
@@ -231,99 +229,108 @@ ${step.stderr}</code></pre>
                             </#if>
                         </div>
                     </div>
-                    <#if step.hasScreenshot>
+                    <#if !step.type.container && step.hasScreenshot>
                         <div class="overflow-content">
                             <img src="./${step.uniqueHash}.png"/>
                         </div>
                     </#if>
                 </#if>
 
-                <@historyDisplay step/>
-
-                <#list step.testTags.tags as tag>
-                    <a href="./../tags.html?t=${tag.tagName}" class="tagged">
-                        <i class="tagged-icon ${tag.stereoType.iconClass}"></i>
-                        <#noautoesc>
-                            ${tag.tagName}
-                        </#noautoesc>
-                    </a>
-                </#list>
-
-                <#if step.hasSeeAlsoRefs>
-                    <#assign startComment="<!--%%%%%">
-                    <#assign endComment="%%%%%-->">
-                    <#list step.seeAlsoRefs.refs as ref>
-                        <#noautoesc>
-                            ${startComment}${ref.className}${endComment}
-                        </#noautoesc>
-                    </#list>
-                </#if>
-
-                <#if step.hasNarrative>
-                    <div class="neutral-no-hover step" style="margin-bottom: ${vMargin}; margin-top: ${vMargin};  font-weight: normal">
-                        <p class="narrative" style="font-weight: ${fWeight}">${step.narrative.header}</p>
-                        <#list step.narrative.formattedLines as line>
-                            <div class="narrative">
-                                <#noautoesc>
-                                    ${line}
-                                </#noautoesc>
-                            </div>
-                        </#list>
-                        <#if step.narrative.hasImages>
-                            <#assign imgIdx = 0>
-                            <#assign modalId = "${step.uniqueHash}Modal">
-                            <#assign imageCount = step.narrative.images?size>
-                            <div class="image-grid-row">
-                                <#list step.narrative.images as img>
-                                    <#assign imgIdx++>
-                                    <div class="image-grid-column">
-                                        <#assign imgId = "${step.uniqueHash}Img${imgIdx}">
-                                        <img id="${imgId}"
-                                             data-modal-index="${imgIdx - 1}"
-                                             onclick="openModal('${modalId}', '${imgId}')"
-                                             src="./${img.fileName}"/>
-                                    </div>
-                                </#list>
-                            </div>
-                            <div id="${modalId}" class="image-grid-modal">
-                                <span class="image-grid-modal-close" onclick="closeModal('${modalId}')">&times;</span>
-                                <#if imageCount gt 1>
-                                    <button class="image-grid-modal-control image-grid-modal-prev"
-                                            onclick="changeModalImage('${modalId}', -1)">&#10094;</button>
-                                    <button class="image-grid-modal-control image-grid-modal-next"
-                                            onclick="changeModalImage('${modalId}', 1)">&#10095;</button>
-                                    <div class="image-grid-modal-counter"></div>
+                <div class="outline-body">
+                    <#if step.type.container>
+                        <#if step.hasScreenshot || "${step.resultState}" == "FAILED">
+                            <div class="step-details">
+                                <#if step.hasScreenshot>
+                                    <img src="./${step.uniqueHash}.png"/>
                                 </#if>
-                                <img class="image-grid-modal-content" id="modal-image">
+                                <#if "${step.resultState}" == "FAILED">
+                                    <@failureDetails step/>
+                                </#if>
                             </div>
                         </#if>
-                        <#if step.narrative.hasAttachments>
-                            <div class="attachments">
-                                <#list step.narrative.attachments as atmnt>
-                                    <a href="./${atmnt.fileName}" target="_blank" class="attachment">
-                                        <i class="attachment-icon"></i>
-                                        ${atmnt.fileName}
-                                    </a>
-                                </#list>
-                            </div>
-                        </#if>
-                    </div>
-                </#if>
+                    </#if>
 
-                <#if "${step.type}" == "SPEC" || "${step.type}" == "FEATURE">
-                    <#list step.steps as childStep>
-                        <#assign level++>
-                        <@dumpSteps childStep step/>
-                        <#assign level-->
-                    </#list>
-                <#else>
-                    <#list step.steps as childStep>
-                        <#assign level++>
-                        <@dumpSteps childStep step/>
-                        <#assign level-->
-                    </#list>
-                </#if>
+                    <@historyDisplay step/>
 
+                    <#list step.testTags.tags as tag>
+                        <a href="./../tags.html?t=${tag.tagName}" class="tagged">
+                            <i class="tagged-icon ${tag.stereoType.iconClass}"></i>
+                            <#noautoesc>
+                                ${tag.tagName}
+                            </#noautoesc>
+                        </a>
+                    </#list>
+
+                    <#if step.hasSeeAlsoRefs>
+                        <#assign startComment="<!--%%%%%">
+                        <#assign endComment="%%%%%-->">
+                        <#list step.seeAlsoRefs.refs as ref>
+                            <#noautoesc>
+                                ${startComment}${ref.className}${endComment}
+                            </#noautoesc>
+                        </#list>
+                    </#if>
+
+                    <#if step.hasNarrative>
+                        <div class="neutral-no-hover step" style="margin-bottom: 2px; margin-top: 2px; font-weight: normal">
+                            <p class="narrative" style="font-weight: ${fWeight}">${step.narrative.header}</p>
+                            <#list step.narrative.formattedLines as line>
+                                <div class="narrative">
+                                    <#noautoesc>
+                                        ${line}
+                                    </#noautoesc>
+                                </div>
+                            </#list>
+                            <#if step.narrative.hasImages>
+                                <#assign imgIdx = 0>
+                                <#assign modalId = "${step.uniqueHash}Modal">
+                                <#assign imageCount = step.narrative.images?size>
+                                <div class="image-grid-row">
+                                    <#list step.narrative.images as img>
+                                        <#assign imgIdx++>
+                                        <div class="image-grid-column">
+                                            <#assign imgId = "${step.uniqueHash}Img${imgIdx}">
+                                            <img id="${imgId}"
+                                 data-modal-index="${imgIdx - 1}"
+                                 onclick="openModal('${modalId}', '${imgId}')"
+                                 src="./${img.fileName}"/>
+                                        </div>
+                                    </#list>
+                                </div>
+                                <div id="${modalId}" class="image-grid-modal">
+                                    <span class="image-grid-modal-close" onclick="closeModal('${modalId}')">&times;</span>
+                                    <#if imageCount gt 1>
+                                        <button class="image-grid-modal-control image-grid-modal-prev"
+                            onclick="changeModalImage('${modalId}', -1)">&#10094;</button>
+                                        <button class="image-grid-modal-control image-grid-modal-next"
+                            onclick="changeModalImage('${modalId}', 1)">&#10095;</button>
+                                        <div class="image-grid-modal-counter"></div>
+                                    </#if>
+                                    <img class="image-grid-modal-content" id="modal-image">
+                                </div>
+                            </#if>
+                            <#if step.narrative.hasAttachments>
+                                <div class="attachments">
+                                    <#list step.narrative.attachments as atmnt>
+                                        <a href="./${atmnt.fileName}" target="_blank" class="attachment">
+                                            <i class="attachment-icon"></i>
+                                            ${atmnt.fileName}
+                                        </a>
+                                    </#list>
+                                </div>
+                            </#if>
+                        </div>
+                    </#if>
+
+                    <#if step.type.container>
+                        <div class="outline-children">
+                            <#list step.steps as childStep>
+                                <@dumpSteps childStep step/>
+                            </#list>
+                        </div>
+                    </#if>
+
+                </div>
             </div>
         </#macro>
 
@@ -364,6 +371,7 @@ ${step.stderr}</code></pre>
 
     </script>
     <@history.clipboardScript/>
+    <@history.outlineScript/>
     <#include "prism-js.ftlh">
     <#include "image-grid-js.ftlh">
 

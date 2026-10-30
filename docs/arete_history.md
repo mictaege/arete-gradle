@@ -32,8 +32,8 @@ The history must:
 | `src/main/kotlin/.../HtmlWriter.kt` | Loads history before rendering a spec, saves the current run after rendering, writes `history.html`, extracts icons, `ScreenshotCleanup`. |
 | `src/main/kotlin/.../SpecificationPlan.kt` | `ResultState.isFailure`, shared `cumulate(...)`, `StepType.label`, screenshot map in `SpecificationPlan`, `SpecificationStep.history` / `showHistory` / `historyTimeStamp`. |
 | `src/main/kotlin/.../AreteTestListener.kt` | Remembers the JUnit output root, receives screenshots via `fileEntryPublished`. |
-| `src/main/resources/templates/history-macros.ftlh` | Shared macros: `stateClass`, `historyStrip`, `historyRun`, `historyErrorMsg`, `clipboardScript`, `copyLinkButton`. |
-| `src/main/resources/templates/spec.ftlh` | History strip below each leaf step (`historyDisplay`), History menu entry. |
+| `src/main/resources/templates/history-macros.ftlh` | Shared macros: `stateClass`, `historyStrip`, `historyRun`, `historyErrorMsg`, `clipboardScript`, `copyLinkButton` (and the shared `outlineScript`, see [arete_outline.md](arete_outline.md)). |
+| `src/main/resources/templates/spec.ftlh` | History strip below each leaf step (`historyDisplay`), History menu entry. The spec tree itself is rendered as an outline, see [arete_outline.md](arete_outline.md). |
 | `src/main/resources/templates/history.ftlh` | The History overview page. |
 | `src/main/resources/templates/icon-clock.ftlh`, `icon-weather.ftlh` | Font Awesome `fa-regular fa-clock` and `fa-solid fa-cloud-sun-rain` as colour-scheme-aware SVG templates. |
 | `src/main/resources/templates/arete-css.ftlh` | History styles and icon classes. |
@@ -209,8 +209,10 @@ Rendered by `historyDisplay` in `spec.ftlh` using `history.historyStrip` and `hi
 
 - Shown only if `SpecificationStep.showHistory`: the step is a leaf, earlier runs exist, and at least
   one run (current or earlier) is not SUCCESSFUL. All-green histories are hidden.
-- The strip is a `<details class="history">` (no JavaScript for folding), indented by `2em`, normal
-  font weight even inside bold container boxes.
+- The strip is a `<details class="history">` (no JavaScript for folding), connected to the outline
+  tree as a child of its leaf step, with the run entries as further children (structure and
+  connector geometry: see [arete_outline.md](arete_outline.md)). It shows with normal font weight
+  even inside bold container boxes.
 - Folded line: a small clock icon (`tagged-icon tagged-clock`, vertically centred via flex) followed by
   coloured dots. The **first dot is the current run**, followed by up to `historyMaxAge - 1` earlier
   runs, newest first. No arrow, no highlighting of the first dot; tooltip per dot with date/time/state.
@@ -244,8 +246,10 @@ Rendered by `historyDisplay` in `spec.ftlh` using `history.historyStrip` and `hi
   with all its listed leaves below. Container labels are prefixed with `StepType.label` unless the
   display name already starts with it.
 - Layout follows the other pages: `card main` (block layout; `card main-step` would create columns),
-  coloured boxes like on spec pages, containers bold, indentation via nested `.history-node`, and
-  the same folded history strip per leaf (with `card-tagged-clock` and `card-icon-*`).
+  coloured boxes like on spec pages, containers bold, and the same folded history strip per leaf
+  (with `card-tagged-clock` and `card-icon-*`). The page structure — collapsible spec rows and
+  container nodes, connector lines, the spec-link button that opens the spec report — is
+  documented in [arete_outline.md](arete_outline.md).
 - State colours: leaf = state of its newest run (as on spec pages); container/spec = `cumulate` of its
   children (FAILED > ABORTED > IGNORED > SUCCESSFUL).
 - Copy-link buttons on spec and container boxes copy a Markdown link to the **spec page**

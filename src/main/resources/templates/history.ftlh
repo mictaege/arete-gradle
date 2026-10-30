@@ -56,47 +56,59 @@
             </#macro>
 
             <#macro historyNode node spec specHash>
-                <div class="history-node">
-                    <#if node.container>
-                        <div class="${history.stateClass(node.state)}-no-hover step history-container">
+                <#if node.container>
+                    <div class="outline-item container-step">
+                        <div class="${history.stateClass(node.state)} step history-container outline-header">
                             <div class="step-display">
                                 ${node.containerDisplayName}
                                 <@anchor hash=node.hash displayName=node.displayName spec=spec/>
                             </div>
                         </div>
-                        <#list node.children as child>
-                            <@historyNode node=child spec=spec specHash=specHash/>
-                        </#list>
-                    <#else>
+                        <div class="outline-body">
+                            <div class="outline-children">
+                                <#list node.children as child>
+                                    <@historyNode node=child spec=spec specHash=specHash/>
+                                </#list>
+                            </div>
+                        </div>
+                    </div>
+                <#else>
+                    <div class="outline-item">
                         <div class="${history.stateClass(node.state)}-no-hover step">
                             <div class="step-display">${node.displayName}</div>
                         </div>
                         <@historyDisplay node=node specHash=specHash/>
-                    </#if>
-                </div>
+                    </div>
+                </#if>
             </#macro>
 
             <#list overview.specs as spec>
                 <section>
-                    <div class="${history.stateClass(spec.state)}-no-hover step history-container">
-                        <div class="step-display">
-                            <#if spec.reportAvailable>
-                                <a href="./specs/${spec.hash}.html">${spec.displayName}</a>
-                            <#else>
+                    <div class="outline-item container-step">
+                        <div class="${history.stateClass(spec.state)} step history-container outline-header">
+                            <div class="step-display">
                                 ${spec.displayName}
-                            </#if>
-                            <@anchor hash=spec.hash displayName=spec.displayName spec=spec/>
+                                <#if spec.reportAvailable>
+                                    <a href="./specs/${spec.hash}.html" class="spec-link-btn" title="Open spec report"></a>
+                                </#if>
+                                <@anchor hash=spec.hash displayName=spec.displayName spec=spec/>
+                            </div>
+                        </div>
+                        <div class="outline-body">
+                            <div class="outline-children">
+                                <#list spec.nodes as node>
+                                    <@historyNode node=node spec=spec specHash=spec.hash/>
+                                </#list>
+                            </div>
                         </div>
                     </div>
-                    <#list spec.nodes as node>
-                        <@historyNode node=node spec=spec specHash=spec.hash/>
-                    </#list>
                 </section>
             </#list>
         </#if>
     </div>
 
     <@history.clipboardScript/>
+    <@history.outlineScript/>
     <#include "prism-js.ftlh">
 </body>
 </html>
