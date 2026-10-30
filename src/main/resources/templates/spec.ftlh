@@ -1,5 +1,6 @@
 <#-- @ftlvariable name="step" type="com.github.mictaege.arete_gradle.SpecificationStep" -->
 <#import "history-macros.ftlh" as history>
+<#import "markdown-macros.ftlh" as md>
 <html>
 <head>
     <title>${step.displayName}</title>
@@ -72,6 +73,9 @@
                 <a id="${step.uniqueHash}">
                     <@history.copyLinkButton text=step.displayName target="#${step.uniqueHash}"/>
                 </a>
+                <@md.markdownCopyButton id="${step.uniqueHash}Markdown" iconClass="spec-markdown-icon">
+                    <@md.markdownStep step=step/>
+                </@md.markdownCopyButton>
             </#if>
         </#macro>
 

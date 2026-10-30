@@ -602,6 +602,42 @@
         opacity: 1;
     }
 
+    .markdown-copy-btn {
+        display: inline-flex;
+        transition: 0.3s;
+        width:1.1rem;
+        height:1.1rem;
+        margin: 0;
+        padding: 0;
+        border: none;
+        cursor: pointer;
+        background-color: transparent;
+        opacity: 0.6;
+    }
+
+    .markdown-copy-btn:hover {
+        opacity: 1;
+    }
+
+    .spec-markdown-icon,
+    .card-markdown-icon {
+        display: inline-block;
+        vertical-align: middle;
+        background-size: contain;
+        background-position: center center;
+        background-repeat: no-repeat;
+        width:1rem;
+        height:1rem;
+    }
+
+    .spec-markdown-icon {
+        background-image: var(--page-icon-clipboard-bg);
+    }
+
+    .card-markdown-icon {
+        background-image: var(--root-icon-clipboard-bg);
+    }
+
     .stacktrace-copy-btn {
         position: absolute;
         transition: 0.3s;

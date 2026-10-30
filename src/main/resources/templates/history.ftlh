@@ -1,5 +1,6 @@
 <#-- @ftlvariable name="overview" type="com.github.mictaege.arete_gradle.HistoryOverview" -->
 <#import "history-macros.ftlh" as history>
+<#import "markdown-macros.ftlh" as md>
 <html>
 <head>
     <title>History</title>
@@ -62,6 +63,9 @@
                             <div class="step-display">
                                 ${node.containerDisplayName}
                                 <@anchor hash=node.hash displayName=node.displayName spec=spec/>
+                                <@md.markdownCopyButton id="${node.hash}Markdown" iconClass="card-markdown-icon">
+                                    <@md.markdownNode node=node/>
+                                </@md.markdownCopyButton>
                             </div>
                         </div>
                         <div class="outline-body">
@@ -92,6 +96,9 @@
                                     <a href="./specs/${spec.hash}.html" class="spec-link-btn" title="Open spec report"></a>
                                 </#if>
                                 <@anchor hash=spec.hash displayName=spec.displayName spec=spec/>
+                                <@md.markdownCopyButton id="${spec.hash}Markdown" iconClass="card-markdown-icon">
+                                    <@md.markdownOverviewSpec spec=spec/>
+                                </@md.markdownCopyButton>
                             </div>
                         </div>
                         <div class="outline-body">
