@@ -7,7 +7,7 @@ plugins {
     `maven-publish`
     id("com.gradle.plugin-publish") version "2.2.1"
     signing
-    id("org.jreleaser") version "1.26.0"
+    id("org.jreleaser") version "1.27.0"
 }
 
 group = "io.github.mictaege"
