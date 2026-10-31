@@ -2,12 +2,12 @@ import org.jreleaser.model.Active
 import org.jreleaser.model.Signing
 
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "2.3.0"
+    id("org.jetbrains.kotlin.jvm") version "2.4.21"
     `java-gradle-plugin`
     `maven-publish`
-    id("com.gradle.plugin-publish") version "2.0.0"
+    id("com.gradle.plugin-publish") version "2.2.1"
     signing
-    id("org.jreleaser") version "1.22.0"
+    id("org.jreleaser") version "1.26.0"
 }
 
 group = "io.github.mictaege"
@@ -28,7 +28,7 @@ gradlePlugin {
 }
 
 tasks.wrapper {
-    gradleVersion = "8.7"
+    gradleVersion = "9.8.2"
     distributionType = Wrapper.DistributionType.ALL
 }
 
@@ -38,15 +38,15 @@ repositories {
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib")
-    implementation("org.junit.jupiter:junit-jupiter-api:6.0.2")
-    implementation("org.junit.platform:junit-platform-launcher:6.0.2")
+    implementation("org.junit.jupiter:junit-jupiter-api:6.1.3")
+    implementation("org.junit.platform:junit-platform-launcher:6.1.3")
     implementation("io.github.mictaege:arete:2026.7")
-    implementation("org.fusesource.jansi:jansi:2.4.2")
-    implementation("com.google.guava:guava:33.5.0-jre")
-    implementation("org.freemarker:freemarker:2.3.34")
-    implementation("net.sourceforge.plantuml:plantuml-mit:1.2025.10")
-    implementation("org.commonmark:commonmark:0.27.0")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:6.0.2")
+    implementation("org.fusesource.jansi:jansi:2.4.3")
+    implementation("com.google.guava:guava:33.7.2-jre")
+    implementation("org.freemarker:freemarker:2.3.35")
+    implementation("net.sourceforge.plantuml:plantuml-mit:1.2026.9")
+    implementation("org.commonmark:commonmark:0.31.0")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:6.1.3")
 }
 
 tasks.register("generateResources") {
