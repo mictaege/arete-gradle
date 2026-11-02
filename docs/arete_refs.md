@@ -11,13 +11,13 @@ as links on the generated specification pages.
 types:
 
 ```java
-@Ref(value = "PROJ-123", url = "https://tracker.example.com/PROJ-")
+@Ref(value = "PROJ-123", url = "https://tracker.example.com/PROJ-{0}")
 ```
 
 - `value` — the reference id, e.g. `"PROJ-123"` or an issue number.
-- `url` — optional URL **prefix**. The final link is `url + value`; if the `url` contains a `{0}`
-  placeholder, the placeholder is replaced by the `value` instead. Without a `url`, the reference
-  is rendered as plain text (no link).
+- `url` — optional URL **pattern**. A `{0}` placeholder in it is replaced by the `value`; without a
+  placeholder the `url` is used as a **prefix** and the `value` is appended. Without a `url`, the
+  reference is rendered as plain text (no link).
 
 The repeatable container is `com.github.mictaege.arete.Refs`.
 
@@ -31,7 +31,7 @@ is meta-annotated with `@Ref(url = ...)`:
 @Target(TYPE)
 @Retention(RUNTIME)
 @Repeatable(GithubRefs.class)                 // own container, so it stays repeatable
-@Ref(url = "https://github.com/mictaege/arete-gradle/issues/")
+@Ref(url = "https://github.com/mictaege/arete-gradle/issues/{0}")
 public @interface GithubRef {
     String value();
 }
@@ -71,10 +71,11 @@ look like see-also links. When a reference has no `url`, the anchor is rendered 
   - `@Refs` (imported as `RefsContainer` to avoid shadowing by the local `Refs` class) → one link
     per element
   - an annotation meta-annotated with `@Ref` (e.g. `@GithubRef`) → `value` read from the
-    annotation's own `value()` attribute, `url` = meta `@Ref.url` + value
+    annotation's own `value()` attribute, `url` = meta `@Ref.url` pattern resolved with that value
   - a container annotation whose `value()` is an array of annotations (e.g. `@GithubRefs`) → each
     element is expanded recursively
-  - URL resolution: `url + value`, or `url` with `{0}` replaced by `value`
+  - URL resolution: a `{0}` placeholder in `url` is replaced by the `value`; without a placeholder
+    the `url` is used as a prefix and the `value` is appended
 - `SpecificationPlan.kt` — `SpecificationStep.refs` (`Refs`), `.refLinks` (`List<RefLink>`),
   `.hasRefLinks`
 - `spec.ftlh` — the rendering block below `step.hasSeeAlsoRefs`, iterating `step.refLinks`

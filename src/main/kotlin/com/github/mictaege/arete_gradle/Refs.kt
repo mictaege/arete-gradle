@@ -46,7 +46,7 @@ private fun Annotation.ownStringAttribute(name: String): String =
         annotationClass.java.getMethod(name).invoke(this) as? String ?: ""
     }.getOrDefault("")
 
-/** The {@code url} of a {@link Ref} is a prefix: the {@code value} is appended to it, unless the url contains a {@code {0}} placeholder. */
+/** The {@code url} of a {@link Ref} is a pattern: a {@code {0}} placeholder is replaced by the {@code value}; without a placeholder the url is used prefix. */
 private fun resolveUrl(url: String, value: String): String = when {
     url.isEmpty() -> ""
     url.contains("{0}") -> url.replace("{0}", value)
