@@ -256,6 +256,11 @@ class SpecificationStep(
                             .filter { it.resultState != ResultState.HIDDEN }
                             .flatMap { it.testTags.tags }
                 ).toSortedSet()
+    val refs: Refs = Refs(this)
+    val refLinks: List<RefLink>
+        get() = refs.links
+    val hasRefLinks: Boolean
+        get() = !isTestTemplate && refLinks.isNotEmpty()
     val hiddenIfDisabled: Boolean
         get() = testId.isAnnotated(HiddenIfDisabled::class.java) || testId.isAnnotated(Step::class.java)
     val resultState: ResultState

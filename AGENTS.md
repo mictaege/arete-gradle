@@ -41,6 +41,9 @@ itself consumed/exercised by the `arete-gradle-test` sample project.
 - Markdown export (copy-as-markdown buttons on the container boxes): read
   [docs/arete_mdcopy.md](docs/arete_mdcopy.md) before changing `markdown-macros.ftlh` or the
   markdown calls in `spec.ftlh` and `history.ftlh`.
+- References (`@Ref` links rendered on spec pages): read [docs/arete_refs.md](docs/arete_refs.md)
+  before changing `Refs.kt`, the `refs`/`refLinks`/`hasRefLinks` properties in
+  `SpecificationPlan.kt`, or the ref-links block in `spec.ftlh`.
 
 ## Working conventions
 - Run `./gradlew test` before submitting changes; also consider building and exercising the plugin

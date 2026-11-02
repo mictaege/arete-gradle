@@ -275,6 +275,17 @@ ${step.stderr}</code></pre>
                         </#list>
                     </#if>
 
+                    <#if step.hasRefLinks>
+                        <#list step.refLinks as link>
+                            <a <#if link.hasUrl>href="${link.url}" target="_blank"</#if> class="see-also">
+                                <i class="see-also-icon"></i>
+                                <#noautoesc>
+                                    ${link.value}
+                                </#noautoesc>
+                            </a>
+                        </#list>
+                    </#if>
+
                     <#if step.hasNarrative>
                         <div class="neutral-no-hover step" style="margin-bottom: 2px; margin-top: 2px; font-weight: normal">
                             <p class="narrative" style="font-weight: ${fWeight}">${step.narrative.header}</p>
