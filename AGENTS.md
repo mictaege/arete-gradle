@@ -32,6 +32,15 @@ itself consumed/exercised by the `arete-gradle-test` sample project.
   users of the arete BDD framework.
 - `gradle.properties` in this project stores Gradle-level configuration (e.g. Kotlin/JVM toggles) —
   check it before assuming defaults.
+- Run history (history store, history strip on spec pages, History page, screenshot hand-over via
+  JUnit file attachments): read [docs/arete_history.md](docs/arete_history.md) before changing
+  `History.kt`, `HtmlWriter.kt`, the history templates or screenshot handling.
+- Report outline (collapsible spec/scenario tree, connector lines, page outline navigation,
+  unfold-on-click): read [docs/arete_outline.md](docs/arete_outline.md) before changing
+  `spec.ftlh`, `history.ftlh`, `history-macros.ftlh` or `arete-css.ftlh`.
+- Markdown export (copy-as-markdown buttons on the container boxes): read
+  [docs/arete_mdcopy.md](docs/arete_mdcopy.md) before changing `markdown-macros.ftlh` or the
+  markdown calls in `spec.ftlh` and `history.ftlh`.
 
 ## Working conventions
 - Run `./gradlew test` before submitting changes; also consider building and exercising the plugin

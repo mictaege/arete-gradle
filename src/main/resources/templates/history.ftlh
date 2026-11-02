@@ -1,5 +1,6 @@
 <#-- @ftlvariable name="overview" type="com.github.mictaege.arete_gradle.HistoryOverview" -->
 <#import "history-macros.ftlh" as history>
+<#import "markdown-macros.ftlh" as md>
 <html>
 <head>
     <title>History</title>
@@ -20,17 +21,6 @@
         <#elseif !overview.specs?has_content>
             <p>No failed or aborted steps are available in the history store.</p>
         <#else>
-            <#macro anchor hash displayName spec>
-                <#if spec.reportAvailable>
-                    <#assign target="specs/${spec.hash}.html#${hash}">
-                <#else>
-                    <#assign target="history.html#${hash}">
-                </#if>
-                <a id="${hash}">
-                    <@history.copyLinkButton text=displayName target=target/>
-                </a>
-            </#macro>
-
             <#macro historyDisplay node specHash>
                 <@history.historyStrip iconClass="card-tagged-clock"; area>
                     <#if area == "summary">
@@ -55,48 +45,64 @@
                 </@history.historyStrip>
             </#macro>
 
-            <#macro historyNode node spec specHash>
-                <div class="history-node">
-                    <#if node.container>
-                        <div class="${history.stateClass(node.state)}-no-hover step history-container">
+            <#macro historyNode node specHash>
+                <#if node.container>
+                    <div class="outline-item container-step">
+                        <div class="${history.stateClass(node.state)} step history-container outline-header" id="${node.hash}">
                             <div class="step-display">
                                 ${node.containerDisplayName}
-                                <@anchor hash=node.hash displayName=node.displayName spec=spec/>
+                                <@md.markdownCopyButton id="${node.hash}Markdown" iconClass="card-markdown-icon">
+                                    <@md.markdownNode node=node/>
+                                </@md.markdownCopyButton>
                             </div>
                         </div>
-                        <#list node.children as child>
-                            <@historyNode node=child spec=spec specHash=specHash/>
-                        </#list>
-                    <#else>
+                        <div class="outline-body">
+                            <div class="outline-children">
+                                <#list node.children as child>
+                                    <@historyNode node=child specHash=specHash/>
+                                </#list>
+                            </div>
+                        </div>
+                    </div>
+                <#else>
+                    <div class="outline-item">
                         <div class="${history.stateClass(node.state)}-no-hover step">
                             <div class="step-display">${node.displayName}</div>
                         </div>
                         <@historyDisplay node=node specHash=specHash/>
-                    </#if>
-                </div>
+                    </div>
+                </#if>
             </#macro>
 
             <#list overview.specs as spec>
                 <section>
-                    <div class="${history.stateClass(spec.state)}-no-hover step history-container">
-                        <div class="step-display">
-                            <#if spec.reportAvailable>
-                                <a href="./specs/${spec.hash}.html">${spec.displayName}</a>
-                            <#else>
+                    <div class="outline-item container-step">
+                        <div class="${history.stateClass(spec.state)} step history-container outline-header" id="${spec.hash}">
+                            <div class="step-display">
                                 ${spec.displayName}
-                            </#if>
-                            <@anchor hash=spec.hash displayName=spec.displayName spec=spec/>
+                                <#if spec.reportAvailable>
+                                    <a href="./specs/${spec.hash}.html" class="spec-link-btn" title="Open spec report"></a>
+                                </#if>
+                                <@md.markdownCopyButton id="${spec.hash}Markdown" iconClass="card-markdown-icon">
+                                    <@md.markdownOverviewSpec spec=spec/>
+                                </@md.markdownCopyButton>
+                            </div>
+                        </div>
+                        <div class="outline-body">
+                            <div class="outline-children">
+                                <#list spec.nodes as node>
+                                    <@historyNode node=node specHash=spec.hash/>
+                                </#list>
+                            </div>
                         </div>
                     </div>
-                    <#list spec.nodes as node>
-                        <@historyNode node=node spec=spec specHash=spec.hash/>
-                    </#list>
                 </section>
             </#list>
         </#if>
     </div>
 
     <@history.clipboardScript/>
+    <@history.outlineScript/>
     <#include "prism-js.ftlh">
 </body>
 </html>

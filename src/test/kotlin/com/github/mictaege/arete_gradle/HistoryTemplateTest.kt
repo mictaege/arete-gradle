@@ -74,7 +74,7 @@ class HistoryTemplateTest {
                 HistoryOverviewSpec(
                     hash = "spec-hash",
                     displayName = "Spec's title",
-                    reportAvailable = false,
+                    reportAvailable = true,
                     nodes = listOf(scenario)
                 )
             )
@@ -85,12 +85,23 @@ class HistoryTemplateTest {
         assertTrue(html.contains("history-dot-FAILED"))
         assertTrue(html.contains("class=\"card-icon-camera\""))
         assertTrue(html.contains("class=\"card-icon-file\""))
-        assertTrue(html.contains("class=\"failed-no-hover step history-container\""))
+        assertTrue(html.contains("class=\"failed step history-container outline-header\""))
+        assertTrue(html.contains("class=\"outline-item container-step\""))
+        assertTrue(html.contains("class=\"outline-item\""))
+        assertTrue(html.contains("class=\"outline-children\""))
+        assertTrue(html.contains("class=\"outline-body\""))
+        assertTrue(html.contains("spec-link-btn"))
+        assertTrue(html.contains("href=\"./specs/spec-hash.html\""))
+        assertTrue(html.contains("querySelectorAll(\".outline-header\")"))
+        assertTrue(html.contains("unfoldTargetOf"))
         assertTrue(html.contains("java.lang.AssertionError"))
         assertTrue(html.contains("function traceToClipboard"))
-        val copyLink = html.substringAfter("onclick='anchorToClipboard(").substringBefore(");")
-        assertTrue(copyLink.contains("Spec\\&#39;s title"), copyLink)
-        assertFalse(copyLink.startsWith("'Spec"))
+        assertTrue(html.contains("class=\"spec-link-btn\""), html)
+        assertTrue(html.contains("class=\"markdown-copy-btn\""), html)
+        assertFalse(html.contains("class=\"link-copy-btn\""), html)
+        assertTrue(html.contains("outline-header\" id=\"scenario-hash\""), html)
+        assertTrue(html.contains("outline-header\" id=\"spec-hash\""), html)
+        assertFalse(html.contains("<a id="), html)
     }
 
     @Test
