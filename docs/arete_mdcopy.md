@@ -54,7 +54,7 @@ adjusted to read well in markdown. The general rules that came out of it:
   leaf**, and the fence two spaces deeper than its bullet:
 
   ````
-  - `[x]` It should display the rooms popularity
+  - <span style="color: #e78284">[x]</span> It should display the rooms popularity
       - Message:
         ```
         Expected: is <8>
@@ -73,22 +73,27 @@ adjusted to read well in markdown. The general rules that came out of it:
   `Message` keeps the original line alignment of the error message (content = indent + original
   line), while `Stack trace` flattens every line (leading whitespace and tabs removed), because a
   `printStackTrace` layout is noise. `Stdout` and `Stderr` follow the `Message` pattern.
-  Details that don't exist are omitted; a successful leaf is a plain bullet.
+  Details are emitted **only for failed or aborted steps** (`ResultState.isFailure`, exposed to
+  FreeMarker as `resultState.failure`); successful and ignored steps are plain bullets even when
+  their stdout/stderr was captured.
 - **History runs are bullets with sign and timestamp only** — no error text on the bullet line.
   The list sits under a `- History:` label at the same level as the other details, four spaces
-  deeper than the leaf; each run is another four spaces deeper. A run with failure details carries
-  its own `Message` / `Stack trace` / `Stdout` / `Stderr` blocks four spaces deeper again:
+  deeper than the leaf; each run is another four spaces deeper. A failed or aborted run carries
+  its own `Message` / `Stack trace` / `Stdout` / `Stderr` blocks four spaces deeper again.
+  The `History:` block follows the same inclusion rule as the HTML history strip
+  (`SpecificationStep.showHistory`): it appears when earlier runs exist and the current run or any
+  history run is not successful.
 
   ````
-  - `[x]` It should display the rooms popularity
+  - <span style="color: #e78284">[x]</span> It should display the rooms popularity
       - History:
-          - `[x]` 30.10.2026 15:44:44
+          - <span style="color: #e78284">[x]</span> 30.10.2026 15:44:44
               - Message:
                 ```
                 Expected: is <8>
                 ...
                 ```
-          - `[+]` 30.10.2026 12:29:35
+          - <span style="color: #a6e3a1">[+]</span> 30.10.2026 12:29:35
   ````
 
 - **`@ExampleGrid`/`@ExampleCsv`/`@Example` instances render exactly like other leaves** — a
@@ -96,8 +101,9 @@ adjusted to read well in markdown. The general rules that came out of it:
   earlier iteration rendered grids as a markdown table with a `State` column and anchor links; the
   list form was preferred because it matches normal examples and needs no extra anchors.)
 - **Screenshots are not exported.** There is no link and no image reference.
-- On the **History page**, the leaf's own `Message`/`Stack trace` details come from the newest run,
-  and *all* runs are listed under `History:` (the History page has no "current run" of its own).
+- On the **History page**, the leaf's own `Message`/`Stack trace` details come from the newest run
+  when that run failed or aborted, and *all* runs are listed under `History:` (the History page has
+  no "current run" of its own).
 
 ## 4. Implementation
 

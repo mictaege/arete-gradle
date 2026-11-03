@@ -1,8 +1,8 @@
 <#--
     Markdown rendering of the report tree, embedded per container for clipboard copy.
     The formatting rules are documented in docs/arete_mdcopy.md.
-    State signs follow arete's ResultState.sign, rendered in backticks as inline code:
-    `[x]` failed, `[*]` aborted, `[/]` ignored, `[#]` hidden, `[+]` successful.
+    State signs follow arete's ResultState.sign, rendered as a colored inline span:
+    [x] failed, [*] aborted, [/] ignored, [#] hidden, [+] successful.
 -->
 
 <#function stateColor state>
@@ -40,34 +40,38 @@ ${indent}  ```
 ${labelIndent}- History:
     <#list entries as entry>
 ${labelIndent}    - <@stateSign entry.state/> ${entry.timeStampLong}
-        <#if entry.errorMsg?has_content>
-            <@fencedBlock label="Message" indent="${labelIndent}        " text=entry.errorMsg/>
-        </#if>
-        <#if entry.stackTrace?has_content>
-            <@fencedBlock label="Stack trace" indent="${labelIndent}        " text=entry.stackTrace trim=true/>
-        </#if>
-        <#if entry.stdout?has_content>
-            <@fencedBlock label="Stdout" indent="${labelIndent}        " text=entry.stdout/>
-        </#if>
-        <#if entry.stderr?has_content>
-            <@fencedBlock label="Stderr" indent="${labelIndent}        " text=entry.stderr/>
+        <#if entry.state.failure>
+            <#if entry.errorMsg?has_content>
+                <@fencedBlock label="Message" indent="${labelIndent}        " text=entry.errorMsg/>
+            </#if>
+            <#if entry.stackTrace?has_content>
+                <@fencedBlock label="Stack trace" indent="${labelIndent}        " text=entry.stackTrace trim=true/>
+            </#if>
+            <#if entry.stdout?has_content>
+                <@fencedBlock label="Stdout" indent="${labelIndent}        " text=entry.stdout/>
+            </#if>
+            <#if entry.stderr?has_content>
+                <@fencedBlock label="Stderr" indent="${labelIndent}        " text=entry.stderr/>
+            </#if>
         </#if>
     </#list>
 </#macro>
 
 <#macro markdownLeaf step>
 - <@stateSign step.resultState/> ${step.displayName}
-    <#if step.hasErrorMsg>
-        <@fencedBlock label="Message" indent="    " text=step.errorMsg/>
-    </#if>
-    <#if step.stackTrace?has_content>
-        <@fencedBlock label="Stack trace" indent="    " text=step.stackTrace trim=true/>
-    </#if>
-    <#if step.hasStdout>
-        <@fencedBlock label="Stdout" indent="    " text=step.stdout/>
-    </#if>
-    <#if step.hasStderr>
-        <@fencedBlock label="Stderr" indent="    " text=step.stderr/>
+    <#if step.resultState.failure>
+        <#if step.hasErrorMsg>
+            <@fencedBlock label="Message" indent="    " text=step.errorMsg/>
+        </#if>
+        <#if step.stackTrace?has_content>
+            <@fencedBlock label="Stack trace" indent="    " text=step.stackTrace trim=true/>
+        </#if>
+        <#if step.hasStdout>
+            <@fencedBlock label="Stdout" indent="    " text=step.stdout/>
+        </#if>
+        <#if step.hasStderr>
+            <@fencedBlock label="Stderr" indent="    " text=step.stderr/>
+        </#if>
     </#if>
     <#if step.showHistory>
         <@markdownHistoryList entries=step.history labelIndent="    "/>
@@ -115,17 +119,19 @@ ${labelIndent}    - <@stateSign entry.state/> ${entry.timeStampLong}
 - <@stateSign node.state/> ${node.displayName}
         <#if node.entries?has_content>
             <#local newest = node.entries?first>
-            <#if newest.errorMsg?has_content>
-                <@fencedBlock label="Message" indent="    " text=newest.errorMsg/>
-            </#if>
-            <#if newest.stackTrace?has_content>
-                <@fencedBlock label="Stack trace" indent="    " text=newest.stackTrace trim=true/>
-            </#if>
-            <#if newest.stdout?has_content>
-                <@fencedBlock label="Stdout" indent="    " text=newest.stdout/>
-            </#if>
-            <#if newest.stderr?has_content>
-                <@fencedBlock label="Stderr" indent="    " text=newest.stderr/>
+            <#if newest.state.failure>
+                <#if newest.errorMsg?has_content>
+                    <@fencedBlock label="Message" indent="    " text=newest.errorMsg/>
+                </#if>
+                <#if newest.stackTrace?has_content>
+                    <@fencedBlock label="Stack trace" indent="    " text=newest.stackTrace trim=true/>
+                </#if>
+                <#if newest.stdout?has_content>
+                    <@fencedBlock label="Stdout" indent="    " text=newest.stdout/>
+                </#if>
+                <#if newest.stderr?has_content>
+                    <@fencedBlock label="Stderr" indent="    " text=newest.stderr/>
+                </#if>
             </#if>
             <@markdownHistoryList entries=node.entries labelIndent="    "/>
         </#if>

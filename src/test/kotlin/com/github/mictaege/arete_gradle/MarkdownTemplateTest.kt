@@ -164,6 +164,67 @@ class MarkdownTemplateTest {
         assertTrue(markdown.contains("> so that I get a ticket"), markdown)
     }
 
+    @Test
+    fun omitsDetailsForSuccessfulStepsAndRuns() {
+        val template = markdownStepTemplate()
+        val leaf = step(
+            StepType.THEN, "Then the payment succeeds", ResultState.SUCCESSFUL,
+            extra = mapOf(
+                "hasStdout" to true,
+                "stdout" to "success stdout",
+                "hasStderr" to true,
+                "stderr" to "success stderr",
+                "history" to listOf(
+                    HistoryEntry(
+                        runId = "run-ok",
+                        timestamp = Instant.parse("2026-10-24T10:00:00Z"),
+                        startTime = Instant.parse("2026-10-24T10:00:00Z"),
+                        state = ResultState.SUCCESSFUL,
+                        errorMsg = "",
+                        stackTrace = "",
+                        stdout = "old stdout",
+                        stderr = "old stderr",
+                        screenshotFileName = ""
+                    )
+                )
+            )
+        )
+
+        val markdown = render(template, mapOf("step" to leaf, "colorScheme" to AreteClassicColors()))
+
+        assertTrue(markdown.contains("- <span style=\"color: limegreen\">[+]</span> Then the payment succeeds"), markdown)
+        assertTrue(!markdown.contains("success stdout"), markdown)
+        assertTrue(!markdown.contains("success stderr"), markdown)
+        assertTrue(!markdown.contains("Stdout:"), markdown)
+        assertTrue(!markdown.contains("Stderr:"), markdown)
+        // no error in the history and current state successful -> no History block at all
+        assertTrue(!markdown.contains("History:"), markdown)
+        assertTrue(!markdown.contains("old stdout"), markdown)
+        assertTrue(!markdown.contains("old stderr"), markdown)
+    }
+
+    @Test
+    fun showsHistoryWhenCurrentRunFailsEvenWithoutHistoryError() {
+        // same inclusion rule as the HTML history strip (showHistory): the current run counts
+        val template = markdownStepTemplate()
+        val leaf = step(
+            StepType.THEN, "Then the payment fails", ResultState.FAILED,
+            extra = mapOf(
+                "hasErrorMsg" to true,
+                "errorMsg" to "Expected: is <true> but: was <false>",
+                "showHistory" to true,
+                "history" to listOf(historyEntry(ResultState.SUCCESSFUL, ""))
+            )
+        )
+
+        val markdown = render(template, mapOf("step" to leaf, "colorScheme" to AreteClassicColors()))
+
+        assertTrue(markdown.contains("- <span style=\"color: red\">[x]</span> Then the payment fails"), markdown)
+        assertTrue(markdown.contains("    - Message:"), markdown)
+        assertTrue(markdown.contains("    - History:"), markdown)
+        assertTrue(markdown.contains("        - <span style=\"color: limegreen\">[+]</span> "), markdown)
+    }
+
     private fun markdownStepTemplate(): Template = Template(
         "markdown-step",
         StringReader(
