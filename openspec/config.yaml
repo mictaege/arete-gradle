@@ -1,0 +1,32 @@
+schema: spec-driven
+
+context: |
+  arete-gradle is the Gradle reporting plugin for the arete JUnit 6 BDD testing framework
+  (https://github.com/mictaege/arete). Applied to a consumer project, it adds Gradle tasks that
+  generate HTML reports for arete specifications/scenarios at build/reports/arete/<task>/index.html.
+
+  Family: depends on the `arete` core library for the extension model; consumed/exercised by the
+  `arete-gradle-test` sample project, which includes ../arete and ../arete-gradle via includeBuild,
+  so local changes are validated end-to-end without publishing.
+
+  Stack: Kotlin (src/main/kotlin), JVM 17, Gradle Kotlin DSL (build.gradle.kts); build only via
+  ./gradlew. HTML report templates live in src/main/resources/templates; service wiring in
+  src/main/resources/META-INF/services. Published via org.jreleaser to Maven Central
+  (io.github.mictaege) and com.gradle.plugin-publish to the Gradle Plugin Portal as
+  io.github.mictaege.arete. License: Apache License 2.0.
+
+  Conventions for changes:
+  - Run ./gradlew test before submitting changes; also build and exercise the plugin against
+    arete-gradle-test.
+  - Keep the plugin's public extension DSL and generated report structure backward compatible,
+    since external consumers apply this plugin by version.
+  - Match the existing Kotlin coding style in the plugin sources.
+  - The report structure mirrors Gradle's built-in test report layout - keep that parity when
+    changing report generation logic.
+  - gradle.properties stores Gradle-level configuration (e.g. Kotlin/JVM toggles) - check it
+    before assuming defaults.
+  - Plugin metadata tags: testing, junit6, bdd, agile.
+
+  Capability specs live in openspec/specs/<capability>/spec.md (currently: refs, history, outline,
+  mdcopy, report-model, report-pages, plugin-dsl, color-schemes, stdout-stderr, narrative-rendering,
+  see-also-rendering). AGENTS.md maps files to the spec to read before changing them.

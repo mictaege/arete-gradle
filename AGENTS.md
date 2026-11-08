@@ -1,53 +1,48 @@
 # AGENTS.md — arete-gradle
 
-## Project purpose
-`arete-gradle` is the Gradle reporting plugin for the [arete](https://github.com/mictaege/arete)
-JUnit 6 BDD testing framework. Applied to a consumer project, it adds Gradle tasks that generate
-HTML reports (parallel to the standard test report) for arete specifications/scenarios, written to
-`build/reports/arete/<task>/index.html`. It also supports options such as excluding disabled tests
-from the report.
+Project context and conventions live in OpenSpec: `openspec/config.yaml` (project context) and
+`openspec/specs/<capability>/spec.md` (capability specs). Use the OpenSpec workflow for behavior
+changes: propose via `/openspec-propose`, implement via `/openspec-apply-change`, validate with
+`openspec validate`, finish with `/openspec-archive-change`.
 
-Part of the arete family: it depends on the `arete` core library for the extension model, and is
-itself consumed/exercised by the `arete-gradle-test` sample project.
+## Read the relevant spec or doc before changing
 
-## Technical stack
-- Language: Kotlin (plugin sources under `src/main/kotlin`), targeting JVM 17.
-- Build tool: Gradle (Kotlin DSL, `build.gradle.kts`) with the Gradle Kotlin plugin
-  (`org.jetbrains.kotlin.jvm`) — build via `./gradlew`.
-- Plugin packaging: `java-gradle-plugin` + `com.gradle.plugin-publish`, published to the Gradle
-  Plugin Portal as `io.github.mictaege.arete`.
-- Resources: `src/main/resources/templates` holds HTML report templates;
-  `src/main/resources/META-INF/services` wires up service implementations.
-- Dependencies: JUnit Jupiter API/platform-launcher (to introspect arete/JUnit test results), plus
-  the Kotlin stdlib.
-- Release/publishing: `org.jreleaser`, publishing to Maven Central under group `io.github.mictaege`
-  (same coordinates/version scheme as `arete`).
-- License: Apache License 2.0.
-
-## Project semantics / domain notes
-- This project consumes the `arete` extension's test model to build a reporting structure that
-  mirrors Gradle's built-in test report layout — keep that parity in mind when changing report
-  generation logic.
-- Plugin metadata (tags: `testing`, `junit6`, `bdd`, `agile`) reflects its intended audience: Gradle
-  users of the arete BDD framework.
-- `gradle.properties` in this project stores Gradle-level configuration (e.g. Kotlin/JVM toggles) —
-  check it before assuming defaults.
+- References (`@Ref` links rendered on spec pages): read `openspec/specs/refs/spec.md` before
+  changing `Refs.kt`, the `refs`/`refLinks`/`hasRefLinks` properties in `SpecificationPlan.kt`, or
+  the ref-links block in `spec.ftlh`.
 - Run history (history store, history strip on spec pages, History page, screenshot hand-over via
-  JUnit file attachments): read [docs/arete_history.md](docs/arete_history.md) before changing
-  `History.kt`, `HtmlWriter.kt`, the history templates or screenshot handling.
+  JUnit file attachments): read `openspec/specs/history/spec.md` before changing `History.kt`,
+  `HtmlWriter.kt`, the history templates or screenshot handling.
 - Report outline (collapsible spec/scenario tree, connector lines, page outline navigation,
-  unfold-on-click): read [docs/arete_outline.md](docs/arete_outline.md) before changing
-  `spec.ftlh`, `history.ftlh`, `history-macros.ftlh` or `arete-css.ftlh`.
+  unfold-on-click): read `openspec/specs/outline/spec.md` before changing `spec.ftlh`,
+  `history.ftlh`, `history-macros.ftlh` or `arete-css.ftlh`.
 - Markdown export (copy-as-markdown buttons on the container boxes): read
-  [docs/arete_mdcopy.md](docs/arete_mdcopy.md) before changing `markdown-macros.ftlh` or the
-  markdown calls in `spec.ftlh` and `history.ftlh`.
-- References (`@Ref` links rendered on spec pages): read [docs/arete_refs.md](docs/arete_refs.md)
-  before changing `Refs.kt`, the `refs`/`refLinks`/`hasRefLinks` properties in
-  `SpecificationPlan.kt`, or the ref-links block in `spec.ftlh`.
+  `openspec/specs/mdcopy/spec.md` before changing `markdown-macros.ftlh` or the markdown calls in
+  `spec.ftlh` and `history.ftlh`.
+- Report model (listener, plan tree, step types/states, hashing): read `openspec/specs/report-model/spec.md`
+  before changing `AreteTestListener.kt`, `SpecificationPlan.kt`, `TestIdentifierNormalizer.kt` or `SpecificationWriter.kt`.
+- Report pages (index/display_names/test_specs/tags, nav, search, hidden steps): read
+  `openspec/specs/report-pages/spec.md` before changing `index.ftlh`, `display_names.ftlh`,
+  `test_specs.ftlh`, `tags.ftlh`, `search-js.ftlh` or the topnav blocks.
+- Plugin DSL and system properties: read `openspec/specs/plugin-dsl/spec.md` before changing
+  `AretePlugin.kt`.
+- Color schemes and icon generation: read `openspec/specs/color-schemes/spec.md` before changing
+  `AreteColorScheme.kt`, `AreteColorSchemeProvider.kt`, `arete-colors-css.ftlh` or the icon handling
+  in `HtmlWriter.kt`.
+- Stdout/stderr capture: read `openspec/specs/stdout-stderr/spec.md` before changing the capture
+  properties or the `stdout`/`stderr` handling in `SpecificationPlan.kt`.
+- Narrative rendering: read `openspec/specs/narrative-rendering/spec.md` before changing
+  `NarrativeSection.kt` or the narrative blocks in `spec.ftlh`.
+- See-also rendering (placeholder pass): read `openspec/specs/see-also-rendering/spec.md` before
+  changing `ReferenceTargets.kt`, the see-also block in `spec.ftlh` or `replaceSeeAlsoPlaceholder` in
+  `HtmlWriter.kt`.
 
 ## Working conventions
+
 - Run `./gradlew test` before submitting changes; also consider building and exercising the plugin
   against `arete-gradle-test`, which is the dedicated consumer/integration test project.
 - Keep the plugin's public extension DSL and generated report structure backward compatible where
   possible, since external consumers apply this plugin by version.
 - Match the existing Kotlin coding style already used in the plugin sources.
+- Behavior changes to the report output or the extension DSL require an OpenSpec change proposal;
+  typo-level fixes do not.

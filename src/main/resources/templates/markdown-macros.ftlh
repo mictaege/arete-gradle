@@ -1,6 +1,6 @@
 <#--
     Markdown rendering of the report tree, embedded per container for clipboard copy.
-    The formatting rules are documented in docs/arete_mdcopy.md.
+    The formatting rules are documented in openspec/specs/mdcopy/spec.md.
     State signs follow arete's ResultState.sign, rendered as a colored inline span:
     [x] failed, [*] aborted, [/] ignored, [#] hidden, [+] successful.
 -->
