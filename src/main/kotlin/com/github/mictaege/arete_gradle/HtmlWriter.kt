@@ -42,6 +42,7 @@ class HtmlWriter: SpecificationWriter {
         writeHtmlFile("/spec.ftlh", mapOf("step" to step, "colorScheme" to AreteColorSchemeProvider.colorScheme), File(BuildDir.specsDir, "${step.uniqueHash}.html"))
         historyStore?.save(step.uniqueHash, historyRecords(step), step.displayName)
         deleteOriginalScreenshots(step)
+        deleteOriginalAttachments(step)
     }
 
     private fun loadHistory(step: SpecificationStep, specHash: String, historyStore: HistoryStore) {
@@ -92,6 +93,14 @@ class HtmlWriter: SpecificationWriter {
             } catch (_: Exception) {
             }
         }
+        step.attachments.forEach { attachment ->
+            try {
+                val target = File(BuildDir.specsDir, "${step.uniqueHash}-${attachment.name}")
+                target.parentFile.mkdirs()
+                Files.copy(attachment.path, target.toPath(), REPLACE_EXISTING)
+            } catch (_: Exception) {
+            }
+        }
         if (step.hasNarrative) {
             step.narrative?.resources?.forEach { i ->
                 val target = File(BuildDir.specsDir, i.fileName)
@@ -113,6 +122,14 @@ class HtmlWriter: SpecificationWriter {
             step.plan.removeScreenshot(step.uniqueId)
         }
         step.steps.forEach { deleteOriginalScreenshots(it) }
+    }
+
+    private fun deleteOriginalAttachments(step: SpecificationStep) {
+        step.attachments.forEach { runCatching { Files.deleteIfExists(it.path) } }
+        if (step.hasAttachments) {
+            step.plan.removeAttachments(step.uniqueId)
+        }
+        step.steps.forEach { deleteOriginalAttachments(it) }
     }
 
     override fun finishPlan(plan: SpecificationPlan) {

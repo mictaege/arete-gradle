@@ -68,6 +68,19 @@
             </#if>
         </#macro>
 
+        <#macro attachmentChips step>
+            <#if step.hasAttachments>
+                <div class="attachments">
+                    <#list step.attachments as atmnt>
+                        <a href="./${step.uniqueHash}-${atmnt.name}" target="_blank" class="attachment">
+                            <i class="attachment-icon"></i>
+                            ${atmnt.name}
+                        </a>
+                    </#list>
+                </div>
+            </#if>
+        </#macro>
+
         <#macro anchor step>
             <#if step.type.container>
                 <a id="${step.uniqueHash}">
@@ -125,7 +138,7 @@ ${step.stderr}</code></pre>
             <#if step.type.container>
                 <#-- containers are collapsible outline nodes, so they signal interactivity by hover -->
                 <#assign noHoverSuffix = "">
-            <#elseif step.hasScreenshot || step.hasErrorMsg>
+            <#elseif step.hasScreenshot || step.hasErrorMsg || step.hasAttachments>
                 <#assign collapsible = "collapsible">
                 <#assign noHoverSuffix = "">
             </#if>
@@ -155,6 +168,9 @@ ${step.stderr}</code></pre>
                     <div class="ignored${noHoverSuffix} step ${collapsible}${headerClass}" style="font-weight: ${fWeight}">
                         <div class="step-display">
                             <@stepDisplay step/>
+                            <#if step.hasAttachments>
+                                <i class="spec-icon-file"></i>
+                            </#if>
                             <#if step.hasScreenshot>
                                 <i class="spec-icon-camera"></i>
                             </#if>
@@ -162,15 +178,21 @@ ${step.stderr}</code></pre>
                             <@stamp step/>
                         </div>
                     </div>
-                    <#if !step.type.container && step.hasScreenshot>
+                    <#if !step.type.container && (step.hasScreenshot || step.hasAttachments)>
                         <div class="overflow-content">
-                            <img src="./${step.uniqueHash}.png"/>
+                            <@attachmentChips step/>
+                            <#if step.hasScreenshot>
+                                <img src="./${step.uniqueHash}.png"/>
+                            </#if>
                         </div>
                     </#if>
                 <#elseif "${step.resultState}" == "SUCCESSFUL">
                     <div class="successful${noHoverSuffix} step ${collapsible}${headerClass}" style="font-weight: ${fWeight}">
                         <div class="step-display">
                             <@stepDisplay step/>
+                            <#if step.hasAttachments>
+                                <i class="spec-icon-file"></i>
+                            </#if>
                             <#if step.hasScreenshot>
                                 <i class="spec-icon-camera"></i>
                             </#if>
@@ -178,15 +200,21 @@ ${step.stderr}</code></pre>
                             <@stamp step/>
                         </div>
                     </div>
-                    <#if !step.type.container && step.hasScreenshot>
+                    <#if !step.type.container && (step.hasScreenshot || step.hasAttachments)>
                         <div class="overflow-content">
-                            <img src="./${step.uniqueHash}.png"/>
+                            <@attachmentChips step/>
+                            <#if step.hasScreenshot>
+                                <img src="./${step.uniqueHash}.png"/>
+                            </#if>
                         </div>
                     </#if>
                 <#elseif "${step.resultState}" == "ABORTED">
                     <div class="aborted${noHoverSuffix} step ${collapsible}${headerClass}" style="font-weight: ${fWeight}">
                         <div class="step-display">
                             <@stepDisplay step/>
+                            <#if step.hasAttachments>
+                                <i class="spec-icon-file"></i>
+                            </#if>
                             <#if step.hasScreenshot>
                                 <i class="spec-icon-camera"></i>
                             </#if>
@@ -194,19 +222,24 @@ ${step.stderr}</code></pre>
                             <@stamp step/>
                         </div>
                     </div>
-                    <#if !step.type.container && step.hasScreenshot>
+                    <#if !step.type.container && (step.hasScreenshot || step.hasAttachments)>
                         <div class="overflow-content">
-                            <img src="./${step.uniqueHash}.png"/>
+                            <@attachmentChips step/>
+                            <#if step.hasScreenshot>
+                                <img src="./${step.uniqueHash}.png"/>
+                            </#if>
                         </div>
                     </#if>
                 <#elseif "${step.resultState}" == "FAILED">
                     <div class="failed${noHoverSuffix} step ${collapsible}${headerClass}" style="font-weight: ${fWeight}">
                         <div class="step-display" style="padding-bottom: 4px">
                             <@stepDisplay step/>
+                            <#if step.hasAttachments>
+                                <i class="spec-icon-file"></i>
+                            </#if>
                             <#if step.hasScreenshot>
                                 <i class="spec-icon-camera"></i>
                             </#if>
-                            <i class="spec-icon-file"></i>
                             <@anchor step/>
                             <@stamp step/>
                         </div>
@@ -218,6 +251,7 @@ ${step.stderr}</code></pre>
                     </div>
                     <#if !step.type.container>
                         <div class="overflow-content">
+                            <@attachmentChips step/>
                             <#if step.hasScreenshot>
                                 <img src="./${step.uniqueHash}.png"/>
                             </#if>
@@ -228,14 +262,20 @@ ${step.stderr}</code></pre>
                     <div class="step ${collapsible}${headerClass}" style="font-weight: ${fWeight}">
                         <div class="step-display" style="padding-bottom: 4px">
                             <@stepDisplay step/>
+                            <#if step.hasAttachments>
+                                <i class="spec-icon-file"></i>
+                            </#if>
                             <#if step.hasScreenshot>
                                 <i class="spec-icon-camera"></i>
                             </#if>
                         </div>
                     </div>
-                    <#if !step.type.container && step.hasScreenshot>
+                    <#if !step.type.container && (step.hasScreenshot || step.hasAttachments)>
                         <div class="overflow-content">
-                            <img src="./${step.uniqueHash}.png"/>
+                            <@attachmentChips step/>
+                            <#if step.hasScreenshot>
+                                <img src="./${step.uniqueHash}.png"/>
+                            </#if>
                         </div>
                     </#if>
                 </#if>

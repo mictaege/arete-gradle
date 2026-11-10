@@ -75,8 +75,16 @@ class AreteTestListener: TestExecutionListener {
 
     override fun fileEntryPublished(testIdentifier: TestIdentifier, fileEntry: FileEntry) {
         val path = fileEntry.path
-        if (path.fileName.toString().startsWith("${ScreenshotTaker.SCREENSHOT_NAME_PREFIX}.")) {
-            outputRoot?.let { specPlan.addScreenshot(testIdentifier.uniqueId, path, it) }
+        val fileName = path.fileName.toString()
+        when {
+            fileName.startsWith("${ScreenshotTaker.SCREENSHOT_NAME_PREFIX}.") ->
+                outputRoot?.let { specPlan.addScreenshot(testIdentifier.uniqueId, path, it) }
+            fileName.startsWith("${StepContext.ATTACHMENT_NAME_PREFIX}.") ->
+                specPlan.addAttachment(
+                    testIdentifier.uniqueId,
+                    fileName.removePrefix("${StepContext.ATTACHMENT_NAME_PREFIX}."),
+                    path
+                )
         }
     }
 

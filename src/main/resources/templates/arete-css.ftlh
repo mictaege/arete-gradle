@@ -672,6 +672,10 @@
         opacity: 0.6
     }
 
+    .overflow-content .attachments {
+        margin-top: 0;
+    }
+
     a.attachment {
         text-decoration:none;
         font-size: smaller;
