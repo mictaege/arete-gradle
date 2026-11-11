@@ -2,9 +2,10 @@
 
 ## Purpose
 
-Receive step attachments published by arete core under the `arete-attach.` namespace and render
-them in the HTML report: a file icon on the owning step in the outline, and a download chip with
-file icon and name inside the step's expanded content.
+Receive step attachments published by arete core under the `arete-attach.` namespace and narrative
+attachments under the `arete-narrative-attach.` namespace, and render them in the HTML report: a
+file icon on the owning step in the outline with a download chip inside the step's expanded
+content, and narrative attachments as chips inside the narrative block.
 
 ## Requirements
 
@@ -40,3 +41,16 @@ of the step's expanded `overflow-content`, above the screenshot.
 - **WHEN** a successful step has both a screenshot and an attachment and is expanded
 - **THEN** the report shows the file icon before the camera icon in the step box, and the
   attachment chip above the screenshot image in the expanded area
+
+### Requirement: Listener registers arete-narrative-attach files per narrative
+
+`AreteTestListener.fileEntryPublished` SHALL accept file entries whose name starts with
+`arete-narrative-attach.` (in addition to `arete-screenshot.` and `arete-attach.`) and register
+them in `SpecificationPlan` as a separate list of narrative attachments (name + path) keyed by the
+test's uniqueId, distinct from step attachments, so a narrative node may carry multiple narrative
+attachments.
+
+#### Scenario: Narrative attachment registered on the owning node
+- **WHEN** a `@Narrative` class publishes `arete-narrative-attach.summary.json` from `@AfterAll`
+- **THEN** `SpecificationPlan.narrativeAttachments(uniqueId)` contains `summary.json` for that
+  node and `SpecificationPlan.attachments(uniqueId)` does not

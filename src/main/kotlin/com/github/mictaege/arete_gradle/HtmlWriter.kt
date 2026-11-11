@@ -43,6 +43,7 @@ class HtmlWriter: SpecificationWriter {
         historyStore?.save(step.uniqueHash, historyRecords(step), step.displayName)
         deleteOriginalScreenshots(step)
         deleteOriginalAttachments(step)
+        deleteOriginalNarrativeAttachments(step)
     }
 
     private fun loadHistory(step: SpecificationStep, specHash: String, historyStore: HistoryStore) {
@@ -101,6 +102,14 @@ class HtmlWriter: SpecificationWriter {
             } catch (_: Exception) {
             }
         }
+        step.narrativeAttachments.forEach { attachment ->
+            try {
+                val target = File(BuildDir.specsDir, "${step.uniqueHash}-${attachment.name}")
+                target.parentFile.mkdirs()
+                Files.copy(attachment.path, target.toPath(), REPLACE_EXISTING)
+            } catch (_: Exception) {
+            }
+        }
         if (step.hasNarrative) {
             step.narrative?.resources?.forEach { i ->
                 val target = File(BuildDir.specsDir, i.fileName)
@@ -130,6 +139,14 @@ class HtmlWriter: SpecificationWriter {
             step.plan.removeAttachments(step.uniqueId)
         }
         step.steps.forEach { deleteOriginalAttachments(it) }
+    }
+
+    private fun deleteOriginalNarrativeAttachments(step: SpecificationStep) {
+        step.narrativeAttachments.forEach { runCatching { Files.deleteIfExists(it.path) } }
+        if (step.hasNarrativeAttachments) {
+            step.plan.removeNarrativeAttachments(step.uniqueId)
+        }
+        step.steps.forEach { deleteOriginalNarrativeAttachments(it) }
     }
 
     override fun finishPlan(plan: SpecificationPlan) {

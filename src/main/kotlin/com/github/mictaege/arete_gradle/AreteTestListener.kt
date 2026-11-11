@@ -85,6 +85,12 @@ class AreteTestListener: TestExecutionListener {
                     fileName.removePrefix("${StepContext.ATTACHMENT_NAME_PREFIX}."),
                     path
                 )
+            fileName.startsWith("${NarrativeContext.ATTACHMENT_NAME_PREFIX}.") ->
+                specPlan.addNarrativeAttachment(
+                    testIdentifier.uniqueId,
+                    fileName.removePrefix("${NarrativeContext.ATTACHMENT_NAME_PREFIX}."),
+                    path
+                )
         }
     }
 

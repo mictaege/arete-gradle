@@ -93,12 +93,13 @@ abstract class SpecificationNode {
     abstract fun cumulatedState(): ResultState
 }
 
-data class StepAttachment(val name: String, val path: Path)
+data class DynamicAttachment(val name: String, val path: Path)
 
 class SpecificationPlan: SpecificationNode() {
     private val allWriter = SpecificationWriter.allWriter
     private val screenshotFiles = mutableMapOf<String, Path>()
-    private val attachmentFiles = mutableMapOf<String, MutableList<StepAttachment>>()
+    private val attachmentFiles = mutableMapOf<String, MutableList<DynamicAttachment>>()
+    private val narrativeAttachmentFiles = mutableMapOf<String, MutableList<DynamicAttachment>>()
     var screenshotOutputRoot: Path? = null
         private set
 
@@ -114,13 +115,23 @@ class SpecificationPlan: SpecificationNode() {
     }
 
     fun addAttachment(uniqueId: String, name: String, path: Path) {
-        attachmentFiles.getOrPut(uniqueId) { mutableListOf() }.add(StepAttachment(name, path))
+        attachmentFiles.getOrPut(uniqueId) { mutableListOf() }.add(DynamicAttachment(name, path))
     }
 
-    fun attachments(uniqueId: String): List<StepAttachment> = attachmentFiles[uniqueId]?.toList() ?: emptyList()
+    fun attachments(uniqueId: String): List<DynamicAttachment> = attachmentFiles[uniqueId]?.toList() ?: emptyList()
 
     fun removeAttachments(uniqueId: String) {
         attachmentFiles.remove(uniqueId)
+    }
+
+    fun addNarrativeAttachment(uniqueId: String, name: String, path: Path) {
+        narrativeAttachmentFiles.getOrPut(uniqueId) { mutableListOf() }.add(DynamicAttachment(name, path))
+    }
+
+    fun narrativeAttachments(uniqueId: String): List<DynamicAttachment> = narrativeAttachmentFiles[uniqueId]?.toList() ?: emptyList()
+
+    fun removeNarrativeAttachments(uniqueId: String) {
+        narrativeAttachmentFiles.remove(uniqueId)
     }
 
     override fun add(step: SpecificationStep): Boolean {
@@ -299,10 +310,14 @@ class SpecificationStep(
         get() = plan.screenshot(uniqueId)
     val hasScreenshot: Boolean
         get() = screenshot != null
-    val attachments: List<StepAttachment>
+    val attachments: List<DynamicAttachment>
         get() = plan.attachments(uniqueId)
     val hasAttachments: Boolean
         get() = attachments.isNotEmpty()
+    val narrativeAttachments: List<DynamicAttachment>
+        get() = plan.narrativeAttachments(uniqueId)
+    val hasNarrativeAttachments: Boolean
+        get() = narrativeAttachments.isNotEmpty()
     val stdoutEntries = mutableListOf<String>()
     var history: List<HistoryEntry> = emptyList()
     val historyTimeStamp: String = historyTimeStamp(timeStamp)

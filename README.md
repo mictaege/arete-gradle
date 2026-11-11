@@ -94,32 +94,6 @@ copies them into the Arete report and history, then removes the attachment files
 directories; screenshots are therefore retained only in the report and history. Without the plugin,
 JUnit keeps the attachments under its configured output directory until the build is cleaned.
 
-## Attaching Files to a Step
-
-Any step can attach files it produced — HTML dumps, API responses, logs, HAR files — so they show
-up in the Arete report next to that step. Use `StepContext` from within the step body:
-
-```Java
-@Spec class BookingSpec {
-
-    @Then
-    void theTravelerReceivesAnInvoice() {
-        // ...
-        StepContext.current().attach(
-                "invoice.txt",
-                MediaType.TEXT_PLAIN,
-                invoice.getBytes(StandardCharsets.UTF_8));
-    }
-
-}
-```
-
-The file name may not contain path separators (they are replaced with `_`). Attachments are
-published as JUnit file attachments under the `arete-attach.` namespace, copied into the report's
-`specs/` directory when the step is expanded, and opened in a new tab when clicked. A step can
-attach multiple files; the step shows a file icon in the report outline whenever it has
-attachments.
-
 ## Reporting Stdout and Stderr
 
 If tests fail for unclear reasons or from time to time, especially on a CI server, it might be useful to see the stdout and stderr of the failing test.

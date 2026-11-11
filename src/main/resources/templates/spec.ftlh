@@ -364,12 +364,18 @@ ${step.stderr}</code></pre>
                                     <img class="image-grid-modal-content" id="modal-image">
                                 </div>
                             </#if>
-                            <#if step.narrative.hasAttachments>
+                            <#if step.narrative.hasAttachments || step.hasNarrativeAttachments>
                                 <div class="attachments">
                                     <#list step.narrative.attachments as atmnt>
                                         <a href="./${atmnt.fileName}" target="_blank" class="attachment">
                                             <i class="attachment-icon"></i>
                                             ${atmnt.fileName}
+                                        </a>
+                                    </#list>
+                                    <#list step.narrativeAttachments as atmnt>
+                                        <a href="./${step.uniqueHash}-${atmnt.name}" target="_blank" class="attachment">
+                                            <i class="attachment-icon"></i>
+                                            ${atmnt.name}
                                         </a>
                                     </#list>
                                 </div>

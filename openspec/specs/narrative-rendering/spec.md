@@ -40,3 +40,24 @@ write all narrative resources (images + diagrams + attachments) into the spec's 
 #### Scenario: PDF attachment
 - **WHEN** `attachmentResourcePath = "com/example/example-invoice.pdf"`
 - **THEN** the file is copied next to the spec page and linked from it
+
+### Requirement: Dynamic narrative attachments are copied and rendered with static ones
+
+Narrative attachments published under `arete-narrative-attach.` SHALL be copied by
+`HtmlWriter.copyResources` into the report `specs/` directory as `<uniqueHash>-<name>` (the hash
+prefix avoids collisions with static resources using the plain file name), and the original file
+SHALL be removed afterwards. `spec.ftlh` SHALL render them inside the `hasNarrative` block in the
+same `attachments` div as static `attachmentResourcePath` entries (file icon + name,
+`href="./<uniqueHash>-<name>"`, `target="_blank"`), whenever the node has narrative attachments —
+including when `attachmentResourcePath` is empty.
+
+#### Scenario: Dynamic attachment alongside static attachments
+- **WHEN** a narrative has `attachmentResourcePath` PDFs and an `@AfterAll` publishes
+  `arete-narrative-attach.summary.json`
+- **THEN** the narrative block shows all attachments as chips on the same line, and
+  `specs/<uniqueHash>-summary.json` exists with the original removed
+
+#### Scenario: Dynamic attachment without static attachments
+- **WHEN** a narrative has an empty `attachmentResourcePath` and an `@AfterAll` publishes
+  `arete-narrative-attach.summary.json`
+- **THEN** the narrative block still shows the attachment chip

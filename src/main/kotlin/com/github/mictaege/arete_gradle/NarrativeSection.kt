@@ -38,9 +38,9 @@ class NarrativeSection(annotation: Narrative) {
     val images: List<Image> = pictures + diagrams
     val hasImages: Boolean = images.isNotEmpty()
 
-    val attachments: List<Attachment> = annotation.attachmentResourcePath
+    val attachments: List<StaticAttachment> = annotation.attachmentResourcePath
         .filter { it.isNotBlank() }
-        .map { Attachment(it) }
+        .map { StaticAttachment(it) }
     val hasAttachments: Boolean = attachments.isNotEmpty()
 
     val resources: List<Resource> = images + attachments
@@ -111,7 +111,7 @@ class PlantUmlDiagram(val diagramSrc: String): Image {
     }
 }
 
-class Attachment(val filePath: String): Resource {
+class StaticAttachment(val filePath: String): Resource {
     val fileUri: URI? = filePath.let { javaClass.classLoader?.getResource(it)?.toURI() }
     override val fileName: String = fileUri?.let { File(it) }?.name ?: filePath.split("/").last()
 
