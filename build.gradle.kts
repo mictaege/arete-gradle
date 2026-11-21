@@ -41,6 +41,7 @@ dependencies {
     implementation("org.junit.jupiter:junit-jupiter-api:6.1.3")
     implementation("org.junit.platform:junit-platform-launcher:6.1.3")
     implementation("io.github.mictaege:arete:2026.8")
+    implementation("io.github.mictaege:arete-ktx:2026.8")
     implementation("org.fusesource.jansi:jansi:2.4.3")
     implementation("com.google.guava:guava:33.7.2-jre")
     implementation("org.freemarker:freemarker:2.3.35")
