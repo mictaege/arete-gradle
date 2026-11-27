@@ -9,6 +9,9 @@
         --page-icon-bell-bg: url("./../icons/icon-bell-bg.svg");
         --page-icon-bell-fg: url("./../icons/icon-bell-fg.svg");
         --page-icon-bell-neutral: url("./../icons/icon-bell-neutral.svg");
+        --page-icon-bookmark-bg: url("./../icons/icon-bookmark-bg.svg");
+        --page-icon-bookmark-fg: url("./../icons/icon-bookmark-fg.svg");
+        --page-icon-bookmark-neutral: url("./../icons/icon-bookmark-neutral.svg");
         --page-icon-broadcast-bg: url("./../icons/icon-broadcast-bg.svg");
         --page-icon-broadcast-fg: url("./../icons/icon-broadcast-fg.svg");
         --page-icon-broadcast-neutral: url("./../icons/icon-broadcast-neutral.svg");
@@ -78,6 +81,9 @@
         --root-icon-bell-bg: url("./icons/icon-bell-bg.svg");
         --root-icon-bell-fg: url("./icons/icon-bell-fg.svg");
         --root-icon-bell-neutral: url("./icons/icon-bell-neutral.svg");
+        --root-icon-bookmark-bg: url("./icons/icon-bookmark-bg.svg");
+        --root-icon-bookmark-fg: url("./icons/icon-bookmark-fg.svg");
+        --root-icon-bookmark-neutral: url("./icons/icon-bookmark-neutral.svg");
         --root-icon-broadcast-bg: url("./icons/icon-broadcast-bg.svg");
         --root-icon-broadcast-fg: url("./icons/icon-broadcast-fg.svg");
         --root-icon-broadcast-neutral: url("./icons/icon-broadcast-neutral.svg");
@@ -774,6 +780,10 @@
         background-image: var(--root-icon-weather-bg)
     }
 
+    .topnav a:hover .menu-icon-bookmark {
+        background-image: var(--root-icon-bookmark-bg)
+    }
+
     .topnav a:hover .spec-menu-icon-home {
         background-image: var(--page-icon-home-bg)
     }
@@ -796,6 +806,10 @@
 
     .topnav a:hover .spec-menu-icon-weather {
         background-image: var(--page-icon-weather-bg)
+    }
+
+    .topnav a:hover .spec-menu-icon-bookmark {
+        background-image: var(--page-icon-bookmark-bg)
     }
 
     /* Add a color to the active/current link */
@@ -829,6 +843,10 @@
         background-image: var(--root-icon-weather-bg)
     }
 
+    .topnav a.active .menu-icon-bookmark {
+        background-image: var(--root-icon-bookmark-bg)
+    }
+
     .topnav a.active .spec-menu-icon-home {
         background-image: var(--page-icon-home-bg)
     }
@@ -851,6 +869,10 @@
 
     .topnav a.active .spec-menu-icon-weather {
         background-image: var(--page-icon-weather-bg)
+    }
+
+    .topnav a.active .spec-menu-icon-bookmark {
+        background-image: var(--page-icon-bookmark-bg)
     }
 
     img {
@@ -924,6 +946,17 @@
         background-image: var(--root-icon-weather-fg)
     }
 
+    .menu-icon-bookmark {
+        display: inline-block;
+        vertical-align: middle;
+        background-size: contain;
+        background-position: center center;
+        background-repeat: no-repeat;
+        width:1.25rem;
+        height:1.25rem;
+        background-image: var(--root-icon-bookmark-fg)
+    }
+
     .spec-menu-icon-home {
         display: inline-block;
         vertical-align: middle;
@@ -988,6 +1021,17 @@
         width:1.25rem;
         height:1.25rem;
         background-image: var(--page-icon-weather-fg)
+    }
+
+    .spec-menu-icon-bookmark {
+        display: inline-block;
+        vertical-align: middle;
+        background-size: contain;
+        background-position: center center;
+        background-repeat: no-repeat;
+        width:1.25rem;
+        height:1.25rem;
+        background-image: var(--page-icon-bookmark-fg)
     }
 
     .spec-icon-camera {
@@ -1182,7 +1226,9 @@
     }
 
     .card-tagged,
-    .search-tagged {
+    .search-tagged,
+    .card-ref,
+    .search-ref {
         text-decoration:none;
         font-size: smaller;
         appearance: none;
@@ -1197,18 +1243,22 @@
         color: var(--arete-color-foreground);
     }
 
-    .search-tagged {
+    .search-tagged,
+    .search-ref {
         margin-top: 4px;
         margin-bottom: 4px;
     }
 
-    .search-tagged:hover {
+    .search-tagged:hover,
+    .search-ref:hover {
         background-color: var(--arete-color-foreground);
         color: var(--arete-color-background);
     }
 
     .card-tagged-icon,
-    .search-tagged-icon {
+    .search-tagged-icon,
+    .card-ref-icon,
+    .search-ref-icon {
         display: inline-block;
         vertical-align: middle;
         background-size: contain;
@@ -1216,6 +1266,15 @@
         background-repeat: no-repeat;
         width:1rem;
         height:1rem;
+    }
+
+    .card-ref-bookmark,
+    .search-ref-bookmark {
+        background-image: var(--root-icon-bookmark-fg);
+    }
+
+    .search-ref:hover > i.search-ref-bookmark {
+        background-image: var(--root-icon-bookmark-bg);
     }
 
     .card-tagged-actor,

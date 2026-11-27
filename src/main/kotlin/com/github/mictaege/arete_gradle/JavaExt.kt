@@ -25,3 +25,16 @@ fun List<TestTag>.compareListOfTags(other: List<TestTag>): Int {
 
     return size.compareTo(other.size)
 }
+
+fun List<RefLink>.compareListOfRefLinks(other: List<RefLink>): Int {
+    val commonSize = minOf(size, other.size)
+
+    for (index in 0 until commonSize) {
+        val comparison = this[index].compareTo(other[index])
+        if (comparison != 0) {
+            return comparison
+        }
+    }
+
+    return size.compareTo(other.size)
+}

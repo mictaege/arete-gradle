@@ -167,6 +167,7 @@ class HtmlWriter: SpecificationWriter {
         writeHtmlFile("/display_names.ftlh", mapOf("plan" to plan, "colorScheme" to AreteColorSchemeProvider.colorScheme), File(BuildDir.taskDir, "display_names.html"))
         writeHtmlFile("/test_specs.ftlh", mapOf("plan" to plan, "colorScheme" to AreteColorSchemeProvider.colorScheme), File(BuildDir.taskDir, "test_specs.html"))
         writeHtmlFile("/tags.ftlh", mapOf("plan" to plan, "colorScheme" to AreteColorSchemeProvider.colorScheme), File(BuildDir.taskDir, "tags.html"))
+        writeHtmlFile("/references.ftlh", mapOf("plan" to plan, "colorScheme" to AreteColorSchemeProvider.colorScheme), File(BuildDir.taskDir, "references.html"))
         val historyStore = HistoryConfig.fromSystemProperties()?.let(::HistoryStore)
         val overview = historyStore?.overview(File(BuildDir.specsDir, "history")) ?: HistoryOverview(emptyList())
         writeHtmlFile(
@@ -216,6 +217,7 @@ class HtmlWriter: SpecificationWriter {
             "icon-calendar",
             "icon-bars",
             "icon-bell",
+            "icon-bookmark",
             "icon-broadcast",
             "icon-buffer",
             "icon-building",

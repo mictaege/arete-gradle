@@ -10,9 +10,9 @@ changes: propose via `/openspec-propose`, implement via `/openspec-apply-change`
 
 ## Read the relevant spec or doc before changing
 
-- References (`@Ref` links rendered on spec pages): read `openspec/specs/refs/spec.md` before
-  changing `Refs.kt`, the `refs`/`refLinks`/`hasRefLinks` properties in `SpecificationPlan.kt`, or
-  the ref-links block in `spec.ftlh`.
+- References (`@Ref` links rendered on spec pages, Refs listing page): read `openspec/specs/refs/spec.md`
+  before changing `Refs.kt`, the `refs`/`refLinks`/`hasRefLinks`/`allRefLinks` properties in
+  `SpecificationPlan.kt`, the ref-links block in `spec.ftlh`, or `references.ftlh`.
 - Run history (history store, history strip on spec pages, History page, screenshot hand-over via
   JUnit file attachments): read `openspec/specs/history/spec.md` before changing `History.kt`,
   `HtmlWriter.kt`, the history templates or screenshot handling.
@@ -30,8 +30,8 @@ changes: propose via `/openspec-propose`, implement via `/openspec-apply-change`
 - Plugin DSL and system properties: read `openspec/specs/plugin-dsl/spec.md` before changing
   `AretePlugin.kt`.
 - Color schemes and icon generation: read `openspec/specs/color-schemes/spec.md` before changing
-  `AreteColorScheme.kt`, `AreteColorSchemeProvider.kt`, `arete-colors-css.ftlh` or the icon handling
-  in `HtmlWriter.kt`.
+  `AreteColorScheme.kt`, `AreteColorSchemeProvider.kt`, `arete-colors-css.ftlh`, an icon template
+  such as `icon-bookmark.ftlh`, or the icon handling in `HtmlWriter.kt`.
 - Stdout/stderr capture: read `openspec/specs/stdout-stderr/spec.md` before changing the capture
   properties or the `stdout`/`stderr` handling in `SpecificationPlan.kt`.
 - Narrative rendering: read `openspec/specs/narrative-rendering/spec.md` before changing

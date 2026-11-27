@@ -14,6 +14,7 @@
         <a href="./../display_names.html"><i class="spec-menu-icon-handshake"></i> Specifications</a>
         <a href="./../test_specs.html"><i class="spec-menu-icon-flask"></i> Spec Classes</a>
         <a href="./../tags.html"><i class="spec-menu-icon-tags"></i> Tags</a>
+        <a href="./../references.html"><i class="spec-menu-icon-bookmark"></i> Refs</a>
         <a href="./../history.html"><i class="spec-menu-icon-weather"></i> History</a>
     </div>
     <div class="card main-step">

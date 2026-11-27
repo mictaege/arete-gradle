@@ -186,6 +186,10 @@ class SpecificationPlan: SpecificationNode() {
         return steps.sortedWith { s1, s2 -> s1.allTestTags.toList().compareListOfTags(s2.allTestTags.toList()) }
     }
 
+    fun specsOrderedByRefs(): List<SpecificationStep> {
+        return steps.sortedWith { s1, s2 -> s1.allRefLinks.toList().compareListOfRefLinks(s2.allRefLinks.toList()) }
+    }
+
     fun specSummaries(): PlanSummaries {
         return PlanSummaries(steps)
     }
@@ -212,6 +216,18 @@ class SpecificationPlan: SpecificationNode() {
             .groupBy { it.stereoType }
             .mapValues { it.value.toSortedSet() }
             .toSortedMap()
+    }
+
+    fun allRefLinks(): List<RefLink> {
+        return flatFilter { true }
+            .filter { it.resultState != ResultState.HIDDEN }
+            .flatMap { it.refLinks }
+            .distinct()
+            .sorted()
+    }
+
+    fun allRefLinkGroups(): List<RefGroup> {
+        return groupRefLinks(allRefLinks())
     }
 
     private fun writeIfSpec(testId: TestIdentifier) {
@@ -285,6 +301,13 @@ class SpecificationStep(
         get() = refs.links
     val hasRefLinks: Boolean
         get() = !isTestTemplate && refLinks.isNotEmpty()
+    val allRefLinks: SortedSet<RefLink>
+        get() = (
+                refLinks +
+                        flatFilter { true }
+                            .filter { it.resultState != ResultState.HIDDEN }
+                            .flatMap { it.refLinks }
+                ).toSortedSet()
     val hiddenIfDisabled: Boolean
         get() = testId.isAnnotated(HiddenIfDisabled::class.java) || testId.isAnnotated(Step::class.java)
     val resultState: ResultState
